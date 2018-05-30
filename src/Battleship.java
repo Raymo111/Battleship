@@ -10,7 +10,7 @@ public class Battleship {
 
 	public static void main(String[] args) {
 		AI.generateHeatMap();
-		Square battleSea[] = new Square[numberOfShips];
+		Square grid[] = new Square[numberOfShips];
 
 	}
 }
