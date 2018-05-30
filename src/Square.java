@@ -19,7 +19,7 @@ public class Square implements Serializable {
 	 * sets contains to EMPTY
 	 */
 	public Square() {
-		contains = SquareTypes.EMPTY;
+		contains = SquareTypes.UNKNOWN;
 	}
 
 	/**
