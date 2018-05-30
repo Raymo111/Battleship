@@ -4,7 +4,9 @@
  * Description: Main class for battleship game
  */
 public class Battleship {
-	public static int numberOfShips = 5;
+
+	public static int shipSizes[] = { 2, 3, 4, 4, 5 };
+	public static int numberOfShips = shipSizes.length;
 
 	public static void main(String[] args) {
 
