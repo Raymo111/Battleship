@@ -6,6 +6,6 @@ public class AI {
 	 * at the beginning of the game only once
 	 */
 	public void generateHeatMap() {
-
+		
 	}
 }
