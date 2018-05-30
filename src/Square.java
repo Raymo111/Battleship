@@ -13,7 +13,6 @@ public class Square implements Serializable {
 
 	public int graphArray[] = new int[Battleship.numberOfShips];
 	public SquareTypes contains;
-	private boolean isAMine = false;
 
 	/**
 	 * sets contains to EMPTY
