@@ -13,7 +13,6 @@ public class Square implements Serializable {
 
 	public int graphArray[] = new int[Battleship.numberOfShips];
 	private SquareTypes contains;
-	private boolean isAMine = false;
 
 	/**
 	 * sets contains to EMPTY
@@ -23,37 +22,16 @@ public class Square implements Serializable {
 	}
 
 	/**
-	 * sets isAMine to true
-	 */
-	public void setToMine() {
-		isAMine = true;
-	}
-
-	/**
-	 * sets isAMine to false
-	 */
-	public void removeMine() {
-		isAMine = false;
-	}
-
-	/**
-	 * return
-	 */
-	public boolean checkMine() {
-		return isAMine;
-	}
-
-	/**
 	 * returns to value of contains
 	 */
-	public SquareTypes getMineType() {
+	public SquareTypes getSquareType() {
 		return contains;
 	}
 
 	/**
 	 * sets the value of contains to type
 	 */
-	public void changeType(SquareTypes type) {
+	public void changeSquareType(SquareTypes type) {
 		contains = type;
 	}
 }
