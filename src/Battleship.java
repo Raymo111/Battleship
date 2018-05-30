@@ -9,8 +9,9 @@ public class Battleship {
 	public static int numberOfShips = shipSizes.length;
 
 	public static void main(String[] args) {
-		AI.generateHeatMap();
-		Square grid[] = new Square[numberOfShips];
+		AI.generatePDDG();
+		Square homeGrid[] = new Square[numberOfShips];
+		Square enemyGrid[] = new Square[numberOfShips];
 
 	}
 }
