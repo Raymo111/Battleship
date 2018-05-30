@@ -6,8 +6,12 @@ public class AI {
 	 * at the beginning of the game only once
 	 */
 	public static void generateHeatMap() {
-		for(int i =0;i<Battleship.numberOfShips;i++) {
-			
+		for (int i = 0; i < Battleship.numberOfShips; i++) {
+
 		}
+	}
+
+	public static void generateHomeGrid() {
+
 	}
 }
