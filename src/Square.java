@@ -12,12 +12,17 @@ public class Square implements Serializable {
 	private static final long serialVersionUID = -4896377842037028342L;
 
 	public int graphArray[] = new int[Battleship.numberOfShips];
-	public SquareTypes contains;
+	public int totalSquareValue;
+	public SquareTypes status;
 
 	/**
 	 * sets contains to EMPTY
 	 */
 	public Square() {
-		contains = SquareTypes.UNKNOWN;
+		status = SquareTypes.UNKNOWN;
+	}
+
+	public int[] returnGraphArray() {
+		return graphArray;
 	}
 }
