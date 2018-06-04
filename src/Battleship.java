@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.Scanner;
+
+import com.sun.corba.se.spi.orbutil.fsm.Input;
 
 /*
  * Authors: Raymond Li, David Tuck
@@ -6,13 +9,21 @@ import java.util.ArrayList;
  * Description: Main class for battleship game
  */
 public class Battleship {
-
-	public static int shipSizes[] = { 2, 3, 4, 4, 5 };
+	public static Scanner input = new Scanner(System.in);
+	public static int shipSizes[] = { 2, 3, 3, 4, 5 };
 	public static int boardSizeXY[] = { 10, 10 };
 	public static int numberOfShips = shipSizes.length;
 	public static boolean[] isShipSunk = new boolean[numberOfShips];
 	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];;
 	public static SquareTypes homeGrid[][] = new SquareTypes[boardSizeXY[0]][boardSizeXY[1]];
+	public static int homeShipPlacement[][] = new int[boardSizeXY[0]][boardSizeXY[1]];
+	/*
+	 * 
+	 * 
+	 * 
+	 * # Class of ship Size 1 Carrier 5 2 Battleship 4 3 Cruiser 3 4 Submarine 3 5
+	 * Destroyer 2
+	 */
 
 	public static void main(String[] args) {
 		AI.generatePDDG();
@@ -49,5 +60,28 @@ public class Battleship {
 				enemyGrid[x][y].totalSquareValue = temp;
 				temp = 0;
 			}
+	}
+
+	public static void placeShip() {
+		System.out.println("Select the mode. \n1-Corners \n2-PDM\n3-Random");
+		int mode = 0;
+		try {
+			mode = input.nextInt();
+		} catch (Exception e) {
+
+		}
+
+		if (mode == 1) {
+
+		} else if (mode == 2) {
+			
+
+		} else if (mode == 3) {
+
+		}
+
+		else {
+
+		}
 	}
 }
