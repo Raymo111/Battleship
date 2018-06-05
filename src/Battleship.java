@@ -110,34 +110,31 @@ public class Battleship {
 
 		} else if (mode == 3) {// random ship placement
 			for (int i = 0; i < shipSizes.length; i++) {
-				int x = rand.nextInt(boardSizeXY[0]);
-				int y = rand.nextInt(boardSizeXY[1]);
-				int rotation = rand.nextInt(4);
-				if (rotation == 0) {
-					if (checkValidShipPosition(x, y, x + shipSizes[i], y + shipSizes[i])) {
+				int x = rand.nextInt(boardSizeXY[0]);// random x coordinate. Start of ship
+				int y = rand.nextInt(boardSizeXY[1]);// random y coordinate. Start of ship
+				int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
 
-					}
-				} else if (rotation == 1) {
-					if (checkValidShipPosition(x, y, x - shipSizes[i], y - shipSizes[i])) {
-
-					}
-				} else if (rotation == 2) {
-					if (checkValidShipPosition(x, y, x - shipSizes[i], y + shipSizes[i])) {
-
-					}
-				} else if (rotation == 3) {
-					if (checkValidShipPosition(x, y, x + shipSizes[i], y - shipSizes[i])) {
-
-					}
-				}
+				if (rotation == 0)// ship horizontal to right
+					if (checkValidShipPosition(x, y, x + shipSizes[i], y))
+						for (int j = 0; j < shipSizes[i]; j++)
+							homeShipPlacement[x + j][y] = i;
+					else if (rotation == 1)// ship horizontal to left
+						if (checkValidShipPosition(x, y, x - shipSizes[i], y))
+							for (int j = 0; j < shipSizes[i]; j++)
+								homeShipPlacement[x - j][y] = i;
+						else if (rotation == 2)// ship vertical up
+							if (checkValidShipPosition(x, y, x, y + shipSizes[i]))
+								for (int j = 0; j < shipSizes[i]; j++)
+									homeShipPlacement[x][y + j] = i;
+							else if (rotation == 3)// ship vertical down7
+								if (checkValidShipPosition(x, y, x, y - shipSizes[i]))
+									for (int j = 0; j < shipSizes[i]; j++)
+										homeShipPlacement[x][y - j] = i;
 
 			}
 
 		}
 
-		else {
-
-		}
 	}
 
 	/**
