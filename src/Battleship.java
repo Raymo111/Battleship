@@ -14,22 +14,22 @@ import javafx.scene.layout.Border;
  * Description: Main class for battleship game
  */
 public class Battleship {
-	Random rand = new Random();
+	public static Random rand = new Random();
 	public static Scanner input = new Scanner(System.in);
-	public static int shipSizes[] = { 2, 3, 3, 4, 5 };
-	public static int boardSizeXY[] = { 10, 10 };
+	public static int shipSizes[] = { 2, 3, 3, 4, 5 };// Each index represents the size of a individual ship
+	public static int boardSizeXY[] = { 10, 10 };// x and y size of the board
 	public static int numberOfShips = shipSizes.length;
-	public static boolean[] isShipSunk = new boolean[numberOfShips];
-	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];;
-	public static SquareTypes homeGrid[][] = new SquareTypes[boardSizeXY[0]][boardSizeXY[1]];
-	public static int homeShipPlacement[][] = new int[boardSizeXY[0]][boardSizeXY[1]];
+	public static boolean[] isShipSunk = new boolean[numberOfShips];// boolean values of id a ship is sunk
+	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];;// state of enemy grid
+	public static SquareTypes homeGrid[][] = new SquareTypes[boardSizeXY[0]][boardSizeXY[1]];// state of home grid
+	public static int homeShipPlacement[][] = new int[boardSizeXY[0]][boardSizeXY[1]];// location of home ships
 	/*
 	 * #0=Empty #5=Carrier-5 #4=Battleship-4 #3=Cruiser-3 #2=Submarine-3
 	 * #1=Destroyer-2
 	 */
 
 	public static void main(String[] args) {
-		AI.generatePDDG();
+		AI.generatePDDG(1);
 
 	}
 
@@ -65,6 +65,9 @@ public class Battleship {
 			}
 	}
 
+	/**
+	 * Generates where to place the ships on the home grid
+	 */
 	public static void placeShips() {
 		int totalGrid[] = new int[boardSizeXY[0] * boardSizeXY[1]];
 		int counter = 0;
@@ -90,7 +93,7 @@ public class Battleship {
 
 		}
 
-		if (mode == 1) {
+		if (mode == 1) {// Corner priority mode ship placement
 			homeShipPlacement[boardSizeXY[0]][boardSizeXY[1]] = 5;
 			homeShipPlacement[boardSizeXY[0]][boardSizeXY[1] - 1] = 5;
 			homeShipPlacement[boardSizeXY[0]][boardSizeXY[1] - 2] = 5;
@@ -102,13 +105,31 @@ public class Battleship {
 
 		} else if (mode == 2) {
 			for (int i = 0; i < numberOfShips; i++) {
-				do {
 
-				} while (condition);
 			}
 
-		} else if (mode == 3) {
+		} else if (mode == 3) {// random ship placement
 			for (int i = 0; i < shipSizes.length; i++) {
+				int x = rand.nextInt(boardSizeXY[0]);
+				int y = rand.nextInt(boardSizeXY[1]);
+				int rotation = rand.nextInt(4);
+				if (rotation == 0) {
+					if (checkValidShipPosition(x, y, x + shipSizes[i], y + shipSizes[i])) {
+
+					}
+				} else if (rotation == 1) {
+					if (checkValidShipPosition(x, y, x - shipSizes[i], y - shipSizes[i])) {
+
+					}
+				} else if (rotation == 2) {
+					if (checkValidShipPosition(x, y, x - shipSizes[i], y + shipSizes[i])) {
+
+					}
+				} else if (rotation == 3) {
+					if (checkValidShipPosition(x, y, x + shipSizes[i], y - shipSizes[i])) {
+
+					}
+				}
 
 			}
 
@@ -128,7 +149,7 @@ public class Battleship {
 	 * @param endY
 	 * @return
 	 */
-	public boolean checkValidShipPosition(int X, int Y, int endX, int endY) {
+	public static boolean checkValidShipPosition(int X, int Y, int endX, int endY) {
 
 		if (X > boardSizeXY[0] || X < 0 || Y > boardSizeXY[1] || Y < 0) {
 			return false;
