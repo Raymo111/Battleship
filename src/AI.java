@@ -12,7 +12,7 @@ public class AI {
 	 * Generates the initial population distribution density graph for the given
 	 * number of ships. Runs only at the beginning of the game.
 	 */
-	public static void generatePDDG(int shipLength) {
+	public static void generatePDDG(int shipLength, Square[][] grid) {
 		for (int i = 0; i < Battleship.numberOfShips; i++) {
 
 		}
