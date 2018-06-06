@@ -1,12 +1,13 @@
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
 
 /*
  * Authors: Raymond Li, David Tuck
  * Date created: 30/05/2018
  * Description: Main class for battleship game
  */
+import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
+
 public class Battleship {
 	public static Random rand = new Random();
 	public static Scanner input = new Scanner(System.in);

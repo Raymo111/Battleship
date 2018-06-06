@@ -4,7 +4,6 @@
  * Date created: 2018-05-30
  * Description: Battleship squares
  */
-
 import java.io.Serializable;
 
 public class Square implements Serializable {
