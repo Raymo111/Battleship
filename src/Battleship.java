@@ -1,17 +1,6 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
-
-import org.omg.CORBA.PUBLIC_MEMBER;
-
-import com.sun.corba.se.spi.orbutil.fsm.Input;
-import com.sun.javafx.scene.control.skin.CustomColorDialog;
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Operators;
-import com.sun.org.apache.xpath.internal.operations.Operation;
-
-import javafx.scene.layout.Border;
-import sun.net.www.content.text.plain;
 
 /*
  * Authors: Raymond Li, David Tuck
