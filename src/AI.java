@@ -31,7 +31,7 @@ public class AI {
 		for (int i = 0; i < Battleship.numberOfShips; i++)
 			for (int j = 0; j < grid.length; j++)
 				for (int k = 0; k < grid[j].length; k++) {
-					int[] distance = new int[] { j, k, grid.length - j, grid[j].length - k };
+					int[] distance = new int[] { j, k, grid.length - j - 1, grid[j].length - k - 1 };
 					graph[j][k] = generatePD(shipLength, distance);
 				}
 		return graph;
