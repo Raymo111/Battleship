@@ -4,10 +4,13 @@
  * Date created: 2018-05-30
  * Description: The artificial intelligence used to select where to fire
  */
+import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 public class AI {
-	Random rand = new Random();
+	private static Random rand = new Random();
+	private static Scanner sc = new Scanner(System.in);
 
 	/**
 	 * Generates the initial population density for the given number of ships for a
@@ -41,6 +44,213 @@ public class AI {
 					distance = new int[] { i, j, grid.length - i - 1, grid[i].length - j - 1 };
 					grid[i][j].totalSquareValue += generatePD(k, distance);
 				}
+	}
+
+	/**
+	 * find the highest likely location of a ship
+	 * 
+	 * @return
+	 */
+	public static int[] findHighestPD(Square[][] grid) {
+		int[] currentTarget = { 0, 0 };
+		int max = grid[0][0].totalSquareValue;
+		for (int x = 0; x < grid[0].length; x++)
+			for (int y = 0; y < grid.length; y++)
+				if ((x + y) % 2 == 0)
+					if (grid[x][y].status == SquareTypes.UNKNOWN)
+						if (grid[x][y].totalSquareValue > max) {
+							currentTarget[0] = x;
+							currentTarget[1] = y;
+						}
+		return currentTarget;
+	}
+
+	/**
+	 * Generates where to place the ships on the home grid
+	 */
+	public static void placeShips(int passedMode, Square[][] grid, int[] shipSizes) {
+		System.out.println("Select the mode. \n1-Corners \n2-PDM\n3-Random");
+
+		int mode = 0;
+
+		try {
+			mode = sc.nextInt();
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+
+		if (mode == 1) {// Corner priority mode ship placement
+			// homeShipPlacement[grid.length - 1][grid[0].length - 5] = 5;
+			// homeShipPlacement[grid.length - 1][grid[0].length - 4] = 5;
+			// homeShipPlacement[grid.length - 1][grid[0].length - 3] = 5;
+			// homeShipPlacement[grid.length - 1][grid[0].length - 2] = 5;
+			// homeShipPlacement[grid.length - 1][grid[0].length - 1] = 5;
+			// homeShipPlacement[grid.length - 3][grid[0].length - 1] = 1;
+			// homeShipPlacement[grid.length - 3][grid[0].length - 2] = 1;
+
+			// Custom placement of two ships for a specific case.
+
+		} else if (mode == 2) {// PDDG placement
+			int[] totalArray = new int[grid.length * grid[0].length];
+			int index = 0;
+			for (int i = 0; i < grid[0].length; i++) {
+				for (int j = 0; j < grid.length; j++) {
+					totalArray[index] = grid[i][j].totalSquareValue;
+					index++;
+				}
+			}
+			Arrays.sort(totalArray);
+			for (int i = 0; i < shipSizes.length; i++) {
+				boolean correct = false;
+				int count = 0;
+				System.out.println(i + 1);
+				int y = rand.nextInt(grid.length - 1);// random x coordinate. Start of ship
+				int x = rand.nextInt(grid[0].length - 1);// random y coordinate. Start of ship
+
+				do {
+					correct = false;
+					if (count > 4) {
+						System.out.println("Over");
+						y = rand.nextInt(grid.length - 1);// random y coordinate. Start of ship
+						x = rand.nextInt(grid[0].length - 1);// random x coordinate. Start of ship
+
+					}
+
+					int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
+					if (rotation == 0) {// ship vertical down
+						if (checkValidShipPosition(y, x, y + shipSizes[i], x, rotation, grid)) {
+							correct = true;
+							count = 0;
+							System.out.println(x + "," + y);
+							// for (int j = 0; j < shipSizes[i]; j++)
+							// homeShipPlacement[y + j][x] = shipSizes[i];
+						}
+					} else if (rotation == 1) {// ship vertical up
+						if (checkValidShipPosition(y, x, y - shipSizes[i], x, rotation, grid)) {
+							count = 0;
+							correct = true;
+							System.out.println(x + "," + y);
+							// for (int j = 0; j < shipSizes[i]; j++)
+							// homeShipPlacement[y - j][x] = shipSizes[i];
+						}
+					} else if (rotation == 2) {// ship horizontal to right
+						if (checkValidShipPosition(y, x, y, x + shipSizes[i], rotation, grid)) {
+							count = 0;
+							correct = true;
+							System.out.println(x + "," + y);
+							// for (int j = 0; j < shipSizes[i]; j++)
+							// homeShipPlacement[y][x + j] = shipSizes[i];
+						}
+					} else if (rotation == 3)// ship horizontal to left
+						if (checkValidShipPosition(y, x, y, x - shipSizes[i], rotation, grid)) {
+							count = 0;
+							correct = true;
+							System.out.println(x + "," + y);
+							// for (int j = 0; j < shipSizes[i]; j++)
+							// homeShipPlacement[y][x - j] = shipSizes[i];
+						}
+					count++;
+				} while (correct == false);
+			}
+
+		} else if (mode == 3)
+
+		{// random ship placement
+			for (int i = 0; i < shipSizes.length; i++) {
+				boolean correct = false;
+				int count = 0;
+				System.out.println(i + 1);
+				int y = rand.nextInt(grid.length - 1);// random x coordinate. Start of ship
+				int x = rand.nextInt(grid[0].length - 1);// random y coordinate. Start of ship
+				int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
+
+				do {
+					correct = false;
+					if (count > 4) {
+						System.out.println("Over");
+						y = rand.nextInt(grid.length - 1);// random y coordinate. Start of ship
+						x = rand.nextInt(grid[0].length - 1);// random x coordinate. Start of ship
+						rotation = rand.nextInt(4);// random int to represent the orientation of the ship
+						count = 0;
+					}
+					rotation = (rotation + 1) % 4;
+					if (rotation == 0) {// ship vertical down
+						if (checkValidShipPosition(y, x, y + shipSizes[i], x, rotation, grid)) {
+							correct = true;
+							count = 0;
+							System.out.println(x + "," + y);
+							// for (int j = 0; j < shipSizes[j]; j++)
+							// homeShipPlacement[y + j][x] = shipSizes[j];
+						}
+					} else if (rotation == 1) {// ship vertical up
+						if (checkValidShipPosition(y, x, y - shipSizes[i], x, rotation, grid)) {
+							count = 0;
+							correct = true;
+							System.out.println(x + "," + y);
+							// for (int j = 0; j < shipSizes[j]; j++)
+							// homeShipPlacement[y - j][x] = shipSizes[i];
+						}
+					} else if (rotation == 2) {// ship horizontal to right
+						if (checkValidShipPosition(y, x, y, x + shipSizes[i], rotation, grid)) {
+							count = 0;
+							correct = true;
+							System.out.println(x + "," + y);
+							// for (int j = 0; j < shipSizes[j]; j++)
+							// homeShipPlacement[y][x + j] = shipSizes[j];
+						}
+					} else if (rotation == 3)// ship horizontal to left
+						if (checkValidShipPosition(y, x, y, x - shipSizes[i], rotation, grid)) {
+							count = 0;
+							correct = true;
+							System.out.println(x + "," + y);
+							// for (int j = 0; j < shipSizes[j]; j++)
+							// homeShipPlacement[y][x - j] = shipSizes[j];
+						}
+					count++;
+				} while (correct == false);
+			}
+		}
+
+	}
+
+	/**
+	 * Check to see if a ship placement is in a valid position
+	 * 
+	 * @param X
+	 *            the starting x coordinate that is always within the grid
+	 * @param Y
+	 *            the starting y coordinate that is always within the grid
+	 * @param endX
+	 *            the ending x coordinate for the ship that might be out of the
+	 *            board
+	 * @param endY
+	 *            the ending y coordinate for the ship that might be out of the
+	 *            board
+	 * @param rotation
+	 *            the orientation of the ship from x,y to endX,endY. 0=down 1=up
+	 *            2=right 3=left
+	 * @return If true, the ship is inside the grid and is not overlapping any other
+	 *         ship. If false, the ships placement is either outside of the board or
+	 *         is overlapping another ship
+	 */
+	public static boolean checkValidShipPosition(int Y, int X, int endY, int endX, int rotation, Square[][] grid) {
+		// first we must check to see if the end values are within the board size
+		if (endX >= grid.length || endX < 0 || endY >= grid[0].length || endY < 0) {
+			return false;
+		}
+		int sign = -1;
+		if (rotation % 2 == 0) {
+			sign = 1;
+		}
+		for (int i = 0; i <= Math.abs(endX - X); i++)
+			for (int j = 0; j <= Math.abs(endY - Y); j++) {
+				// if (homeShipPlacement[Y + (sign * j)][X + (sign * i)] != 0) {
+				// System.out.println("overlace");
+				// return false;
+				// }
+			}
+
+		return true;
 	}
 
 }
