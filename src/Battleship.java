@@ -1,4 +1,3 @@
-
 /*
  * Authors: Raymond Li, David Tuck
  * Date created: 30/05/2018
@@ -7,9 +6,11 @@
 
 public class Battleship {
 	public static int shipSizes[] = { 2, 3, 3, 4, 5 };// Each index represents the size of a individual ship
+
+	// Each index represents the size of a individual ship
+	public static String shipNames[] = { "Destroyer", "Cruiser", "Submarine", "Battleship", "Aircraft Carrier" };
 	public static int boardSizeXY[] = { 10, 10 };// x and y size of the board
-	public static int numberOfShips = shipSizes.length;
-	public static boolean[] isShipSunk = new boolean[numberOfShips];// boolean values of id a ship is sunk
+	public static boolean[] isShipSunk = new boolean[shipSizes.length];// boolean values of id a ship is sunk
 	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of enemy grid
 	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of home grid
 	public static int homeShipPlacement[][] = new int[boardSizeXY[0]][boardSizeXY[1]];// location of home ships
@@ -28,7 +29,7 @@ public class Battleship {
 	public static void newGameProcedure() {
 		for (int i = 0; i < enemyGrid.length; i++)
 			for (int j = 0; j < enemyGrid[i].length; j++)
-				enemyGrid[i][j] = new Square();
+				enemyGrid[i][j] = new Square(i, j);
 		AI.generatePDDG(enemyGrid);
 		AI.placeShips(3, homeGrid, shipSizes);
 		display2Darray(homeShipPlacement);
