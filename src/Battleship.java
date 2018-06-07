@@ -8,8 +8,6 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
-
 public class Battleship {
 	public static Random rand = new Random();
 	public static Scanner input = new Scanner(System.in);
@@ -232,13 +230,15 @@ public class Battleship {
 	 * Check to see if a ship placement is in a valid position
 	 * 
 	 * @param X
+	 *            the starting x coordinate that is always within the grid
 	 * @param Y
+	 *            the starting y coordinate that is always within the grid
 	 * @param endX
 	 * @param endY
 	 * @return
 	 */
 	public static boolean checkValidShipPosition(int Y, int X, int endY, int endX, int rotation) {
-
+		// first we must check to see if the end values are within the bourd size
 		if (endX >= boardSizeXY[0] || endX < 0 || endY >= boardSizeXY[1] || endY < 0) {
 			return false;
 		}
