@@ -1,3 +1,9 @@
+
+/*
+ * Authors: Raymond Li, David Tuck
+ * Date created: 2018-06-07
+ * Description: Battleship ships
+ */
 import java.io.Serializable;
 
 public class Ship implements Serializable {

@@ -13,10 +13,6 @@ public class Battleship {
 	public static boolean[] isShipSunk = new boolean[shipSizes.length];// boolean values of id a ship is sunk
 	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of enemy grid
 	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of home grid
-	public static int homeShipPlacement[][] = new int[boardSizeXY[0]][boardSizeXY[1]];// location of home ships
-	// homeShipPlacement[X-coordinate][Y-coordinate]
-	// #0=Empty #5=Carrier-5 #4=Battleship-4 #3=Cruiser-3 #2=Submarine-3
-	// #1=Destroyer-2
 
 	public static void main(String[] args) {
 		// while (true)
@@ -32,7 +28,7 @@ public class Battleship {
 				enemyGrid[i][j] = new Square(i, j);
 		AI.generatePDDG(enemyGrid);
 		AI.placeShips(3, homeGrid, shipSizes);
-		display2Darray(homeShipPlacement);
+		display2Darray(homeGrid);
 		display2Darray(enemyGrid);
 	}
 

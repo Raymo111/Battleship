@@ -47,22 +47,18 @@ public class AI {
 	}
 
 	/**
-	 * find the highest likely location of a ship
+	 * Finds the highest likely location of a ship
 	 * 
 	 * @return
 	 */
-	public static int[] findHighestPD(Square[][] grid) {
-		int[] currentTarget = { 0, 0 };
+	public static Square target(Square[][] grid) {
 		int max = grid[0][0].totalSquareValue;
-		for (int x = 0; x < grid[0].length; x++)
-			for (int y = 0; y < grid.length; y++)
-				if ((x + y) % 2 == 0)
-					if (grid[x][y].status == SquareTypes.UNKNOWN)
-						if (grid[x][y].totalSquareValue > max) {
-							currentTarget[0] = x;
-							currentTarget[1] = y;
-						}
-		return currentTarget;
+		Square target = grid[0][0];
+		for (int i = 0; i < grid[0].length; i++)
+			for (int j = 0; j < grid.length; j++)
+				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquareValue > max)
+					target = grid[i][j];
+		return target;
 	}
 
 	/**
