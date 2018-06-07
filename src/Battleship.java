@@ -234,8 +234,17 @@ public class Battleship {
 	 * @param Y
 	 *            the starting y coordinate that is always within the grid
 	 * @param endX
+	 *            the ending x coordinate for the ship that might be out of the
+	 *            board
 	 * @param endY
-	 * @return
+	 *            the ending y coordinate for the ship that might be out of the
+	 *            board
+	 * @param rotation
+	 *            the orientation of the ship from x,y to endX,endY. 0=down 1=up
+	 *            2=right 3=left
+	 * @return If true, the ship is inside the grid and is not overlapping any other
+	 *         ship. If false, the ships placement is either outside of the board or
+	 *         is overlapping another ship
 	 */
 	public static boolean checkValidShipPosition(int Y, int X, int endY, int endX, int rotation) {
 		// first we must check to see if the end values are within the bourd size
