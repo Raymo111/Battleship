@@ -28,12 +28,22 @@ public class AI {
 	 */
 	public static int[][] generatePDDG(int shipLength, Square[][] grid) {
 		int[][] graph = new int[grid.length][grid[0].length];
-		for (int i = 0; i < Battleship.numberOfShips; i++)
-			for (int j = 0; j < grid.length; j++)
-				for (int k = 0; k < grid[j].length; k++) {
-					int[] distance = new int[] { j, k, grid.length - j - 1, grid[j].length - k - 1 };
-					graph[j][k] = generatePD(shipLength, distance);
-				}
+		for (int i = 0; i < grid.length; i++)
+			for (int j = 0; j < grid[i].length; j++) {
+				int[] distance = new int[] { i, j, grid.length - i - 1, grid[i].length - j - 1 };
+				graph[i][j] = generatePD(shipLength, distance);
+			}
+		return graph;
+	}
+
+	/**
+	 * Generates the initial population density distributed graph for the entire
+	 * given grid. Runs once for each grid (home and enemy) at the beginning of the
+	 * game.
+	 */
+	public static int[][] initializePDDG(Square[][] grid) {
+		int[][] graph = new int[grid.length][grid[0].length];
+
 		return graph;
 	}
 
