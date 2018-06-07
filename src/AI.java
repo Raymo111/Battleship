@@ -12,6 +12,13 @@ public class AI {
 	/**
 	 * Generates the initial population density for the given number of ships for a
 	 * given square. Runs only at the beginning of the game.
+	 * 
+	 * @param shipLength
+	 *            The length of a ship to calculate the PD for
+	 * @param distance
+	 *            The distances of a square to the edges of the grid (0 for a square
+	 *            on the edge)
+	 * @return The PD of a square
 	 */
 	public static int generatePD(int shipLength, int[] distance) {
 		int pD = 2 * shipLength; // Population density of a square
@@ -26,29 +33,14 @@ public class AI {
 	 * number of ships for each square in a given grid. Runs only at the beginning
 	 * of the game.
 	 */
-	public static int[][] generatePDDG(int shipLength, Square[][] grid) {
-		int[][] graph = new int[grid.length][grid[0].length];
+	public static void generatePDDG(Square[][] grid) {
+		int[] distance;
 		for (int i = 0; i < grid.length; i++)
-			for (int j = 0; j < grid[i].length; j++) {
-				int[] distance = new int[] { i, j, grid.length - i - 1, grid[i].length - j - 1 };
-				graph[i][j] = generatePD(shipLength, distance);
-			}
-		return graph;
-	}
-
-	/**
-	 * Generates the initial population density distributed graph for the entire
-	 * given grid. Runs once for each grid (home and enemy) at the beginning of the
-	 * game.
-	 */
-	public static int[][] initializePDDG(Square[][] grid) {
-		int[][] graph = new int[grid.length][grid[0].length];
-
-		return graph;
-	}
-
-	public static void main(String[] args) {
-		Battleship.display2Darray(generatePDDG(2, Battleship.enemyGrid));
+			for (int j = 0; j < grid[i].length; j++)
+				for (int k : Battleship.shipSizes) {
+					distance = new int[] { i, j, grid.length - i - 1, grid[i].length - j - 1 };
+					grid[i][j].totalSquareValue += generatePD(k, distance);
+				}
 	}
 
 }

@@ -23,10 +23,13 @@ public class Battleship {
 	// #1=Destroyer-2
 
 	public static void main(String[] args) {
+		for (int i = 0; i < enemyGrid.length; i++)
+			for (int j = 0; j < enemyGrid[i].length; j++)
+				enemyGrid[i][j] = new Square();
+		AI.generatePDDG(enemyGrid);
 		placeShips(3);
-
 		display2Darray(homeShipPlacement);
-		AI.generatePDDG(1, enemyGrid);
+		display2Darray(enemyGrid);
 
 	}
 
@@ -267,10 +270,10 @@ public class Battleship {
 		return true;
 	}
 
-	public static void display2Darray(Object[][] array) {
+	public static void display2Darray(Square[][] array) {
 		for (int i = 0; i < array.length; i++) {
 			for (int j = 0; j < array.length; j++) {
-				System.out.print("|" + array[j][i]);
+				System.out.print("|" + array[j][i].totalSquareValue);
 			}
 			System.out.println();
 		}
