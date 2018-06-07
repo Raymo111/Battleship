@@ -12,19 +12,23 @@ public class Ship implements Serializable {
 	public Square[] location;
 
 	public Ship(Square start, Square end) {
+		int shipLength;
 		if (start.x == end.x) {// Vertical ship
-			location = new Square[end.y - start.y + 1];
+			shipLength = end.y - start.y;
+			location = new Square[shipLength + 1];
 			location[0] = start;
 			for (int i = 1; i < location.length - 1; i++)
 				location[i] = Battleship.homeGrid[start.y + i][end.y + i];
 			location[location.length] = end;
 		} else {// Horizontal ship
-			location = new Square[end.x - start.x + 1];
+			shipLength = end.x - start.x;
+			location = new Square[shipLength + 1];
 			location[0] = start;
 			for (int i = 1; i < location.length - 1; i++)
 				location[i] = Battleship.homeGrid[start.x + i][end.x + i];
 			location[location.length] = end;
 		}
+		shipName = Battleship.shipNames[shipLength - 1];
 	}
 
 }

@@ -76,14 +76,6 @@ public class AI {
 		}
 
 		if (mode == 1) {// Corner priority mode ship placement
-			// homeShipPlacement[grid.length - 1][grid[0].length - 5] = 5;
-			// homeShipPlacement[grid.length - 1][grid[0].length - 4] = 5;
-			// homeShipPlacement[grid.length - 1][grid[0].length - 3] = 5;
-			// homeShipPlacement[grid.length - 1][grid[0].length - 2] = 5;
-			// homeShipPlacement[grid.length - 1][grid[0].length - 1] = 5;
-			// homeShipPlacement[grid.length - 3][grid[0].length - 1] = 1;
-			// homeShipPlacement[grid.length - 3][grid[0].length - 2] = 1;
-
 			// Custom placement of two ships for a specific case.
 
 		} else if (mode == 2) {// PDDG placement
