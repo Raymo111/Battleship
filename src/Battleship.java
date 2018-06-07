@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+
 public class Battleship {
 	public static Random rand = new Random();
 	public static Scanner input = new Scanner(System.in);
@@ -23,7 +25,7 @@ public class Battleship {
 	// #1=Destroyer-2
 
 	public static void main(String[] args) {
-		placeShips();
+		placeShips(3);
 
 		display2Darray(homeShipPlacement);
 		AI.generatePDDG(1, enemyGrid);
@@ -70,7 +72,7 @@ public class Battleship {
 	/**
 	 * Generates where to place the ships on the home grid
 	 */
-	public static void placeShips() {
+	public static void placeShips(int passedMode) {
 		/*
 		 * int totalGrid[] = new int[boardSizeXY[0] * boardSizeXY[1]]; int counter = 0;
 		 * int maxMin = 0; for (int i = 0; i < shipSizes.length; i++) { maxMin +=
@@ -128,32 +130,32 @@ public class Battleship {
 					}
 
 					int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
-					if (rotation == 0) {// ship horizontal to right
-						if (checkValidShipPosition(y, x, y + shipSizes[i], x)) {
+					if (rotation == 0) {// ship vertical down
+						if (checkValidShipPosition(y, x, y + shipSizes[i], x, rotation)) {
 							correct = true;
 							count = 0;
 							System.out.println(x + "," + y);
 							for (int j = 0; j < shipSizes[i]; j++)
 								homeShipPlacement[y + j][x] = shipSizes[i];
 						}
-					} else if (rotation == 1) {// ship horizontal to left
-						if (checkValidShipPosition(y, x, y - shipSizes[i], x)) {
+					} else if (rotation == 1) {// ship vertical up
+						if (checkValidShipPosition(y, x, y - shipSizes[i], x, rotation)) {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
 							for (int j = 0; j < shipSizes[i]; j++)
 								homeShipPlacement[y - j][x] = shipSizes[i];
 						}
-					} else if (rotation == 2) {// ship vertical up
-						if (checkValidShipPosition(y, x, y, x + shipSizes[i])) {
+					} else if (rotation == 2) {// ship horizontal to right
+						if (checkValidShipPosition(y, x, y, x + shipSizes[i], rotation)) {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
 							for (int j = 0; j < shipSizes[i]; j++)
 								homeShipPlacement[y][x + j] = shipSizes[i];
 						}
-					} else if (rotation == 3)// ship vertical down7
-						if (checkValidShipPosition(y, x, y, x - shipSizes[i])) {
+					} else if (rotation == 3)// ship horizontal to left
+						if (checkValidShipPosition(y, x, y, x - shipSizes[i], rotation)) {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
@@ -174,6 +176,7 @@ public class Battleship {
 				System.out.println(i + 1);
 				int y = rand.nextInt(boardSizeXY[0] - 1);// random x coordinate. Start of ship
 				int x = rand.nextInt(boardSizeXY[1] - 1);// random y coordinate. Start of ship
+				int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
 
 				do {
 					correct = false;
@@ -181,36 +184,36 @@ public class Battleship {
 						System.out.println("Over");
 						y = rand.nextInt(boardSizeXY[0] - 1);// random y coordinate. Start of ship
 						x = rand.nextInt(boardSizeXY[1] - 1);// random x coordinate. Start of ship
-
+						rotation = rand.nextInt(4);// random int to represent the orientation of the ship
+						count = 0;
 					}
-
-					int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
-					if (rotation == 0) {// ship horizontal to right
-						if (checkValidShipPosition(y, x, y + shipSizes[i], x)) {
+					rotation = (rotation + 1) % 4;
+					if (rotation == 0) {// ship vertical down
+						if (checkValidShipPosition(y, x, y + shipSizes[i], x, rotation)) {
 							correct = true;
 							count = 0;
 							System.out.println(x + "," + y);
 							for (int j = 0; j < shipSizes[i]; j++)
 								homeShipPlacement[y + j][x] = shipSizes[i];
 						}
-					} else if (rotation == 1) {// ship horizontal to left
-						if (checkValidShipPosition(y, x, y - shipSizes[i], x)) {
+					} else if (rotation == 1) {// ship vertical up
+						if (checkValidShipPosition(y, x, y - shipSizes[i], x, rotation)) {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
 							for (int j = 0; j < shipSizes[i]; j++)
 								homeShipPlacement[y - j][x] = shipSizes[i];
 						}
-					} else if (rotation == 2) {// ship vertical up
-						if (checkValidShipPosition(y, x, y, x + shipSizes[i])) {
+					} else if (rotation == 2) {// ship horizontal to right
+						if (checkValidShipPosition(y, x, y, x + shipSizes[i], rotation)) {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
 							for (int j = 0; j < shipSizes[i]; j++)
 								homeShipPlacement[y][x + j] = shipSizes[i];
 						}
-					} else if (rotation == 3)// ship vertical down7
-						if (checkValidShipPosition(y, x, y, x - shipSizes[i])) {
+					} else if (rotation == 3)// ship horizontal to left
+						if (checkValidShipPosition(y, x, y, x - shipSizes[i], rotation)) {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
@@ -234,19 +237,24 @@ public class Battleship {
 	 * @param endY
 	 * @return
 	 */
-	public static boolean checkValidShipPosition(int X, int Y, int endX, int endY) {
+	public static boolean checkValidShipPosition(int Y, int X, int endY, int endX, int rotation) {
 
-		if (X > boardSizeXY[0] || X < 0 || Y > boardSizeXY[1] || Y < 0) {
-			return false;
-		} else if (endX > boardSizeXY[0] || endX < 0 || endY > boardSizeXY[1] || endY < 0) {
+		if (endX >= boardSizeXY[0] || endX < 0 || endY >= boardSizeXY[1] || endY < 0) {
 			return false;
 		}
+		int sign = -1;
+		if (rotation % 2 == 0) {
+			sign = 1;
+		}
 		for (int i = 0; i <= Math.abs(endX - X); i++)
-			for (int j = 0; j <= Math.abs(endY - Y); j++)
-				if (homeShipPlacement[Y][X] != 0) {
+			for (int j = 0; j <= Math.abs(endY - Y); j++) {
+				if (homeShipPlacement[Y + (sign * j)][X + (sign * i)] != 0) {
+
 					System.out.println("overlace");
 					return false;
 				}
+			}
+
 		return true;
 	}
 
