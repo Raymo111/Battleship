@@ -49,7 +49,7 @@ public class AI {
 	/**
 	 * Finds the highest likely location of a ship
 	 * 
-	 * @return
+	 * @return The target to fire at
 	 */
 	public static Square target(Square[][] grid) {
 		int max = grid[0][0].totalSquareValue;
@@ -62,22 +62,25 @@ public class AI {
 	}
 
 	/**
-	 * Generates where to place the ships on the home grid
+	 * Generates where to place ships
+	 * 
+	 * @param grid
+	 *            The grid to place ships on
+	 * @param shipLengths
+	 *            The lengths of ships to place
 	 */
-	public static void placeShips(int passedMode, Square[][] grid, int[] shipLengths) {
-		System.out.println("Select the mode. \n1-Corners \n2-PDM\n3-Random");
+	public static void placeShips(Square[][] grid, int[] shipLengths) {
+		System.out.println("Select the mode. \n1-PDM\n2-Random");
 
 		int mode = 0;
 
 		try {
 			mode = sc.nextInt();
 		} catch (Exception e) {
-			System.err.println(e);
+			System.err.println("Input integer.");
 		}
 
-		if (mode == 1) {// Corner priority mode ship placement
-			Battleship.homeShips[4] = new Ship(grid[5][9], grid[9][9]);// Carrier in bottom right
-		} else if (mode == 2) {// PDDG placement
+		if (mode == 1) {// PDDG placement
 			int[] totalArray = new int[grid.length * grid[0].length];
 			int index = 0;
 			for (int i = 0; i < grid[0].length; i++) {
@@ -115,7 +118,7 @@ public class AI {
 						x = rand.nextInt(grid[0].length - 1);// random x coordinate. Start of ship
 
 					}
-					for (int a = 0; a < 4; a++) {// loooooooppppppp
+					for (int a = 0; a < 4; a++) {// loop
 						int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
 
 						if (checkValidShipPosition(y, x, rotationModifiers[0][rotation], rotationModifiers[1][rotation],
@@ -128,13 +131,9 @@ public class AI {
 						}
 						count++;
 					}
-
 				} while (correct == false);
 			}
-
-		} else if (mode == 3)
-
-		{// random ship placement
+		} else if (mode == 3) {// random ship placement
 			for (int i = 0; i < shipLengths.length; i++) {
 				boolean correct = false;
 				int count = 0;
@@ -161,7 +160,7 @@ public class AI {
 						x = rand.nextInt(grid[0].length - 1);// random x coordinate. Start of ship
 
 					}
-					for (int a = 0; a < 4; a++) {// loooooooppppppp
+					for (int a = 0; a < 4; a++) {// loop
 						int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
 
 						if (checkValidShipPosition(y, x, rotationModifiers[0][rotation], rotationModifiers[1][rotation],
@@ -212,10 +211,10 @@ public class AI {
 		}
 		for (int i = 0; i <= Math.abs(endX - X); i++)
 			for (int j = 0; j <= Math.abs(endY - Y); j++) {
-				// if (homeShipPlacement[Y + (sign * j)][X + (sign * i)] != 0) {
-				// System.out.println("overlace");
-				// return false;
-				// }
+				if (Battleship.homeGrid[Y + (sign * j)][X + (sign * i)].shipType != 0) {
+					System.out.println("overlace");
+					return false;
+				}
 			}
 
 		return true;
