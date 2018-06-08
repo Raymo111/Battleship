@@ -19,20 +19,20 @@ public class Ship implements Serializable {
 			shipLength = Math.abs(end.y - start.y);
 			location = new Square[shipLength + 1];
 			location[0] = start;
-			for (int i = 1; i < location.length - 1; i++) {
-				location[i] = grid[start.x + i][start.y];
-				grid[start.x + i][start.y].shipType = shipLength;
+			for (int i = 1; i < shipLength; i++) {
+				location[i] = grid[start.x + i - 1][start.y];
+				grid[start.x + i - 1][start.y].shipType = shipLength;
 			}
-			location[location.length - 1] = end;
+			location[shipLength] = end;
 		} else {// Horizontal ship
 			shipLength = Math.abs(end.x - start.x);
 			location = new Square[shipLength + 1];
 			location[0] = start;
-			for (int i = 1; i < location.length - 1; i++) {
-				location[i] = grid[start.x][start.y + i];
-				grid[start.x][start.y + 1].shipType = shipLength;
+			for (int i = 1; i < shipLength; i++) {
+				location[i] = grid[start.x][start.y + i - 1];
+				grid[start.x][start.y + i - 1].shipType = shipLength;
 			}
-			location[location.length - 1] = end;
+			location[shipLength] = end;
 		}
 		ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);
 		for (int i = 0; i < Battleship.shipLengths.length; i++)
