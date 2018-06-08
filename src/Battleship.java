@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /*
  * Authors: Raymond Li, David Tuck
  * Date created: 30/05/2018
@@ -14,6 +16,7 @@ public class Battleship {
 	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of enemy grid
 	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of home grid
 	public static Ship[] homeShips = new Ship[shipLengths.length];
+	public static ArrayList<String> usedShipNames = new ArrayList<String>(shipNames.length);
 
 	public static void main(String[] args) {
 		// while (true)
