@@ -22,16 +22,16 @@ public class Ship implements Serializable {
 				location[i] = Battleship.homeGrid[start.x + i][start.y];
 				Battleship.homeGrid[start.x + i][start.y].shipType = shipLength;
 			}
-			location[location.length] = end;
+			location[location.length - 1] = end;
 		} else {// Horizontal ship
 			shipLength = end.x - start.x;
 			location = new Square[shipLength + 1];
 			location[0] = start;
 			for (int i = 1; i < location.length - 1; i++) {
 				location[i] = Battleship.homeGrid[start.x][start.y + i];
-				Battleship.homeGrid[start.x + i][start.y].shipType = shipLength;
+				Battleship.homeGrid[start.x][start.y + 1].shipType = shipLength;
 			}
-			location[location.length] = end;
+			location[location.length - 1] = end;
 		}
 		for (int i = 0; i < Battleship.shipLengths.length; i++)
 			if (Battleship.shipLengths[i] == shipLength && !Battleship.usedShipNames.contains(shipName)) {
