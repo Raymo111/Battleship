@@ -76,7 +76,7 @@ public class AI {
 		}
 
 		if (mode == 1) {// Corner priority mode ship placement
-			Battleship.homeShips[4] = new Ship(grid[9][5], grid[9][9]);// Carrier in bottom right
+			Battleship.homeShips[4] = new Ship(grid[5][9], grid[9][9]);// Carrier in bottom right
 		} else if (mode == 2) {// PDDG placement
 			int[] totalArray = new int[grid.length * grid[0].length];
 			int index = 0;
