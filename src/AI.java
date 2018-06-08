@@ -126,7 +126,7 @@ public class AI {
 							correct = true;
 							count = 0;
 							System.out.println(x + "," + y);
-							Battleship.homeShips[i] = new Ship(grid[y][x],
+							Battleship.homeShips[i] = new Ship(grid, grid[y][x],
 									grid[rotationModifiers[0][rotation]][rotationModifiers[1][rotation]]);
 						}
 						count++;
@@ -168,7 +168,7 @@ public class AI {
 							correct = true;
 							count = 0;
 							System.out.println(x + "," + y);
-							Battleship.homeShips[i] = new Ship(grid[y][x],
+							Battleship.homeShips[i] = new Ship(grid, grid[y][x],
 									grid[rotationModifiers[0][rotation]][rotationModifiers[1][rotation]]);
 						}
 						count++;

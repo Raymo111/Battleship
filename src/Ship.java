@@ -5,6 +5,7 @@
  * Description: Battleship ships
  */
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Ship implements Serializable {
 	private static final long serialVersionUID = 5892849002266847494L;
@@ -12,15 +13,15 @@ public class Ship implements Serializable {
 	public String shipName;
 	public Square[] location;
 
-	public Ship(Square start, Square end) {
+	public Ship(Square[][] grid, Square start, Square end) {
 		int shipLength;
 		if (start.x == end.x) {// Vertical ship
 			shipLength = end.y - start.y;
 			location = new Square[shipLength + 1];
 			location[0] = start;
 			for (int i = 1; i < location.length - 1; i++) {
-				location[i] = Battleship.homeGrid[start.x + i][start.y];
-				Battleship.homeGrid[start.x + i][start.y].shipType = shipLength;
+				location[i] = grid[start.x + i][start.y];
+				grid[start.x + i][start.y].shipType = shipLength;
 			}
 			location[location.length - 1] = end;
 		} else {// Horizontal ship
@@ -28,15 +29,16 @@ public class Ship implements Serializable {
 			location = new Square[shipLength + 1];
 			location[0] = start;
 			for (int i = 1; i < location.length - 1; i++) {
-				location[i] = Battleship.homeGrid[start.x][start.y + i];
-				Battleship.homeGrid[start.x][start.y + 1].shipType = shipLength;
+				location[i] = grid[start.x][start.y + i];
+				grid[start.x][start.y + 1].shipType = shipLength;
 			}
 			location[location.length - 1] = end;
 		}
+		ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);
 		for (int i = 0; i < Battleship.shipLengths.length; i++)
-			if (Battleship.shipLengths[i] == shipLength && !Battleship.usedShipNames.contains(shipName)) {
+			if (Battleship.shipLengths[i] == shipLength && usedShipNames.contains(shipName)) {
 				shipName = Battleship.shipNames[i];
-				Battleship.usedShipNames.add(shipName);
+				usedShipNames.add(shipName);
 			}
 	}
 

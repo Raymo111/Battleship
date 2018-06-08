@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /*
  * Authors: Raymond Li, David Tuck
  * Date created: 30/05/2018
@@ -16,7 +14,6 @@ public class Battleship {
 	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of enemy grid
 	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of home grid
 	public static Ship[] homeShips = new Ship[shipLengths.length];
-	public static ArrayList<String> usedShipNames = new ArrayList<String>(shipNames.length);
 
 	public static void main(String[] args) {
 		// while (true)
@@ -43,14 +40,14 @@ public class Battleship {
 	public static void display2Darray(Square[][] array) {
 		for (int i = 0; i < array.length; i++) {
 			for (int j = 0; j < array.length; j++) {
-				System.out.print("|" + array[j][i].totalSquareValue);
+				System.out.print("|" + array[i][j].totalSquareValue);
 			}
 			System.out.println();
 		}
 		try {
 			for (int i = 0; i < array.length; i++) {
 				for (int j = 0; j < array.length; j++) {
-					System.out.print("|" + array[j][i].shipType);
+					System.out.print("|" + array[i][j].shipType);
 				}
 				System.out.println();
 			}
