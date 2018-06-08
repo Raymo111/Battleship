@@ -117,8 +117,8 @@ public class AI {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
-							// for (int j = 0; j < shipLengths[i]; j++)
-							// homeShipPlacement[y - j][x] = shipLengths[i];
+							Battleship.homeShips[i] = new Ship(grid[y][x], grid[y - shipLengths[i]][x]);
+							// Carrier in bottom right
 						}
 					} else if (rotation == 2) {// ship horizontal to right
 						if (checkValidShipPosition(y, x, y, x + shipLengths[i], rotation, grid)) {
