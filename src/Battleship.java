@@ -5,14 +5,15 @@
  */
 
 public class Battleship {
-	public static int shipSizes[] = { 2, 3, 3, 4, 5 };// Each index represents the size of a individual ship
+	public static int shipLengths[] = { 2, 3, 3, 4, 5 };// Each index represents the size of a individual ship
 
 	// Each index represents the size of a individual ship
 	public static String shipNames[] = { "Destroyer", "Cruiser", "Submarine", "Battleship", "Aircraft Carrier" };
 	public static int boardSizeXY[] = { 10, 10 };// x and y size of the board
-	public static boolean[] isShipSunk = new boolean[shipSizes.length];// boolean values of id a ship is sunk
+	public static boolean[] isShipSunk = new boolean[shipLengths.length];// boolean values of id a ship is sunk
 	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of enemy grid
 	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of home grid
+	public static Ship[] homeShips = new Ship[shipLengths.length];
 
 	public static void main(String[] args) {
 		// while (true)
@@ -27,7 +28,7 @@ public class Battleship {
 			for (int j = 0; j < enemyGrid[i].length; j++)
 				enemyGrid[i][j] = new Square(i, j);
 		AI.generatePDDG(enemyGrid);
-		AI.placeShips(3, homeGrid, shipSizes);
+		AI.placeShips(3, homeGrid, shipLengths);
 		display2Darray(homeGrid);
 		display2Darray(enemyGrid);
 	}

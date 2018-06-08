@@ -40,7 +40,7 @@ public class AI {
 		int[] distance;
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
-				for (int k : Battleship.shipSizes) {
+				for (int k : Battleship.shipLengths) {
 					distance = new int[] { i, j, grid.length - i - 1, grid[i].length - j - 1 };
 					grid[i][j].totalSquareValue += generatePD(k, distance);
 				}
@@ -64,7 +64,7 @@ public class AI {
 	/**
 	 * Generates where to place the ships on the home grid
 	 */
-	public static void placeShips(int passedMode, Square[][] grid, int[] shipSizes) {
+	public static void placeShips(int passedMode, Square[][] grid, int[] shipLengths) {
 		System.out.println("Select the mode. \n1-Corners \n2-PDM\n3-Random");
 
 		int mode = 0;
@@ -76,8 +76,7 @@ public class AI {
 		}
 
 		if (mode == 1) {// Corner priority mode ship placement
-			// Custom placement of two ships for a specific case.
-
+			Battleship.homeShips[4] = new Ship(grid[9][5], grid[9][9]);// Carrier in bottom right
 		} else if (mode == 2) {// PDDG placement
 			int[] totalArray = new int[grid.length * grid[0].length];
 			int index = 0;
@@ -88,7 +87,7 @@ public class AI {
 				}
 			}
 			Arrays.sort(totalArray);
-			for (int i = 0; i < shipSizes.length; i++) {
+			for (int i = 0; i < shipLengths.length; i++) {
 				boolean correct = false;
 				int count = 0;
 				System.out.println(i + 1);
@@ -106,36 +105,36 @@ public class AI {
 
 					int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
 					if (rotation == 0) {// ship vertical down
-						if (checkValidShipPosition(y, x, y + shipSizes[i], x, rotation, grid)) {
+						if (checkValidShipPosition(y, x, y + shipLengths[i], x, rotation, grid)) {
 							correct = true;
 							count = 0;
 							System.out.println(x + "," + y);
-							// for (int j = 0; j < shipSizes[i]; j++)
-							// homeShipPlacement[y + j][x] = shipSizes[i];
+							// for (int j = 0; j < shipLengths[i]; j++)
+							// homeShipPlacement[y + j][x] = shipLengths[i];
 						}
 					} else if (rotation == 1) {// ship vertical up
-						if (checkValidShipPosition(y, x, y - shipSizes[i], x, rotation, grid)) {
+						if (checkValidShipPosition(y, x, y - shipLengths[i], x, rotation, grid)) {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
-							// for (int j = 0; j < shipSizes[i]; j++)
-							// homeShipPlacement[y - j][x] = shipSizes[i];
+							// for (int j = 0; j < shipLengths[i]; j++)
+							// homeShipPlacement[y - j][x] = shipLengths[i];
 						}
 					} else if (rotation == 2) {// ship horizontal to right
-						if (checkValidShipPosition(y, x, y, x + shipSizes[i], rotation, grid)) {
+						if (checkValidShipPosition(y, x, y, x + shipLengths[i], rotation, grid)) {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
-							// for (int j = 0; j < shipSizes[i]; j++)
-							// homeShipPlacement[y][x + j] = shipSizes[i];
+							// for (int j = 0; j < shipLengths[i]; j++)
+							// homeShipPlacement[y][x + j] = shipLengths[i];
 						}
 					} else if (rotation == 3)// ship horizontal to left
-						if (checkValidShipPosition(y, x, y, x - shipSizes[i], rotation, grid)) {
+						if (checkValidShipPosition(y, x, y, x - shipLengths[i], rotation, grid)) {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
-							// for (int j = 0; j < shipSizes[i]; j++)
-							// homeShipPlacement[y][x - j] = shipSizes[i];
+							// for (int j = 0; j < shipLengths[i]; j++)
+							// homeShipPlacement[y][x - j] = shipLengths[i];
 						}
 					count++;
 				} while (correct == false);
@@ -144,7 +143,7 @@ public class AI {
 		} else if (mode == 3)
 
 		{// random ship placement
-			for (int i = 0; i < shipSizes.length; i++) {
+			for (int i = 0; i < shipLengths.length; i++) {
 				boolean correct = false;
 				int count = 0;
 				System.out.println(i + 1);
@@ -163,36 +162,36 @@ public class AI {
 					}
 					rotation = (rotation + 1) % 4;
 					if (rotation == 0) {// ship vertical down
-						if (checkValidShipPosition(y, x, y + shipSizes[i], x, rotation, grid)) {
+						if (checkValidShipPosition(y, x, y + shipLengths[i], x, rotation, grid)) {
 							correct = true;
 							count = 0;
 							System.out.println(x + "," + y);
-							// for (int j = 0; j < shipSizes[j]; j++)
-							// homeShipPlacement[y + j][x] = shipSizes[j];
+							// for (int j = 0; j < shipLengths[j]; j++)
+							// homeShipPlacement[y + j][x] = shipLengths[j];
 						}
 					} else if (rotation == 1) {// ship vertical up
-						if (checkValidShipPosition(y, x, y - shipSizes[i], x, rotation, grid)) {
+						if (checkValidShipPosition(y, x, y - shipLengths[i], x, rotation, grid)) {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
-							// for (int j = 0; j < shipSizes[j]; j++)
-							// homeShipPlacement[y - j][x] = shipSizes[i];
+							// for (int j = 0; j < shipLengths[j]; j++)
+							// homeShipPlacement[y - j][x] = shipLengths[i];
 						}
 					} else if (rotation == 2) {// ship horizontal to right
-						if (checkValidShipPosition(y, x, y, x + shipSizes[i], rotation, grid)) {
+						if (checkValidShipPosition(y, x, y, x + shipLengths[i], rotation, grid)) {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
-							// for (int j = 0; j < shipSizes[j]; j++)
-							// homeShipPlacement[y][x + j] = shipSizes[j];
+							// for (int j = 0; j < shipLengths[j]; j++)
+							// homeShipPlacement[y][x + j] = shipLengths[j];
 						}
 					} else if (rotation == 3)// ship horizontal to left
-						if (checkValidShipPosition(y, x, y, x - shipSizes[i], rotation, grid)) {
+						if (checkValidShipPosition(y, x, y, x - shipLengths[i], rotation, grid)) {
 							count = 0;
 							correct = true;
 							System.out.println(x + "," + y);
-							// for (int j = 0; j < shipSizes[j]; j++)
-							// homeShipPlacement[y][x - j] = shipSizes[j];
+							// for (int j = 0; j < shipLengths[j]; j++)
+							// homeShipPlacement[y][x - j] = shipLengths[j];
 						}
 					count++;
 				} while (correct == false);

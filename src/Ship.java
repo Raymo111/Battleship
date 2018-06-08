@@ -7,6 +7,7 @@
 import java.io.Serializable;
 
 public class Ship implements Serializable {
+	private static final long serialVersionUID = 5892849002266847494L;
 	public int shipLength;
 	public String shipName;
 	public Square[] location;
@@ -28,7 +29,7 @@ public class Ship implements Serializable {
 				location[i] = Battleship.homeGrid[start.x + i][end.x + i];
 			location[location.length] = end;
 		}
-		shipName = Battleship.shipNames[shipLength - 1];
+		shipName = Battleship.shipLengths[shipLength - 1];
 	}
 
 }
