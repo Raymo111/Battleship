@@ -35,6 +35,9 @@ public class AI {
 	 * Generates the initial population density distributed graph for the given
 	 * number of ships for each square in a given grid. Runs only at the beginning
 	 * of the game.
+	 * 
+	 * @param grid
+	 *            The grid for which to calculate the initial PDDG
 	 */
 	public static void generatePDDG(Square[][] grid) {
 		int[] distance;
@@ -44,6 +47,10 @@ public class AI {
 					distance = new int[] { i, j, grid.length - i - 1, grid[i].length - j - 1 };
 					grid[i][j].totalSquareValue += generatePD(k, distance);
 				}
+	}
+
+	public static void updatePPDG() {
+
 	}
 
 	/**
@@ -201,6 +208,7 @@ public class AI {
 	 *         is overlapping another ship
 	 */
 	public static boolean checkValidShipPosition(int Y, int X, int endY, int endX, int rotation, Square[][] grid) {
+
 		// first we must check to see if the end values are within the board size
 		if (endX >= grid.length || endX < 0 || endY >= grid[0].length || endY < 0)
 			return false;
