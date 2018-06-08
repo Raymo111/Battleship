@@ -202,20 +202,17 @@ public class AI {
 	 */
 	public static boolean checkValidShipPosition(int Y, int X, int endY, int endX, int rotation, Square[][] grid) {
 		// first we must check to see if the end values are within the board size
-		if (endX >= grid.length || endX < 0 || endY >= grid[0].length || endY < 0) {
+		if (endX >= grid.length || endX < 0 || endY >= grid[0].length || endY < 0)
 			return false;
-		}
 		int sign = -1;
-		if (rotation % 2 == 0) {
+		if (rotation % 2 == 0)
 			sign = 1;
-		}
-		for (int i = 0; i <= Math.abs(endX - X); i++)
-			for (int j = 0; j <= Math.abs(endY - Y); j++) {
+		for (int i = 0; i < Math.abs(endX - X); i++)
+			for (int j = 0; j < Math.abs(endY - Y); j++)
 				if (Battleship.homeGrid[Y + (sign * j)][X + (sign * i)].shipType != 0) {
 					System.out.println("overlace");
 					return false;
 				}
-			}
 
 		return true;
 	}
