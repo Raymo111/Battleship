@@ -19,17 +19,21 @@ public class Ship implements Serializable {
 			location = new Square[shipLength + 1];
 			location[0] = start;
 			for (int i = 1; i < location.length - 1; i++)
-				location[i] = Battleship.homeGrid[start.y + i][end.y + i];
+				location[i] = Battleship.homeGrid[start.x + i][start.y];
 			location[location.length] = end;
 		} else {// Horizontal ship
 			shipLength = end.x - start.x;
 			location = new Square[shipLength + 1];
 			location[0] = start;
 			for (int i = 1; i < location.length - 1; i++)
-				location[i] = Battleship.homeGrid[start.x + i][end.x + i];
+				location[i] = Battleship.homeGrid[start.x][start.y + i];
 			location[location.length] = end;
 		}
-		shipName = Battleship.shipLengths[shipLength - 1];
+		for (int i = 0; i < Battleship.shipLengths.length; i++)
+			if (Battleship.shipLengths[i] == shipLength && !Battleship.usedShipNames.contains(shipName)) {
+				shipName = Battleship.shipNames[i];
+				Battleship.usedShipNames.add(shipName);
+			}
 	}
 
 }
