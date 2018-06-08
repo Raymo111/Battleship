@@ -133,7 +133,7 @@ public class AI {
 					}
 				} while (correct == false);
 			}
-		} else if (mode == 3) {// random ship placement
+		} else if (mode == 2) {// random ship placement
 			for (int i = 0; i < shipLengths.length; i++) {
 				boolean correct = false;
 				int count = 0;
