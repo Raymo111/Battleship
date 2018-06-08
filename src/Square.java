@@ -19,8 +19,10 @@ public class Square implements Serializable {
 	/**
 	 * sets contains to EMPTY
 	 */
-	public Square(int x, int y) {
+	public Square(int startX, int startY) {
 		status = SquareTypes.UNKNOWN;
+		x = startX;
+		y = startY;
 	}
 
 	public int[] returnGraphArray() {

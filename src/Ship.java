@@ -16,7 +16,7 @@ public class Ship implements Serializable {
 	public Ship(Square[][] grid, Square start, Square end) {
 		int shipLength;
 		if (start.x == end.x) {// Vertical ship
-			shipLength = end.y - start.y;
+			shipLength = Math.abs(end.y - start.y);
 			location = new Square[shipLength + 1];
 			location[0] = start;
 			for (int i = 1; i < location.length - 1; i++) {
@@ -25,7 +25,7 @@ public class Ship implements Serializable {
 			}
 			location[location.length - 1] = end;
 		} else {// Horizontal ship
-			shipLength = end.x - start.x;
+			shipLength = Math.abs(end.x - start.x);
 			location = new Square[shipLength + 1];
 			location[0] = start;
 			for (int i = 1; i < location.length - 1; i++) {
