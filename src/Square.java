@@ -28,4 +28,8 @@ public class Square implements Serializable {
 	public int[] returnGraphArray() {
 		return graphArray;
 	}
+
+	public void combinePDXY() {
+		totalSquareValue = PDx + PDy;
+	}
 }

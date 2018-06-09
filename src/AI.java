@@ -14,7 +14,8 @@ public class AI {
 
 	/**
 	 * Generates the initial population density for the given number of ships for a
-	 * given square. Runs only at the beginning of the game.
+	 * component (horizontal or vertical) of a given square. Runs only at the
+	 * beginning of the game.
 	 * 
 	 * @param shipLength
 	 *            The length of a ship to calculate the PD for
@@ -48,6 +49,7 @@ public class AI {
 					distanceY = new int[] { j, grid[i].length - j - 1 };
 					grid[j][i].PDx += generatePD(k, distanceX);
 					grid[j][i].PDy += generatePD(k, distanceY);
+					grid[j][i].combinePDXY();
 				}
 	}
 
