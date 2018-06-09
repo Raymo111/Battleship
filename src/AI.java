@@ -66,33 +66,32 @@ public class AI {
 		// Going down
 		for (int i = shot.y + 1; i < grid.length; i++)
 			if (grid[i][shot.x].status == SquareTypes.MISS || grid[i][shot.x].status == SquareTypes.SUNK) {
-				leftBound = i;
+				lowBound = i;
 				break;
 			}
 
 		// Going left
 		for (int i = shot.x - 1; i >= 0; i--)
 			if (grid[shot.y][i].status == SquareTypes.MISS || grid[shot.y][i].status == SquareTypes.SUNK) {
-				highBound = i;
+				leftBound = i;
 				break;
 			}
 
 		// Going right
 		for (int i = shot.x + 1; i < grid.length; i++)
 			if (grid[shot.y][i].status == SquareTypes.MISS || grid[shot.y][i].status == SquareTypes.SUNK) {
-				leftBound = i;
+				rightBound = i;
 				break;
 			}
 
 		for (int i = 0; i < shipLengths.length; i++) {
-			updatePD(shot, shipLengths[i], highBound, leftBound, leftBound, rightBound);
+			updatePD(shot, shipLengths[i], highBound, lowBound, leftBound, rightBound);
 		}
 	}
 
-	public static void updatePD(Square shot, int shipLength, int highBound, int lowBound, int leftBound, int rightBound) {
-		if (highBound - shot.y <=) {
-			
-		}
+	public static void updatePD(Square shot, int shipLength, int highBound, int lowBound, int leftBound,
+			int rightBound) {
+
 	}
 
 	/**
