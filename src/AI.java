@@ -21,10 +21,10 @@ public class AI {
 	 * @param distance
 	 *            The distances of a square to the edges of the grid (0 for a square
 	 *            on the edge)
-	 * @return The PD of a square
+	 * @return The PD of a component (horizontal or vertical) of a square
 	 */
 	public static int generatePD(int shipLength, int[] distance) {
-		int pD = 2 * shipLength; // Population density of a square
+		int pD = shipLength; // Population density of a component (horizontal or vertical) of a square
 		for (int l = 0; l < distance.length; l++)
 			if (distance[l] < shipLength - 1)
 				pD -= (shipLength - 1 - distance[l]);
@@ -40,12 +40,14 @@ public class AI {
 	 *            The grid for which to calculate the initial PDDG
 	 */
 	public static void generatePDDG(Square[][] grid) {
-		int[] distance;
+		int[] distanceX, distanceY;
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
 				for (int k : Battleship.shipLengths) {
-					distance = new int[] { i, j, grid.length - i - 1, grid[i].length - j - 1 };
-					grid[i][j].totalSquareValue += generatePD(k, distance);
+					distanceX = new int[] { i, grid.length - i - 1 };
+					distanceY = new int[] { j, grid[i].length - j - 1 };
+					grid[j][i].PDx += generatePD(k, distanceX);
+					grid[j][i].PDy += generatePD(k, distanceY);
 				}
 	}
 
@@ -83,12 +85,14 @@ public class AI {
 			}
 
 		for (int i = 0; i < shipLengths.length; i++) {
-			updatePD(shipLengths[i], highBound, leftBound, leftBound, rightBound);
+			updatePD(shot, shipLengths[i], highBound, leftBound, leftBound, rightBound);
 		}
 	}
 
-	public static void updatePD(int shipLength, int highBound, int lowBound, int leftBound, int rightBound) {
-
+	public static void updatePD(Square shot, int shipLength, int highBound, int lowBound, int leftBound, int rightBound) {
+		if (highBound - shot.y <=) {
+			
+		}
 	}
 
 	/**
