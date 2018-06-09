@@ -35,6 +35,11 @@ public class base extends JPanel{
 				contractPaneButton.setVisible(true);
 				contractPane.setVisible(false);
 			}
+			try{
+				int i = mRightButtons.indexOf((JLabel)e.getSource());
+				mEffects.get(i).setVisible(false);
+			}catch(Exception exp){
+			}
 		}
 		public void mouseEntered(MouseEvent e) {
 			try{

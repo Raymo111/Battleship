@@ -9,11 +9,17 @@ import javax.swing.*;
 public class system extends JFrame {
 	MouseListener directory = new MouseListener() {
 		public void mouseClicked(MouseEvent event) {
-			Object source = event.getSource();
+			JLabel source = (JLabel)event.getSource();
 			if (source.equals(baseInter.gameButton)) {
 				System.out.println(-1);
 				remove(baseInter);
 				add(gameInter);
+				repaint();
+			}
+			if(source.getIcon().toString().equals("theBackButton.png")){
+				System.out.println(0);
+				getContentPane().removeAll();;
+				add(baseInter);
 				repaint();
 			}
 		}
@@ -35,6 +41,7 @@ public class system extends JFrame {
 
 	public system() {
 		baseInter.gameButton.addMouseListener(directory);
+		gameInter.backButton.addMouseListener(directory);
 		add(baseInter);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
