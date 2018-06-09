@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import javax.swing.*;
 
 public class system extends JFrame {
+	Boolean inGame = false;
 	MouseListener directory = new MouseListener() {
 		public void mouseClicked(MouseEvent event) {
 			JLabel source = (JLabel)event.getSource();
@@ -14,6 +15,23 @@ public class system extends JFrame {
 				System.out.println(-1);
 				remove(baseInter);
 				add(gameInter);
+				if(!inGame){
+					//will be modify to be round shape frame if there is time left
+					Object[] options = {"User","AI"};
+					int n = JOptionPane.showOptionDialog(null,
+							"Battle started from:",
+							"First hand",
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE,
+							new ImageIcon("gNani.png"),     
+							options,  
+							options[0]); 
+					if(n==0){
+						gameInter.userTurn = true;
+					}else{
+						gameInter.userTurn = false;
+					}
+				}
 				repaint();
 			}
 			if(source.getIcon().toString().equals("theBackButton.png")){
