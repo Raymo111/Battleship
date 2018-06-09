@@ -38,20 +38,20 @@ public class Battleship {
 	}
 
 	public static void display2Darray(Square[][] array) {
-		for (int i = 0; i < array.length; i++) {
-			for (int j = 0; j < array.length; j++) {
-				System.out.print("|" + array[i][j].totalSquareValue);
-			}
-			System.out.println();
-		}
 		try {
 			for (int i = 0; i < array.length; i++) {
 				for (int j = 0; j < array.length; j++) {
-					System.out.print("|" + array[i][j].shipType);
+					System.out.print("|" + array[i][j].totalSquareValue);
 				}
 				System.out.println();
 			}
 		} catch (Exception e) {
+		}
+		for (int i = 0; i < array.length; i++) {
+			for (int j = 0; j < array.length; j++) {
+				System.out.print("|" + array[i][j].shipType);
+			}
+			System.out.println();
 		}
 	}
 

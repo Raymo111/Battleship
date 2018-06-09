@@ -109,6 +109,25 @@ public class AI {
 		else // With bounds
 			for (int i = lowBound; i > shot.y; i--)
 				grid[i][shot.x].PDy -= shot.y - i;
+
+		// Going left
+		if (shot.x - leftBound >= shipLength) // No bounds
+			for (int i = 0; i < shipLength; i++)
+				grid[i][shot.y].PDx -= i;
+		else // With bounds
+			for (int i = leftBound; i < shot.x; i++)
+				grid[i][shot.y].PDx -= shot.x - i;
+
+		// Going right
+		if (rightBound - shot.x >= shipLength) // No bounds
+			for (int i = 0; i < shipLength; i++)
+				grid[i][shot.y].PDx -= i;
+		else // With bounds
+			for (int i = rightBound; i > shot.x; i--)
+				grid[i][shot.y].PDx -= shot.x - i;
+		for (int i = 0; i < grid.length; i++)
+			for (int j = 0; j < grid[i].length; j++)
+				grid[i][j].combinePDXY();
 	}
 
 	/**
