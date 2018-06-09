@@ -242,7 +242,17 @@ public class AI {
 						System.out.println("Over");
 						y = rand.nextInt(grid.length - 1);// random y coordinate. Start of ship
 						x = rand.nextInt(grid[0].length - 1);// random x coordinate. Start of ship
+						rotationModifiers[0][0] = y + shipLengths[i];
+						rotationModifiers[1][0] = x;
 
+						rotationModifiers[0][1] = y - shipLengths[i];
+						rotationModifiers[1][1] = x;
+
+						rotationModifiers[0][2] = y;
+						rotationModifiers[1][2] = x + shipLengths[i];
+
+						rotationModifiers[0][3] = y;
+						rotationModifiers[1][3] = x - shipLengths[i];
 					}
 					for (int a = 0; a < 4; a++) {// loop
 						int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
