@@ -242,21 +242,25 @@ public class AI {
 	 * @param shipLengths
 	 *            The lengths of ships still in play
 	 */
-	public static void updatePDDG(Square shot, Square[][] grid, int[] shipLengths) {
+	public static Square updatePDDG(Square shot, Square[][] grid, int[] shipLengths) {
 
 		// If shot was a miss
 		if (shot.status == SquareTypes.MISS) {
 			for (int i = 0; i < shipLengths.length; i++)
-				updatePD(grid, shot, shipLengths[i]);
-			hunt(grid);
+				updateMissPD(grid, shot, shipLengths[i]);
+			return hunt(grid);
 		}
 
 		// If shot was a hit
-
+		else
+			for (int i = 0; i < shipLengths.length; i++) {
+				updateHitPD(grid, shot, shipLengths[i]);
+			}
+		return target(grid);
 	}
 
 	/**
-	 * Updates the population density for a ship for a square in a grid
+	 * Updates the population density for a ship for a missed square in a grid
 	 * 
 	 * @param grid
 	 *            The grid in which the square is located
@@ -265,7 +269,7 @@ public class AI {
 	 * @param shipLength
 	 *            The specific ship length for which to calculate
 	 */
-	public static void updatePD(Square[][] grid, Square shot, int shipLength) {
+	public static void updateMissPD(Square[][] grid, Square shot, int shipLength) {
 
 		int[] bounds = getBounds(shot, grid);
 
