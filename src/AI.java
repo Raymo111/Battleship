@@ -49,10 +49,10 @@ public class AI {
 				}
 	}
 
-	public static void updatePDDG(Square shot, Square[][] grid) {
+	public static void updatePDDG(Square shot, Square[][] grid, int[] shipLengths) {
 
-		// Boundaries set for decrementing
-		int highBound, lowBound, leftBound, rightBound;
+		// Boundaries set for decrementing total square values
+		int highBound = -1, lowBound = -1, leftBound = -1, rightBound = -1;
 
 		// Going up
 		for (int i = shot.y - 1; i >= 0; i--)
@@ -81,6 +81,14 @@ public class AI {
 				leftBound = i;
 				break;
 			}
+
+		for (int i = 0; i < shipLengths.length; i++) {
+			updatePD(shipLengths[i], highBound, leftBound, leftBound, rightBound);
+		}
+	}
+
+	public static void updatePD(int shipLength, int highBound, int lowBound, int leftBound, int rightBound) {
+
 	}
 
 	/**
