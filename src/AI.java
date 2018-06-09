@@ -12,172 +12,18 @@ public class AI {
 	private static Random rand = new Random();
 	private static Scanner sc = new Scanner(System.in);
 
-	/**
-	 * Generates the initial population density for the given number of ships for a
-	 * component (horizontal or vertical) of a given square. Runs only at the
-	 * beginning of the game.
-	 * 
-	 * @param shipLength
-	 *            The length of a ship to calculate the PD for
-	 * @param distance
-	 *            The distances of a square to the edges of the grid (0 for a square
-	 *            on the edge)
-	 * @return The PD of a component (horizontal or vertical) of a square
-	 */
-	public static int generatePD(int shipLength, int[] distance) {
-		int pD = shipLength; // Population density of a component (horizontal or vertical) of a square
-		for (int l = 0; l < distance.length; l++)
-			if (distance[l] < shipLength - 1)
-				pD -= (shipLength - 1 - distance[l]);
-		return pD;
-	}
+	// Constructor
+	public AI() {
 
-	/**
-	 * Generates the initial population density distributed graph for the given
-	 * number of ships for each square in a given grid. Runs only at the beginning
-	 * of the game.
-	 * 
-	 * @param grid
-	 *            The grid for which to calculate the initial PDDG
-	 */
-	public static void generatePDDG(Square[][] grid) {
-		int[] distanceX, distanceY;
-		for (int i = 0; i < grid.length; i++)
-			for (int j = 0; j < grid[i].length; j++)
-				for (int k : Battleship.shipLengths) {
-					distanceX = new int[] { i, grid.length - i - 1 };
-					distanceY = new int[] { j, grid[i].length - j - 1 };
-					grid[j][i].PDx += generatePD(k, distanceX);
-					grid[j][i].PDy += generatePD(k, distanceY);
-					grid[j][i].combinePDXY();
-				}
-	}
+		// Generate Population Density Distributed Graph for both grids
+		generatePDDG(Battleship.enemyGrid);
+		generatePDDG(Battleship.homeGrid);
 
-	/**
-	 * Updates the population density after a given shot for a given grid and ship
-	 * lengths
-	 * 
-	 * @param shot
-	 *            The shot which was fired
-	 * @param grid
-	 *            The grid for which to calculate
-	 * @param shipLengths
-	 *            The lengths of ships still in play
-	 */
-	public static void updatePDDG(Square shot, Square[][] grid, int[] shipLengths) {
-
-		for (int i = 0; i < shipLengths.length; i++)
-			updatePD(grid, shot, shipLengths[i]);
-	}
-
-	/**
-	 * Gets the boundaries for a decrement of population density in all 4 directions
-	 * 
-	 * @param shot
-	 *            The shot that was fired
-	 * @param grid
-	 *            The grid for which to calculate boundaries
-	 * @return The boundaries as an int array
-	 */
-	private static int[] getBounds(Square shot, Square[][] grid) {
-
-		// Boundaries set for decrementing total square values
-		int[] bounds = new int[] { -1, -1, -1, -1 };
-
-		// Going up
-		for (int i = shot.y - 1; i >= 0; i--)
-			if (grid[i][shot.x].status == SquareTypes.MISS || grid[i][shot.x].status == SquareTypes.SUNK) {
-				bounds[0] = i;
-				break;
-			}
-
-		// Going down
-		for (int i = shot.y + 1; i < grid.length; i++)
-			if (grid[i][shot.x].status == SquareTypes.MISS || grid[i][shot.x].status == SquareTypes.SUNK) {
-				bounds[1] = i;
-				break;
-			}
-
-		// Going left
-		for (int i = shot.x - 1; i >= 0; i--)
-			if (grid[shot.y][i].status == SquareTypes.MISS || grid[shot.y][i].status == SquareTypes.SUNK) {
-				bounds[2] = i;
-				break;
-			}
-
-		// Going right
-		for (int i = shot.x + 1; i < grid.length; i++)
-			if (grid[shot.y][i].status == SquareTypes.MISS || grid[shot.y][i].status == SquareTypes.SUNK) {
-				bounds[3] = i;
-				break;
-			}
-		return bounds;
-	}
-
-	/**
-	 * Updates the population density for a ship for a square in a grid
-	 * 
-	 * @param grid
-	 *            The grid in which the square is located
-	 * @param shot
-	 *            The square for which to calculate
-	 * @param shipLength
-	 *            The specific ship length for which to calculate
-	 */
-	public static void updatePD(Square[][] grid, Square shot, int shipLength) {
-
-		int[] bounds = getBounds(shot, grid);
-
-		// Going up
-		if (shot.y - bounds[0] >= shipLength) // No bounds
-			for (int i = 0; i < shipLength; i++)
-				grid[i][shot.x].PDy -= i;
-		else // With bounds
-			for (int i = bounds[0]; i < shot.y; i++)
-				grid[i][shot.x].PDy -= shot.y - i;
-
-		// Going down
-		if (bounds[1] - shot.y >= shipLength) // No bounds
-			for (int i = 0; i < shipLength; i++)
-				grid[i][shot.x].PDy -= i;
-		else // With bounds
-			for (int i = bounds[1]; i > shot.y; i--)
-				grid[i][shot.x].PDy -= shot.y - i;
-
-		// Going left
-		if (shot.x - bounds[2] >= shipLength) // No bounds
-			for (int i = 0; i < shipLength; i++)
-				grid[i][shot.y].PDx -= i;
-		else // With bounds
-			for (int i = bounds[2]; i < shot.x; i++)
-				grid[i][shot.y].PDx -= shot.x - i;
-
-		// Going right
-		if (bounds[3] - shot.x >= shipLength) // No bounds
-			for (int i = 0; i < shipLength; i++)
-				grid[i][shot.y].PDx -= i;
-		else // With bounds
-			for (int i = bounds[3]; i > shot.x; i--)
-				grid[i][shot.y].PDx -= shot.x - i;
-		for (int i = 0; i < grid.length; i++)
-			for (int j = 0; j < grid[i].length; j++)
-				grid[i][j].combinePDXY();
-	}
-
-	/**
-	 * Finds the highest likely location of a ship while in hunt mode. Switches to
-	 * target mode once a hit is found
-	 * 
-	 * @return The target to fire at
-	 */
-	public static Square hunt(Square[][] grid) {
-		int max = grid[0][0].totalSquareValue;
-		Square target = grid[0][0];
-		for (int i = 0; i < grid[0].length; i++)
-			for (int j = 0; j < grid.length; j++)
-				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquareValue > max)
-					target = grid[i][j];
-		return target;
+		// Place ships on home grid
+		try {
+			// placeShips(Battleship.homeGrid, Battleship.shipLengths);
+		} catch (Exception e) {
+		}
 	}
 
 	/**
@@ -342,6 +188,174 @@ public class AI {
 				}
 
 		return true;
+	}
+
+	/**
+	 * Generates the initial population density distributed graph for the given
+	 * number of ships for each square in a given grid. Runs only at the beginning
+	 * of the game.
+	 * 
+	 * @param grid
+	 *            The grid for which to calculate the initial PDDG
+	 */
+	public static void generatePDDG(Square[][] grid) {
+		int[] distanceX, distanceY;
+		for (int i = 0; i < grid.length; i++)
+			for (int j = 0; j < grid[i].length; j++)
+				for (int k : Battleship.shipLengths) {
+					distanceX = new int[] { i, grid.length - i - 1 };
+					distanceY = new int[] { j, grid[i].length - j - 1 };
+					grid[j][i].PDx += generatePD(k, distanceX);
+					grid[j][i].PDy += generatePD(k, distanceY);
+					grid[j][i].combinePDXY();
+				}
+	}
+
+	/**
+	 * Generates the initial population density for the given number of ships for a
+	 * component (horizontal or vertical) of a given square. Runs only at the
+	 * beginning of the game.
+	 * 
+	 * @param shipLength
+	 *            The length of a ship to calculate the PD for
+	 * @param distance
+	 *            The distances of a square to the edges of the grid (0 for a square
+	 *            on the edge)
+	 * @return The PD of a component (horizontal or vertical) of a square
+	 */
+	public static int generatePD(int shipLength, int[] distance) {
+		int pD = shipLength; // Population density of a component (horizontal or vertical) of a square
+		for (int l = 0; l < distance.length; l++)
+			if (distance[l] < shipLength - 1)
+				pD -= (shipLength - 1 - distance[l]);
+		return pD;
+	}
+
+	/**
+	 * Updates the population density after a given shot for a given grid and ship
+	 * lengths
+	 * 
+	 * @param shot
+	 *            The shot which was fired
+	 * @param grid
+	 *            The grid for which to calculate
+	 * @param shipLengths
+	 *            The lengths of ships still in play
+	 */
+	public static void updatePDDG(Square shot, Square[][] grid, int[] shipLengths) {
+
+		for (int i = 0; i < shipLengths.length; i++)
+			updatePD(grid, shot, shipLengths[i]);
+	}
+
+	/**
+	 * Updates the population density for a ship for a square in a grid
+	 * 
+	 * @param grid
+	 *            The grid in which the square is located
+	 * @param shot
+	 *            The square for which to calculate
+	 * @param shipLength
+	 *            The specific ship length for which to calculate
+	 */
+	public static void updatePD(Square[][] grid, Square shot, int shipLength) {
+
+		int[] bounds = getBounds(shot, grid);
+
+		// Going up
+		if (shot.y - bounds[0] >= shipLength) // No bounds
+			for (int i = 0; i < shipLength; i++)
+				grid[i][shot.x].PDy -= i;
+		else // With bounds
+			for (int i = bounds[0]; i < shot.y; i++)
+				grid[i][shot.x].PDy -= shot.y - i;
+
+		// Going down
+		if (bounds[1] - shot.y >= shipLength) // No bounds
+			for (int i = 0; i < shipLength; i++)
+				grid[i][shot.x].PDy -= i;
+		else // With bounds
+			for (int i = bounds[1]; i > shot.y; i--)
+				grid[i][shot.x].PDy -= shot.y - i;
+
+		// Going left
+		if (shot.x - bounds[2] >= shipLength) // No bounds
+			for (int i = 0; i < shipLength; i++)
+				grid[i][shot.y].PDx -= i;
+		else // With bounds
+			for (int i = bounds[2]; i < shot.x; i++)
+				grid[i][shot.y].PDx -= shot.x - i;
+
+		// Going right
+		if (bounds[3] - shot.x >= shipLength) // No bounds
+			for (int i = 0; i < shipLength; i++)
+				grid[i][shot.y].PDx -= i;
+		else // With bounds
+			for (int i = bounds[3]; i > shot.x; i--)
+				grid[i][shot.y].PDx -= shot.x - i;
+		for (int i = 0; i < grid.length; i++)
+			for (int j = 0; j < grid[i].length; j++)
+				grid[i][j].combinePDXY();
+	}
+
+	/**
+	 * Gets the boundaries for a decrement of population density in all 4 directions
+	 * 
+	 * @param shot
+	 *            The shot that was fired
+	 * @param grid
+	 *            The grid for which to calculate boundaries
+	 * @return The boundaries as an int array
+	 */
+	private static int[] getBounds(Square shot, Square[][] grid) {
+
+		// Boundaries set for decrementing total square values
+		int[] bounds = new int[] { -1, -1, -1, -1 };
+
+		// Going up
+		for (int i = shot.y - 1; i >= 0; i--)
+			if (grid[i][shot.x].status == SquareTypes.MISS || grid[i][shot.x].status == SquareTypes.SUNK) {
+				bounds[0] = i;
+				break;
+			}
+
+		// Going down
+		for (int i = shot.y + 1; i < grid.length; i++)
+			if (grid[i][shot.x].status == SquareTypes.MISS || grid[i][shot.x].status == SquareTypes.SUNK) {
+				bounds[1] = i;
+				break;
+			}
+
+		// Going left
+		for (int i = shot.x - 1; i >= 0; i--)
+			if (grid[shot.y][i].status == SquareTypes.MISS || grid[shot.y][i].status == SquareTypes.SUNK) {
+				bounds[2] = i;
+				break;
+			}
+
+		// Going right
+		for (int i = shot.x + 1; i < grid.length; i++)
+			if (grid[shot.y][i].status == SquareTypes.MISS || grid[shot.y][i].status == SquareTypes.SUNK) {
+				bounds[3] = i;
+				break;
+			}
+		return bounds;
+	}
+
+	/**
+	 * Finds the highest likely location of a ship while in hunt mode. Switches to
+	 * target mode once a hit is found
+	 * 
+	 * @return The target to fire at
+	 */
+	public static Square hunt(Square[][] grid) {
+		int max = grid[0][0].totalSquareValue;
+		Square target = grid[0][0];
+		for (int i = 0; i < grid[0].length; i++)
+			for (int j = 0; j < grid.length; j++)
+				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquareValue > max)
+					target = grid[i][j];
+		return target;
 	}
 
 }

@@ -30,12 +30,7 @@ public class Battleship {
 		for (int i = 0; i < homeGrid.length; i++)
 			for (int j = 0; j < homeGrid[i].length; j++)
 				homeGrid[i][j] = new Square(i, j);
-		AI.generatePDDG(enemyGrid);
-		AI.generatePDDG(homeGrid);
-		try {
-			//AI.placeShips(homeGrid, shipLengths);
-		} catch (Exception e) {
-		}
+		AI Michael = new AI();
 		display2Darray(homeGrid);
 		display2Darray(enemyGrid);
 	}
