@@ -200,11 +200,9 @@ public class AI {
 						System.out.println("Over");
 						y = rand.nextInt(grid.length - 1);// random y coordinate. Start of ship
 						x = rand.nextInt(grid[0].length - 1);// random x coordinate. Start of ship
-
 					}
 					for (int a = 0; a < 4; a++) {// loop
 						int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
-
 						if (checkValidShipPosition(y, x, rotationModifiers[0][rotation], rotationModifiers[1][rotation],
 								rotation, grid)) {
 							correct = true;
@@ -271,7 +269,6 @@ public class AI {
 				} while (correct == false);
 			}
 		}
-
 	}
 
 	/**

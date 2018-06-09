@@ -33,7 +33,7 @@ public class Battleship {
 		AI.generatePDDG(enemyGrid);
 		AI.generatePDDG(homeGrid);
 		try {
-			AI.placeShips(homeGrid, shipLengths);
+			//AI.placeShips(homeGrid, shipLengths);
 		} catch (Exception e) {
 		}
 		display2Darray(homeGrid);
