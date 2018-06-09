@@ -87,13 +87,28 @@ public class AI {
 			}
 
 		for (int i = 0; i < shipLengths.length; i++) {
-			updatePD(shot, shipLengths[i], highBound, lowBound, leftBound, rightBound);
+			updatePD(grid, shot, shipLengths[i], highBound, lowBound, leftBound, rightBound);
 		}
 	}
 
-	public static void updatePD(Square shot, int shipLength, int highBound, int lowBound, int leftBound,
-			int rightBound) {
+	public static void updatePD(Square[][] grid, Square shot, int shipLength, int highBound, int lowBound,
+			int leftBound, int rightBound) {
 
+		// Going up
+		if (shot.y - highBound >= shipLength) // No bounds
+			for (int i = 0; i < shipLength; i++)
+				grid[i][shot.x].PDy -= i;
+		else // With bounds
+			for (int i = highBound; i < shot.y; i++)
+				grid[i][shot.x].PDy -= shot.y - i;
+
+		// Going down
+		if (lowBound - shot.y >= shipLength) // No bounds
+			for (int i = 0; i < shipLength; i++)
+				grid[i][shot.x].PDy -= i;
+		else // With bounds
+			for (int i = lowBound; i > shot.y; i--)
+				grid[i][shot.x].PDy -= shot.y - i;
 	}
 
 	/**
