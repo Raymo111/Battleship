@@ -244,8 +244,15 @@ public class AI {
 	 */
 	public static void updatePDDG(Square shot, Square[][] grid, int[] shipLengths) {
 
-		for (int i = 0; i < shipLengths.length; i++)
-			updatePD(grid, shot, shipLengths[i]);
+		// If shot was a miss
+		if (shot.status == SquareTypes.MISS) {
+			for (int i = 0; i < shipLengths.length; i++)
+				updatePD(grid, shot, shipLengths[i]);
+			hunt(grid);
+		}
+
+		// If shot was a hit
+
 	}
 
 	/**
