@@ -32,34 +32,32 @@ public class Battleship {
 				homeGrid[i][j] = new Square(i, j);
 		AI.generatePDDG(enemyGrid);
 		AI.generatePDDG(homeGrid);
-		AI.placeShips(homeGrid, shipLengths);
+		try {
+			AI.placeShips(homeGrid, shipLengths);
+		} catch (Exception e) {
+		}
 		display2Darray(homeGrid);
 		display2Darray(enemyGrid);
 	}
 
 	public static void display2Darray(Square[][] array) {
-		try {
-			for (int i = 0; i < array.length; i++) {
-				for (int j = 0; j < array.length; j++) {
-					System.out.print("|" + array[i][j].totalSquareValue);
-				}
-				System.out.println();
-			}
-		} catch (Exception e) {
-		}
 		for (int i = 0; i < array.length; i++) {
 			for (int j = 0; j < array.length; j++) {
-				System.out.print("|" + array[i][j].shipType);
+				System.out.print("|" + array[i][j].totalSquareValue);
 			}
+			System.out.println();
+		}
+		for (int i = 0; i < array.length; i++) {
+			for (int j = 0; j < array.length; j++)
+				System.out.print("|" + array[i][j].shipType);
 			System.out.println();
 		}
 	}
 
 	public static void display2Darray(int[][] array) {
 		for (int i = 0; i < array.length; i++) {
-			for (int j = 0; j < array.length; j++) {
+			for (int j = 0; j < array.length; j++)
 				System.out.print("|" + array[j][i]);
-			}
 			System.out.println();
 		}
 	}
