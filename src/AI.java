@@ -19,7 +19,7 @@ public class AI {
 	 * 
 	 * @type TARGET -> Parity is off, looking around a specific square after a hit.
 	 */
-	private enum Mode {
+	public enum Mode {
 		HUNT, TARGET
 	}
 
@@ -204,6 +204,7 @@ public class AI {
 		if (mode == Mode.TARGET) {
 			for (int i = 0; i < shipLengths.length; i++)
 				updateHitPD(grid, lastShot, shipLengths[i]);
+			mode = Mode.TARGET;
 			return target(grid, lastShot);
 		}
 

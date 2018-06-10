@@ -67,8 +67,9 @@ public class Battleship implements java.io.Serializable {
 
 		// Local variables
 		boolean AIFirst, AIWin = false, userWin = false;
-		int round = 1, x, y;
-		Square userShot, AIShot;
+		int round = 1, x, y, shipNumber = 0;// The index of a ship in homeShips array
+		Square userShot = null, AIShot = null;
+		Ship ship = homeShips[0];
 
 		// Who goes first
 		System.out.println("You first or Michael (the AI) first?");
@@ -102,22 +103,25 @@ public class Battleship implements java.io.Serializable {
 
 			// Check for hit or miss on home grid
 			userShot = homeGrid[y][x];
-			if (userShot.shipType != null) {
+			if (userShot.shipType != null) {// Miss
 				userShot.status = SquareTypes.MISS;
 				System.out.println("MISS");
-			} else {
+			} else {// Hit
 				for (int i = 0; i < homeShips.length; i++)
-					for (int j = 0; j < homeShips[i].location.length; j++) {
-						if (homeShips[i].location[i] == userShot) {
-
+					for (int j = 0; j < homeShips[i].location.length; j++)
+						if (homeShips[i].location[j] == userShot) {
+							ship = homeShips[i];
+							i = shipNumber;
+							if (ship.location[j].status == SquareTypes.UNKNOWN) {
+								homeShipsSunk[i] = false;
+								break;
+							}
 						}
-						if (homeShips[i].location[j].status == SquareTypes.UNKNOWN) {
-							homeShipsSunk[i] = false;
-							break;
-						}
-					}
 				homeGrid[y][x].status = SquareTypes.HIT;
-				System.out.println("HIT, ");
+				if (homeShipsSunk[shipNumber])
+					System.out.println("HIT, SUNK " + homeShips[shipNumber].shipName);
+				else
+					System.out.println("HIT, " + ship.shipName);
 			}
 			enemyShotLog.add(homeGrid[y][x]);// Add enemy shot to log
 		}
@@ -130,12 +134,12 @@ public class Battleship implements java.io.Serializable {
 
 			// Get AI's shot
 			System.out.println("Round " + round + ". Michael's turn.");
-			AIShot = Michael.aim(null, null, enemyGrid, shipLengths);
+			AIShot = Michael.aim(AI.Mode.HUNT, AIShot, enemyGrid, shipLengths);
 			homeShotLog.add(AIShot);// Add home shot to log
 
 			// Print AI's shot's y-x coordinate converted to Battleship standards (e.g. A1)
-			System.out.println(
-					(Character.toString((char) (AIShot.y + 65)) + Integer.toString(AIShot.x + 1)).toUpperCase());
+			System.out.println("AI's shot coordinates: "
+					+ (Character.toString((char) (AIShot.y + 65)) + Integer.toString(AIShot.x + 1)).toUpperCase());
 
 			// Get user's response
 			System.out.println("HIT or MISS?");
@@ -158,12 +162,25 @@ public class Battleship implements java.io.Serializable {
 			y = ((int) input.charAt(0)) - 65;
 
 			// Check for hit or miss on home grid
-			if (homeGrid[y][x].shipType != null) {
+			if (homeGrid[y][x].shipType != null) {// Miss
 				homeGrid[y][x].status = SquareTypes.MISS;
 				System.out.println("MISS");
-			} else {
+			} else {// Hit
+				for (int i = 0; i < homeShips.length; i++)
+					for (int j = 0; j < homeShips[i].location.length; j++)
+						if (homeShips[i].location[j] == userShot) {
+							ship = homeShips[i];
+							i = shipNumber;
+							if (ship.location[j].status == SquareTypes.UNKNOWN) {
+								homeShipsSunk[i] = false;
+								break;
+							}
+						}
 				homeGrid[y][x].status = SquareTypes.HIT;
-				System.out.println("HIT");
+				if (homeShipsSunk[shipNumber])
+					System.out.println("HIT, SUNK " + homeShips[shipNumber].shipName);
+				else
+					System.out.println("HIT, " + ship.shipName);
 			}
 			enemyShotLog.add(homeGrid[y][x]);// Add enemy shot to log
 
