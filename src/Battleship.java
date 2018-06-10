@@ -57,7 +57,7 @@ public class Battleship {
 
 		// Local variables
 		boolean AIFirst, AIWin = false, userWin = false;
-		int round;
+		int round = 1;
 
 		// Who goes first
 		System.out.println("You first or Michael (the AI) first?");
@@ -79,12 +79,23 @@ public class Battleship {
 		} catch (Exception e) {
 		}
 
+		// Only executes once for when user goes first
+		if (!AIFirst) {
+			System.out.println("Round 1. Your turn.\nWhat square would you like to shoot at? (e.g. A1)");
+			input = br.readLine();
+			input.toLowerCase();
+
+		}
+
 		// Game do-while loop
 		do {
-			if (!AIFirst) {
-				System.out.println("Round " + round + "Your turn.");
-			}
-		} while (!AIWin && !userWin);
+
+			// Increment round
+			round++;
+
+			//
+
+		} while (!AIWin && !userWin);// Continues running until someone wins
 
 	}
 
