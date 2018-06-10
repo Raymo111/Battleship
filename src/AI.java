@@ -12,6 +12,21 @@ public class AI {
 	private static Random rand = new Random();
 	private static Scanner sc = new Scanner(System.in);
 
+	/**
+	 * An enum for which mode the AI is in.
+	 * 
+	 * @type Hunt -> Parity is on, looking in entire grid for the highest PD after a
+	 *       miss.
+	 * 
+	 * @type TARGET -> Parity is off, looking around a specific square after a hit.
+	 */
+	private enum Mode {
+		HUNT, TARGET
+	}
+
+	// Start with hunt mode
+	Mode mode = Mode.HUNT;
+
 	// Constructor
 	public AI() {
 
@@ -232,8 +247,11 @@ public class AI {
 	}
 
 	/**
-	 * Updates the population density after a given shot for a given grid and ship
-	 * lengths
+	 * Selects a square to fire at after updating the population density for a given
+	 * grid and ship lengths after a given shot
+	 * 
+	 * @param mode
+	 *            The mode in which the AI is in (determined by hit or miss)
 	 * 
 	 * @param shot
 	 *            The shot which was fired
@@ -242,21 +260,31 @@ public class AI {
 	 * @param shipLengths
 	 *            The lengths of ships still in play
 	 */
-	public static Square updatePDDG(Square shot, Square[][] grid, int[] shipLengths) {
+	public static Square aim(Mode mode, Square shot, Square[][] grid, int[] shipLengths) {
 
-		// If shot was a miss
-		if (shot.status == SquareTypes.MISS) {
+		// If shot was a hit, set aim mode to target, update hit PD and target shot
+		if (mode == Mode.TARGET) {
+			for (int i = 0; i < shipLengths.length; i++)
+				updateHitPD(grid, shot, shipLengths[i]);
+			return target(grid, shot);
+		}
+
+		// If ship was sunk, check for side-by-side ships and target those
+		else if (shot.status == SquareTypes.SUNK) {
+			for (int i = 0; i < grid.length; i++)
+				for (int j = 0; j < grid[0].length; j++)
+					if (shot.status == SquareTypes.HIT)
+						return aim(mode, grid[i][j], grid, shipLengths);
+			mode = Mode.HUNT;
+			return hunt(grid);
+		}
+
+		// If shot was a miss, update miss PD and hunt for a target
+		else {
 			for (int i = 0; i < shipLengths.length; i++)
 				updateMissPD(grid, shot, shipLengths[i]);
 			return hunt(grid);
 		}
-
-		// If shot was a hit
-		else
-			for (int i = 0; i < shipLengths.length; i++) {
-				updateHitPD(grid, shot, shipLengths[i]);
-			}
-		return target(grid);
 	}
 
 	/**
@@ -310,6 +338,20 @@ public class AI {
 	}
 
 	/**
+	 * Updates the population density for a ship for a hit square in a grid
+	 * 
+	 * @param grid
+	 *            The grid in which the square is located
+	 * @param shot
+	 *            The square for which to calculate
+	 * @param shipLength
+	 *            The specific ship length for which to calculate
+	 */
+	public static void updateHitPD(Square[][] grid, Square shot, int shipLength) {
+
+	}
+
+	/**
 	 * Gets the boundaries for a decrement of population density in all 4 directions
 	 * 
 	 * @param shot
@@ -325,28 +367,28 @@ public class AI {
 
 		// Going up
 		for (int i = shot.y - 1; i >= 0; i--)
-			if (grid[i][shot.x].status == SquareTypes.MISS || grid[i][shot.x].status == SquareTypes.SUNK) {
+			if (grid[i][shot.x].status != SquareTypes.UNKNOWN) {
 				bounds[0] = i;
 				break;
 			}
 
 		// Going down
 		for (int i = shot.y + 1; i < grid.length; i++)
-			if (grid[i][shot.x].status == SquareTypes.MISS || grid[i][shot.x].status == SquareTypes.SUNK) {
+			if (grid[i][shot.x].status != SquareTypes.UNKNOWN) {
 				bounds[1] = i;
 				break;
 			}
 
 		// Going left
 		for (int i = shot.x - 1; i >= 0; i--)
-			if (grid[shot.y][i].status == SquareTypes.MISS || grid[shot.y][i].status == SquareTypes.SUNK) {
+			if (grid[shot.y][i].status != SquareTypes.UNKNOWN) {
 				bounds[2] = i;
 				break;
 			}
 
 		// Going right
 		for (int i = shot.x + 1; i < grid.length; i++)
-			if (grid[shot.y][i].status == SquareTypes.MISS || grid[shot.y][i].status == SquareTypes.SUNK) {
+			if (grid[shot.y][i].status != SquareTypes.UNKNOWN) {
 				bounds[3] = i;
 				break;
 			}
@@ -354,14 +396,28 @@ public class AI {
 	}
 
 	/**
-	 * Finds the highest likely location of a ship while in hunt mode. Switches to
-	 * target mode once a hit is found
+	 * Finds the highest likely location of a ship from the entire grid
 	 * 
 	 * @return The target to fire at
 	 */
 	public static Square hunt(Square[][] grid) {
-		int max = grid[0][0].totalSquareValue;
+		int max = 0;
 		Square target = grid[0][0];
+		for (int i = 0; i < grid[0].length; i++)
+			for (int j = 0; j < grid.length; j++)
+				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquareValue > max)
+					target = grid[i][j];
+		return target;
+	}
+
+	/**
+	 * Finds the highest likely location of a ship from a 3x3 cross of a grid
+	 * 
+	 * @return The target to fire at
+	 */
+	public static Square target(Square[][] grid, Square shot) {
+		int max = 0;
+		Square target = grid[shot.y][shot.x];
 		for (int i = 0; i < grid[0].length; i++)
 			for (int j = 0; j < grid.length; j++)
 				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquareValue > max)
