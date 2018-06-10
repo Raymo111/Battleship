@@ -31,8 +31,8 @@ public class Battleship {
 			for (int j = 0; j < homeGrid[i].length; j++)
 				homeGrid[i][j] = new Square(i, j);
 		AI Michael = new AI();
-		display2Darray(homeGrid);
-		display2Darray(enemyGrid);
+		// display2Darray(homeGrid);
+		// display2Darray(enemyGrid);
 	}
 
 	public static void display2Darray(Square[][] array) {
