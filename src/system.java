@@ -25,6 +25,7 @@ public class system extends JFrame {
 			if(source.getIcon().toString().equals("theBackButton.png")){
 				System.out.println(0);
 				getContentPane().removeAll();
+				baseInter.updateInfo(userInfo[0],Integer.parseInt(userInfo[18]),Integer.parseInt(userInfo[15]));//update the base interface
 				add(baseInter);
 				repaint();
 			}
@@ -43,6 +44,9 @@ public class system extends JFrame {
 				System.out.println("Asdfasfasfasfadfafasdaa");
 			}
 			startGame.dispose();
+			check();
+			baseInter.updateInfo(userInfo[0],Integer.parseInt(userInfo[18]),Integer.parseInt(userInfo[15]));//initialize the base interface
+			add(baseInter);
 			setVisible(true);
 		}
 		public void mouseEntered(MouseEvent e) {}
@@ -55,14 +59,28 @@ public class system extends JFrame {
 	public system() {
 		startGame = new login();
 		startGame.okButton.addMouseListener(loginOper);
+		baseInter.gameButton.addMouseListener(directory);//add directory to buttons in base interface	
+		gameInter.backButton.addMouseListener(directory);//add directory to buttons in game interface
 
-		baseInter.gameButton.addMouseListener(directory);
-		gameInter.backButton.addMouseListener(directory);
-		add(baseInter);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
+		addWindowListener(new java.awt.event.WindowAdapter() {//need to save the information before closing
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				try {
+					//save the information
+					PrintWriter saveWriter = new PrintWriter("User"+userIndex);//create PrintWriter
+					for(String infoLn:userInfo){
+						saveWriter.println(infoLn);//record the information line by line
+					}//end for
+					saveWriter.close();//close the saveWriter
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}//end try catch
+				System.exit(0);//terminate the program
+			}//end method
+		});//end WindowStateListener		this.setResizable(false);
 		setSize(1300, 700);
         setLocationRelativeTo(null);
+	}
+	public void updateGame(){
 	}
 	public void enterGame(){
 		if(!inGame){
@@ -85,19 +103,22 @@ public class system extends JFrame {
 	}
 	public void readLogin(String thisUsername) throws IOException{
 	    	BufferedReader fileReader = new BufferedReader(new FileReader("usersRecord.txt"));
-	    	int userIndex = 0;
+	    	int thisUserIndex = 0;
 	    	try{
 	    		while(true){//search till end of the list
-	    			userIndex++;//incrementing index of the user
+	    			thisUserIndex++;//incrementing index of the user
 	    			if(fileReader.readLine().equals(thisUsername)){//when the username is found in history
-	    				break;
+	    				loadUser(thisUserIndex);//load the user information
+	    				break;//stop searching
 	    			}
 	    		}
 	    	}catch(Exception e){
 	    		//when the username is not found in history
-	    		System.out.println(userIndex);
-	    		createUser(thisUsername,userIndex);
+	    		System.out.println("u"+thisUserIndex);
+	    		createUser(thisUsername,thisUserIndex);
 	    	}
+    		userIndex = thisUserIndex;
+    		fileReader.close();//close the BufferedReader
 	 }//end method
 	/**
 	 * The procedure type method read and record all information in file to the system
@@ -184,16 +205,16 @@ public class system extends JFrame {
 	 * The procedure type method initiates all information for a new user in system.
 	 * @param newName the user name registered
 	 * @param newIndex the new user's index
-	 * @throws IOException Exceptions of using {@link #updateRank(int, String)}method} and creating new file
+	 * @throws IOException Exceptions of using {@link #updateRank(int, String)}method}, creating new file and registering the new user.
 	 */
 	public void createUser(String newName, int newIndex) throws IOException{
-	    	userInfo[0]=newName+"\n";//first line:username
+	    	userInfo[0]=newName;//first line:username
 	    	initialn(1,1,14,"null");//initialize the game board to not started
 	    	initialn(15,1,2,"0");//initialize the contract number and time played
 	    	initialn(17,2,1,"0");//initialize the battle numbers
 	    	initialn(18,1,1,"1");;//initialize number of level
 	    	initialn(19,1,2,"0");//initialize the exp number and assistant
-	    	userInfo[21]="0 1 2 3 4\n";//initialize team setting
+	    	userInfo[21]="0 1 2 3 4";//initialize team setting
 	    	initialn(22,100,2,"null");//initialize characters owned list and intimacy list
 	    	initialn(24,1,1,"0");//initialize dismantle num
 	    	initialn(25,1,1,"false");//initialize expert setting
@@ -210,7 +231,17 @@ public class system extends JFrame {
 	    		initialn(33+i*2,1,1,"0");
 	    	}//end for
 	    	new File("User"+newIndex).createNewFile();//create a new file for the new user
+	    	PrintWriter recordWriter =  new PrintWriter(new FileWriter("usersRecord.txt",true));//create PrintWriter to record new user
+	    	recordWriter.println(newName);//write the name into users' record list
+	    	recordWriter.close();//close the record writer
 	}//end method
+	
+	public void check(){
+		for(int i=0;i<38;i++){
+			System.out.println(userInfo[i]);
+		}
+	}
+	
 	public static void main(String[] args) {
 		system theGame = new system();
 	}

@@ -59,10 +59,12 @@ public class base extends JPanel{
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
 	};
+	String userName;
+	int level;
+	int contractNum;
 	public base(){
 		setSize(1300,700);
 		setLayout(null);
-        
         mRightButtons.add(achievementButton);
         mRightButtons.add(taskButton);
         mRightButtons.add(gameButton);
@@ -96,6 +98,17 @@ public class base extends JPanel{
        setVisible(true);
 		
 	}
+	/**
+	 * The procedure type setter method is used to update information displayed on base interface
+	 * @param yourName updated username
+	 * @param lv updated level number
+	 * @param contracts updated number of contract(s) owned
+	 */
+	public void updateInfo(String yourName, int lv, int contracts){
+		userName = yourName;//update username
+		level = lv;//update level
+		contractNum = contracts;//update number of contracts
+	}//end method
 	
 //	public static void main(String[] args) {
 //		// TODO Auto-generated method stub
