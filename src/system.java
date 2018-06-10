@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 
 import javax.swing.*;
-//
+
 public class system extends JFrame {
 	Boolean inGame = false;
 	int userIndex;
