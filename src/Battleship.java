@@ -26,10 +26,10 @@ public class Battleship {
 	public static void newGameProcedure() {
 		for (int i = 0; i < enemyGrid.length; i++)
 			for (int j = 0; j < enemyGrid[i].length; j++)
-				enemyGrid[i][j] = new Square(i, j);
+				enemyGrid[i][j] = new Square(j, i);
 		for (int i = 0; i < homeGrid.length; i++)
 			for (int j = 0; j < homeGrid[i].length; j++)
-				homeGrid[i][j] = new Square(i, j);
+				homeGrid[i][j] = new Square(j, i);
 		AI Michael = new AI();
 		// display2Darray(homeGrid);
 		// display2Darray(enemyGrid);

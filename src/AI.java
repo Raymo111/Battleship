@@ -376,12 +376,14 @@ public class AI {
 	 */
 	public static Square hunt(Square[][] grid) {
 		int max = 0;
-		Square target = grid[0][0];
+		Square hunt = grid[0][0];
 		for (int i = 0; i < grid[0].length; i++)
 			for (int j = 0; j < grid.length; j++)
-				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquarePD > max)
-					target = grid[i][j];
-		return target;
+				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquarePD > max) {
+					max = grid[i][j].totalSquarePD;
+					hunt = grid[i][j];
+				}
+		return hunt;
 	}
 
 	/**
@@ -391,11 +393,13 @@ public class AI {
 	 */
 	public static Square target(Square[][] grid, Square shot) {
 		int max = 0;
-		Square target = grid[shot.y][shot.x];
+		Square target = shot;
 		for (int i = 0; i < grid[0].length; i++)
 			for (int j = 0; j < grid.length; j++)
-				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquarePD > max)
+				if (grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquarePD > max) {
+					max = grid[i][j].totalSquarePD;
 					target = grid[i][j];
+				}
 		return target;
 	}
 
