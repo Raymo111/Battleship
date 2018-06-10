@@ -20,10 +20,10 @@ public class Battleship implements java.io.Serializable {
 	// Each index represents the size of a individual ship
 	public static String shipNames[] = { "Destroyer", "Cruiser", "Submarine", "Battleship", "Aircraft Carrier" };
 	public static int boardSizeXY[] = { 10, 10 };// x and y size of the board
-	private static boolean[] enemyShipsSunk = new boolean[shipLengths.length];// which enemy ships are sunk
-	private static boolean[] homeShipsSunk = new boolean[shipLengths.length];// which home ships are sunk
-	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of enemy grid
-	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of home grid
+	private static boolean[] enemyShipsSunk = new boolean[shipLengths.length];// Which enemy ships are sunk
+	private static boolean[] homeShipsSunk = new boolean[shipLengths.length];// Which home ships are sunk
+	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// State of enemy grid
+	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// State of home grid
 	public static Ship[] homeShips = new Ship[shipLengths.length];// A list of home ships
 	public static ArrayList<Square> enemyShotLog = new ArrayList<Square>(20);// A log of enemy shots
 	public static ArrayList<Square> homeShotLog = new ArrayList<Square>(20);// A log of AI's shots
@@ -86,20 +86,16 @@ public class Battleship implements java.io.Serializable {
 
 		// Wait for user to place ships
 		System.out.println("Place your ships on a separate grid. When you're ready, press ENTER to continue...");
-		try {
-			System.in.read();
-		} catch (Exception e) {
-		}
+		br.readLine();
 
 		// Only executes once for when user goes first
 		if (!AIFirst) {
 
 			// Get user's shot
 			System.out.println("Round 1. Your turn.\nWhat square would you like to shoot at? (e.g. A1)");
-			input = br.readLine();
-			input.toLowerCase();
-			x = ((int) input.charAt(1)) - 1; // ASCII value for A~J = 65~74
-			y = ((int) input.charAt(0)) - 65;
+			input = br.readLine().toUpperCase();
+			x = Integer.parseInt(input.substring(1, 2)) - 1;
+			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
 
 			// Check for hit or miss on home grid
 			userShot = homeGrid[y][x];
@@ -156,10 +152,9 @@ public class Battleship implements java.io.Serializable {
 
 			// Get user's shot
 			System.out.println("Round 1. Your turn.\nEnter coordinates to fire:");
-			input = br.readLine();
-			input.toLowerCase();
-			x = ((int) input.charAt(1)) - 1; // ASCII value for A~J = 65~74
-			y = ((int) input.charAt(0)) - 65;
+			input = br.readLine().toUpperCase();
+			x = Integer.parseInt(input.substring(1, 2)) - 1;
+			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
 
 			// Check for hit or miss on home grid
 			if (homeGrid[y][x].shipType != null) {// Miss
