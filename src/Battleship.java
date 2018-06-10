@@ -1,10 +1,13 @@
-import java.util.Scanner;
 
 /*
  * Authors: Raymond Li, David Tuck
  * Date created: 30/05/2018
  * Description: Main class for battleship game
  */
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class Battleship {
 	public static int shipLengths[] = { 2, 3, 3, 4, 5 };// Each index represents the size of a individual ship
@@ -17,7 +20,9 @@ public class Battleship {
 	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of enemy grid
 	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of home grid
 	public static Ship[] homeShips = new Ship[shipLengths.length];// A list of home ships
-	private static Scanner scanner = new Scanner(System.in);
+
+	// Buffered reader to read user input
+	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	public static void main(String[] args) {
 		// while (true)
@@ -39,8 +44,48 @@ public class Battleship {
 			for (int j = 0; j < homeGrid[i].length; j++)
 				homeGrid[i][j] = new Square(j, i);
 
-		// Create a new AI - Warrior angel of God
+		// Create a new AI - God's warrior angel
 		AI Michael = new AI();
+	}
+
+	/**
+	 * The actual game method
+	 * 
+	 * @throws IOException
+	 */
+	public static void game() throws IOException {
+
+		// Local variables
+		boolean AIFirst, AIWin = false, userWin = false;
+		int round;
+
+		// Who goes first
+		System.out.println("You first or Michael (the AI) first?");
+		String input = br.readLine().toLowerCase();
+
+		// User wants AI to go first
+		if (input.contains("a")) {
+			AIFirst = true;
+			System.out.println("Michael is going first.");
+		} else {
+			AIFirst = false;
+			System.out.println("You are going first.");
+		}
+
+		// Wait for user to place ships
+		System.out.println("Place your ships on a separate grid. When you're ready, press ENTER to continue...");
+		try {
+			System.in.read();
+		} catch (Exception e) {
+		}
+
+		// Game do-while loop
+		do {
+			if (!AIFirst) {
+				System.out.println("Round " + round + "Your turn.");
+			}
+		} while (!AIWin && !userWin);
+
 	}
 
 	public static void display2Darray(Square[][] array) {
