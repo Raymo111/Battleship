@@ -4,7 +4,6 @@
  * Date created: 2018-05-30
  * Description: The artificial intelligence used to select where to fire
  */
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -30,7 +29,7 @@ public class AI {
 	// Constructor
 	public AI() {
 
-		// Generate Population Density Distributed Graph for both grids
+		// Generate Probability Density Distributed Graph for both grids
 		generatePDDG(Battleship.enemyGrid);
 		generatePDDG(Battleship.homeGrid);
 
@@ -147,7 +146,7 @@ public class AI {
 	}
 
 	/**
-	 * Generates the initial population density distributed graph for the given
+	 * Generates the initial probability density distributed graph for the given
 	 * number of ships for each square in a given grid. Runs only at the beginning
 	 * of the game.
 	 * 
@@ -168,7 +167,7 @@ public class AI {
 	}
 
 	/**
-	 * Generates the initial population density for the given number of ships for a
+	 * Generates the initial probability density for the given number of ships for a
 	 * component (horizontal or vertical) of a given square. Runs only at the
 	 * beginning of the game.
 	 * 
@@ -180,7 +179,7 @@ public class AI {
 	 * @return The PD of a component (horizontal or vertical) of a square
 	 */
 	public static int generatePD(int shipLength, int[] distance) {
-		int pD = shipLength; // Population density of a component (horizontal or vertical) of a square
+		int pD = shipLength; // Probability density of a component (horizontal or vertical) of a square
 		for (int l = 0; l < distance.length; l++)
 			if (distance[l] < shipLength - 1)
 				pD -= (shipLength - 1 - distance[l]);
@@ -188,8 +187,8 @@ public class AI {
 	}
 
 	/**
-	 * Selects a square to fire at after updating the population density for a given
-	 * grid and ship lengths after a given shot
+	 * Selects a square to fire at after updating the probability density for a
+	 * given grid and ship lengths after a given shot
 	 * 
 	 * @param mode
 	 *            The mode in which the AI is in (determined by hit or miss)
@@ -229,7 +228,7 @@ public class AI {
 	}
 
 	/**
-	 * Updates the population density for a ship for a missed square in a grid
+	 * Updates the probability density for a ship for a missed square in a grid
 	 * 
 	 * @param grid
 	 *            The grid in which the square is located
@@ -279,7 +278,7 @@ public class AI {
 	}
 
 	/**
-	 * Updates the population density for a ship for a hit square in a grid
+	 * Updates the probability density for a ship for a hit square in a grid
 	 * 
 	 * @param grid
 	 *            The grid in which the square is located
@@ -293,7 +292,8 @@ public class AI {
 	}
 
 	/**
-	 * Gets the boundaries for a decrement of population density in all 4 directions
+	 * Gets the boundaries for a decrement of probability density in all 4
+	 * directions
 	 * 
 	 * @param shot
 	 *            The shot that was fired
