@@ -44,105 +44,46 @@ public class AI {
 		} catch (Exception e) {
 			System.err.println("Input integer.");
 		}
-
+		int[][] rotationModifiers = new int[2][4];
+		// [0][i]=y
+		// [1][i]=x
+		rotationModifiers[0][0] = 1;
+		rotationModifiers[1][0] = 0;
+		rotationModifiers[0][1] = -1;
+		rotationModifiers[1][1] = 0;
+		rotationModifiers[0][2] = 0;
+		rotationModifiers[1][2] = 1;
+		rotationModifiers[0][3] = 0;
+		rotationModifiers[1][3] = -1;
 		if (mode == 1) {// PDDG placement
-			int[] totalArray = new int[grid.length * grid[0].length];
-			int index = 0;
-			for (int i = 0; i < grid[0].length; i++) {
-				for (int j = 0; j < grid.length; j++) {
-					totalArray[index] = grid[i][j].totalSquareValue;
-					index++;
-				}
-			}
-			Arrays.sort(totalArray);
-			int[][] rotationModifiers = new int[2][4];
 
-			for (int i = 0; i < shipLengths.length; i++) {
-				boolean correct = false;
-				int count = 0;
-				System.out.println(i + 1);
-				int y = rand.nextInt(grid.length - 1);// random x coordinate. Start of ship
-				int x = rand.nextInt(grid[0].length - 1);// random y coordinate. Start of ship
-
-				rotationModifiers[0][0] = y + shipLengths[i];
-				rotationModifiers[1][0] = x;
-
-				rotationModifiers[0][1] = y - shipLengths[i];
-				rotationModifiers[1][1] = x;
-
-				rotationModifiers[0][2] = y;
-				rotationModifiers[1][2] = x + shipLengths[i];
-
-				rotationModifiers[0][3] = y;
-				rotationModifiers[1][3] = x - shipLengths[i];
-				do {
-					correct = false;
-					if (count > 4) {
-						System.out.println("Over");
-						y = rand.nextInt(grid.length - 1);// random y coordinate. Start of ship
-						x = rand.nextInt(grid[0].length - 1);// random x coordinate. Start of ship
-					}
-					for (int a = 0; a < 4; a++) {// loop
-						int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
-						if (checkValidShipPosition(y, x, rotationModifiers[0][rotation], rotationModifiers[1][rotation],
-								rotation, grid)) {
-							correct = true;
-							count = 0;
-							System.out.println(x + "," + y);
-							Battleship.homeShips[i] = new Ship(grid, grid[y][x],
-									grid[rotationModifiers[0][rotation]][rotationModifiers[1][rotation]]);
-						}
-						count++;
-					}
-				} while (correct == false);
-			}
 		} else if (mode == 2) {// random ship placement
-			for (int i = 0; i < shipLengths.length; i++) {
+			for (int i = 0; i < shipLengths.length; i++) {// loop for number of ships
 				boolean correct = false;
 				int count = 0;
 				System.out.println(i + 1);
 				int y = rand.nextInt(grid.length - 1);// random x coordinate. Start of ship
 				int x = rand.nextInt(grid[0].length - 1);// random y coordinate. Start of ship
-				int[][] rotationModifiers = new int[2][4];
-				rotationModifiers[0][0] = y + shipLengths[i];
-				rotationModifiers[1][0] = x;
 
-				rotationModifiers[0][1] = y - shipLengths[i];
-				rotationModifiers[1][1] = x;
-
-				rotationModifiers[0][2] = y;
-				rotationModifiers[1][2] = x + shipLengths[i];
-
-				rotationModifiers[0][3] = y;
-				rotationModifiers[1][3] = x - shipLengths[i];
 				do {
 					correct = false;
 					if (count > 4) {
 						System.out.println("Over");
 						y = rand.nextInt(grid.length - 1);// random y coordinate. Start of ship
 						x = rand.nextInt(grid[0].length - 1);// random x coordinate. Start of ship
-						rotationModifiers[0][0] = y + shipLengths[i];
-						rotationModifiers[1][0] = x;
-
-						rotationModifiers[0][1] = y - shipLengths[i];
-						rotationModifiers[1][1] = x;
-
-						rotationModifiers[0][2] = y;
-						rotationModifiers[1][2] = x + shipLengths[i];
-
-						rotationModifiers[0][3] = y;
-						rotationModifiers[1][3] = x - shipLengths[i];
 					}
-					for (int a = 0; a < 4; a++) {// loop
+					for (int a = 0; a < 4; a++) {
 						int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
 
-						if (checkValidShipPosition(y, x, rotationModifiers[0][rotation], rotationModifiers[1][rotation],
-								rotation, grid)) {
+						if (checkValidShipPosition(y, x, y + (shipLengths[i] * rotationModifiers[0][rotation]),
+								x + (shipLengths[i] * rotationModifiers[1][rotation]), rotation, grid)) {
 							correct = true;
 							count = 0;
 							System.out.println(x + "," + y);
 							Battleship.homeShips[i] = new Ship(grid, grid[y][x],
-									grid[rotationModifiers[0][rotation]][rotationModifiers[1][rotation]]);
+									grid[y + (shipLengths[i] * rotationModifiers[0][rotation])][x
+											+ (shipLengths[i] * rotationModifiers[1][rotation])]);
+							break;
 						}
 						count++;
 					}
