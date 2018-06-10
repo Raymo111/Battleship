@@ -86,7 +86,7 @@ public class Battleship {
 			System.out.println("Round 1. Your turn.\nWhat square would you like to shoot at? (e.g. A1)");
 			input = br.readLine();
 			input.toLowerCase();
-			x = ((int) input.charAt(1)) - 1;
+			x = ((int) input.charAt(1)) - 1; // ASCII value for A~J = 65~74
 			y = ((int) input.charAt(0)) - 65;
 
 		}
