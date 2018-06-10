@@ -139,6 +139,7 @@ public class system extends JFrame {
 	 * @throws IOException Exceptions for File IO
 	 */
 	public void updateRank(int tUserIndex, String rankType) throws IOException{
+		System.out.println("------------------------------------------"+rankType);
 		File theRank = new File("rank"+rankType+".txt");
 		BufferedReader rankReader = new BufferedReader(new FileReader(theRank));
 		int rankInfo;//record the info of rank of target player for comparisons
@@ -152,6 +153,7 @@ public class system extends JFrame {
 		String newIndexes = "";//initialize empty String for the new indexes
 		String newValues = "";//initialize empty String for the new values
 		try{
+			System.out.println("_______________________________________________ranked");
 			String[] index = rankReader.readLine().split(" ");//read and record the indexes and values
 			String[] val = rankReader.readLine().split(" ");
 			rankReader.close();//close the IO fileReader
@@ -167,6 +169,7 @@ public class system extends JFrame {
 					}else{
 						newIndexes+=tUserIndex+" ";
 						newValues+=rankInfo+" ";
+						placed = true;//record the placement
 					}//end if
 				}//end if
 			}//end for
@@ -178,6 +181,7 @@ public class system extends JFrame {
 				newValues+=val[val.length-1];
 			}//end if
 		}catch(Exception e){//add the user directly when there is no user exists in record rank
+			System.out.println("_______________________________________________direct");
 			newIndexes+=tUserIndex;
 			newValues+=rankInfo;
 		}//end try catch

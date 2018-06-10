@@ -30,11 +30,15 @@ public class base extends JPanel{
 			Object source = e.getSource();
 			if(source.equals(contractPaneButton)&&contractPaneButton.isVisible()){
 				contractPaneButton.setVisible(false);
+				contractLabel.setVisible(true);
 				contractPane.setVisible(true);
+//				contractPane.setText(contractLabel.getText());
+//				contractPane.setForeground(Color.white);
 			}
 			if(source.equals(contractPane)&&contractPane.isVisible()){
 				contractPaneButton.setVisible(true);
 				contractPane.setVisible(false);
+				contractLabel.setVisible(false);
 			}
 			try{
 				int i = mRightButtons.indexOf((JLabel)e.getSource());
@@ -62,6 +66,9 @@ public class base extends JPanel{
 	String userName;
 	int level;
 	int contractNum;
+	JLabel nameLabel = new JLabel("asdfasfafadfadfasfa");
+	JLabel levelLabel = new JLabel("99");
+	JLabel contractLabel = new JLabel("22");
 	public base(){
 		setSize(1300,700);
 		setLayout(null);
@@ -76,7 +83,17 @@ public class base extends JPanel{
         profileButton.setBounds(bInsets.left,bInsets.top,300,100);
         assistant.setBounds(bInsets.left,bInsets.top,720,700);
         bgi.setBounds(bInsets.left,bInsets.top,1300,700);
-        
+        nameLabel.setBounds(bInsets.left+105,bInsets.top,150,65);
+        nameLabel.setForeground(Color.white);
+        nameLabel.setFont(new Font(nameLabel.getFont().getName(),Font.PLAIN,20));
+        levelLabel.setBounds(bInsets.left,bInsets.top,65,65);
+        levelLabel.setForeground(Color.white);
+        levelLabel.setHorizontalAlignment(JLabel.CENTER);
+        levelLabel.setFont(new Font(nameLabel.getFont().getName(),Font.PLAIN,45));
+        contractLabel.setBounds(bInsets.left,bInsets.top+550,160,80);
+        contractLabel.setForeground(Color.white);
+        contractLabel.setHorizontalAlignment(JLabel.CENTER);
+        contractLabel.setFont(new Font(nameLabel.getFont().getName(),Font.PLAIN,45));
        for(int i =0;i<mRightButtons.size();i++){
     	   mEffects.add(new JLabel(new ImageIcon("mMouse.png")));
     	   mEffects.get(i).setBounds(initXCoordinate+i/3*300+bInsets.left-5,initYCoordinates[i/3]+i%3*200+bInsets.top-5,280,190);
@@ -88,10 +105,13 @@ public class base extends JPanel{
        }
        contractPaneButton.addMouseListener(mMousListButtons);
        add(contractPaneButton);
+       contractPane.setVisible(false);
+       add(nameLabel);
+       add(levelLabel);
+       add(contractLabel);
+       contractLabel.setVisible(false);
        contractPane.addMouseListener(mMousListButtons);
        add(contractPane);
-       contractPane.setVisible(false);
-
        add(profileButton);
        add(assistant);
        add(bgi);
@@ -106,8 +126,11 @@ public class base extends JPanel{
 	 */
 	public void updateInfo(String yourName, int lv, int contracts){
 		userName = yourName;//update username
+		nameLabel.setText(userName);//reset the label for name
 		level = lv;//update level
+		levelLabel.setText(Integer.toString(level));//reset the label for level
 		contractNum = contracts;//update number of contracts
+		contractLabel.setText(Integer.toBinaryString(contractNum));//reset the label for contract
 	}//end method
 	
 //	public static void main(String[] args) {
