@@ -16,14 +16,14 @@ public class Ship implements Serializable {
 	public Ship(Square[][] grid, Square start, Square end) {
 		int shipLength;
 		if (start.x == end.x) {// Vertical ship
-			shipLength = Math.abs(end.y - start.y);
+			shipLength = Math.abs(end.y - start.y) + 1;
 			location = new Square[shipLength + 1];
 			for (int i = 0; i < shipLength; i++) {
 				location[i] = grid[start.x + i][start.y];
 				grid[start.x + i][start.y].shipType = shipLength;
 			}
 		} else {// Horizontal ship
-			shipLength = Math.abs(end.x - start.x);
+			shipLength = Math.abs(end.x - start.x) + 1;
 			location = new Square[shipLength + 1];
 			for (int i = 0; i < shipLength; i++) {
 				location[i] = grid[start.x][start.y + i];
