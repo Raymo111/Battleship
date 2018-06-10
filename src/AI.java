@@ -8,8 +8,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class AI {
-	private static Random rand = new Random();
-	private static Scanner sc = new Scanner(System.in);
+	private Random rand = new Random();
+	private Scanner sc = new Scanner(System.in);
 
 	/**
 	 * An enum for which mode the AI is in.
@@ -48,7 +48,7 @@ public class AI {
 	 * @param shipLengths
 	 *            The lengths of ships to place
 	 */
-	public static void placeShips(Square[][] grid, int[] shipLengths) {
+	public void placeShips(Square[][] grid, int[] shipLengths) {
 		System.out.println("Select the mode. \n1-PDM\n2-Random");
 
 		int mode = 0;
@@ -133,7 +133,7 @@ public class AI {
 	 *         ship. If false, the ships placement is either outside of the board or
 	 *         is overlapping another ship
 	 */
-	public static boolean checkValidShipPosition(int Y, int X, int endY, int endX, int rotation, Square[][] grid) {
+	public boolean checkValidShipPosition(int Y, int X, int endY, int endX, int rotation, Square[][] grid) {
 
 		// first we must check to see if the end values are within the board size
 		if (endX >= grid.length || endX < 0 || endY >= grid[0].length || endY < 0)
@@ -159,7 +159,7 @@ public class AI {
 	 * @param grid
 	 *            The grid for which to calculate the initial PDDG
 	 */
-	public static void generatePDDG(Square[][] grid) {
+	public void generatePDDG(Square[][] grid) {
 		int[] distanceX, distanceY;
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
@@ -184,7 +184,7 @@ public class AI {
 	 *            on the edge)
 	 * @return The PD of a component (horizontal or vertical) of a square
 	 */
-	public static int generatePD(int shipLength, int[] distance) {
+	public int generatePD(int shipLength, int[] distance) {
 		int pD = shipLength; // Probability density of a component (horizontal or vertical) of a square
 		for (int l = 0; l < distance.length; l++)
 			if (distance[l] < shipLength - 1)
@@ -206,7 +206,7 @@ public class AI {
 	 * @param shipLengths
 	 *            The lengths of ships still in play
 	 */
-	public static Square aim(Mode mode, Square shot, Square[][] grid, int[] shipLengths) {
+	public Square aim(Mode mode, Square shot, Square[][] grid, int[] shipLengths) {
 
 		// If shot was a hit, set aim mode to target, update hit PD and target shot
 		if (mode == Mode.TARGET) {
@@ -243,7 +243,7 @@ public class AI {
 	 * @param shipLength
 	 *            The specific ship length for which to calculate
 	 */
-	public static void updateMissPD(Square[][] grid, Square shot, int shipLength) {
+	public void updateMissPD(Square[][] grid, Square shot, int shipLength) {
 
 		int[] bounds = getBounds(shot, grid);
 
@@ -295,7 +295,7 @@ public class AI {
 	 * @param shipLength
 	 *            The specific ship length for which to calculate
 	 */
-	public static void updateHitPD(Square[][] grid, Square shot, int shipLength) {
+	public void updateHitPD(Square[][] grid, Square shot, int shipLength) {
 		int[] bounds = getBounds(shot, grid);
 
 		// Going up
@@ -334,7 +334,7 @@ public class AI {
 	 *            The grid for which to calculate boundaries
 	 * @return The boundaries as an int array
 	 */
-	private static int[] getBounds(Square shot, Square[][] grid) {
+	private int[] getBounds(Square shot, Square[][] grid) {
 
 		// Boundaries set for decrementing total square values
 		int[] bounds = new int[] { -1, -1, -1, -1 };
@@ -374,7 +374,7 @@ public class AI {
 	 * 
 	 * @return The target to fire at
 	 */
-	public static Square hunt(Square[][] grid) {
+	public Square hunt(Square[][] grid) {
 		int max = 0;
 		Square hunt = grid[0][0];
 		for (int i = 0; i < grid[0].length; i++)
@@ -391,7 +391,7 @@ public class AI {
 	 * 
 	 * @return The target to fire at
 	 */
-	public static Square target(Square[][] grid, Square shot) {
+	public Square target(Square[][] grid, Square shot) {
 		int max = 0;
 		Square target = shot;
 		for (int i = 0; i < grid[0].length; i++)

@@ -12,6 +12,7 @@ public class Ship implements Serializable {
 	public int shipLength;
 	public String shipName;
 	public Square[] location;
+	public boolean isSunk;
 
 	public Ship(Square[][] grid, Square start, Square end) {
 		int shipLength;

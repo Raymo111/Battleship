@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /*
  * Authors: Raymond Li, David Tuck
  * Date created: 30/05/2018
@@ -10,10 +12,12 @@ public class Battleship {
 	// Each index represents the size of a individual ship
 	public static String shipNames[] = { "Destroyer", "Cruiser", "Submarine", "Battleship", "Aircraft Carrier" };
 	public static int boardSizeXY[] = { 10, 10 };// x and y size of the board
-	public static boolean[] isShipSunk = new boolean[shipLengths.length];// boolean values of if a ship is sunk
+	private static int[] enemyShipsSunk = new int[shipLengths.length];// which enemy ships are sunk
+	private static int[] homeShipsSunk = new int[shipLengths.length];// which home ships are sunk
 	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of enemy grid
 	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of home grid
-	public static Ship[] homeShips = new Ship[shipLengths.length];
+	public static Ship[] homeShips = new Ship[shipLengths.length];// A list of home ships
+	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		// while (true)
@@ -24,15 +28,19 @@ public class Battleship {
 	 * Functions that only need to be run at the beginning of a new game
 	 */
 	public static void newGameProcedure() {
+
+		// Initialize enemy grid
 		for (int i = 0; i < enemyGrid.length; i++)
 			for (int j = 0; j < enemyGrid[i].length; j++)
 				enemyGrid[i][j] = new Square(j, i);
+
+		// Initialize home grid
 		for (int i = 0; i < homeGrid.length; i++)
 			for (int j = 0; j < homeGrid[i].length; j++)
 				homeGrid[i][j] = new Square(j, i);
+
+		// Create a new AI - Warrior angel of God
 		AI Michael = new AI();
-		// display2Darray(homeGrid);
-		// display2Darray(enemyGrid);
 	}
 
 	public static void display2Darray(Square[][] array) {
