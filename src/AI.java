@@ -85,7 +85,6 @@ public class AI {
 				do {
 					correct = false;
 					if (count > 4) {
-						System.out.println("Over");
 						y = rand.nextInt(grid.length - 1);// random y coordinate. Start of ship
 						x = rand.nextInt(grid[0].length - 1);// random x coordinate. Start of ship
 					}
@@ -96,13 +95,6 @@ public class AI {
 								(x + (shipLengths[i] * rotationModifiers[1][rotation])), rotation, grid)) {
 							correct = true;
 							count = 0;
-							System.out.println(i);
-							System.out.println("Y:" + y + "  X:" + x + "  endY:"
-									+ (y + ((shipLengths[i] - 1) * rotationModifiers[0][rotation])) + "  endX:"
-									+ (x + ((shipLengths[i] - 1) * rotationModifiers[1][rotation])));
-							Battleship.homeShips[i] = new Ship(grid, grid[y][x],
-									grid[y + ((shipLengths[i] - 1) * rotationModifiers[0][rotation])][x
-											+ ((shipLengths[i] - 1) * rotationModifiers[1][rotation])]);
 							break;
 						}
 						count++;
@@ -143,8 +135,7 @@ public class AI {
 			sign = 1;
 		for (int i = 0; i < Math.abs(endX - X); i++)
 			for (int j = 0; j < Math.abs(endY - Y); j++)
-				if (Battleship.homeGrid[Y + (sign * j)][X + (sign * i)].shipType != 0) {
-					System.out.println("overlace");
+				if (Battleship.homeGrid[Y + (sign * j)][X + (sign * i)].shipType != null) {
 					return false;
 				}
 

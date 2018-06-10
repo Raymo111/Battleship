@@ -6,17 +6,22 @@
  */
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class Battleship {
+public class Battleship implements java.io.Serializable {
+
+	/**
+	 * Generated serial version UID for serialization (part of machine learning)
+	 */
+	private static final long serialVersionUID = 5377521207075619332L;
+
 	public static int shipLengths[] = { 2, 3, 3, 4, 5 };// Each index represents the size of a individual ship
 
 	// Each index represents the size of a individual ship
 	public static String shipNames[] = { "Destroyer", "Cruiser", "Submarine", "Battleship", "Aircraft Carrier" };
 	public static int boardSizeXY[] = { 10, 10 };// x and y size of the board
-	private static int[] enemyShipsSunk = new int[shipLengths.length];// which enemy ships are sunk
-	private static int[] homeShipsSunk = new int[shipLengths.length];// which home ships are sunk
+	private static boolean[] enemyShipsSunk = new boolean[shipLengths.length];// which enemy ships are sunk
+	private static boolean[] homeShipsSunk = new boolean[shipLengths.length];// which home ships are sunk
 	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of enemy grid
 	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of home grid
 	public static Ship[] homeShips = new Ship[shipLengths.length];// A list of home ships
@@ -24,7 +29,7 @@ public class Battleship {
 	public static ArrayList<Square> homeShotLog = new ArrayList<Square>(20);// A log of AI's shots
 
 	// Buffered reader to read user input
-	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	private static BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
 
 	public static void main(String[] args) throws IOException {
 		// while (true)
@@ -63,7 +68,7 @@ public class Battleship {
 		// Local variables
 		boolean AIFirst, AIWin = false, userWin = false;
 		int round = 1, x, y;
-		Square shot;
+		Square userShot, AIShot;
 
 		// Who goes first
 		System.out.println("You first or Michael (the AI) first?");
@@ -88,7 +93,7 @@ public class Battleship {
 		// Only executes once for when user goes first
 		if (!AIFirst) {
 
-			// Get's user's shot
+			// Get user's shot
 			System.out.println("Round 1. Your turn.\nWhat square would you like to shoot at? (e.g. A1)");
 			input = br.readLine();
 			input.toLowerCase();
@@ -96,12 +101,23 @@ public class Battleship {
 			y = ((int) input.charAt(0)) - 65;
 
 			// Check for hit or miss on home grid
-			if (homeGrid[y][x].shipType != 0) {
-				homeGrid[y][x].status = SquareTypes.MISS;
+			userShot = homeGrid[y][x];
+			if (userShot.shipType != null) {
+				userShot.status = SquareTypes.MISS;
 				System.out.println("MISS");
 			} else {
+				for (int i = 0; i < homeShips.length; i++)
+					for (int j = 0; j < homeShips[i].location.length; j++) {
+						if (homeShips[i].location[i] == userShot) {
+
+						}
+						if (homeShips[i].location[j].status == SquareTypes.UNKNOWN) {
+							homeShipsSunk[i] = false;
+							break;
+						}
+					}
 				homeGrid[y][x].status = SquareTypes.HIT;
-				System.out.println("HIT");
+				System.out.println("HIT, ");
 			}
 			enemyShotLog.add(homeGrid[y][x]);// Add enemy shot to log
 		}
@@ -114,31 +130,35 @@ public class Battleship {
 
 			// Get AI's shot
 			System.out.println("Round " + round + ". Michael's turn.");
-			shot = Michael.aim(null, null, enemyGrid, shipLengths);
-			homeShotLog.add(shot);// Add home shot to log
+			AIShot = Michael.aim(null, null, enemyGrid, shipLengths);
+			homeShotLog.add(AIShot);// Add home shot to log
 
 			// Print AI's shot's y-x coordinate converted to Battleship standards (e.g. A1)
-			System.out.println((Character.toString((char) (shot.y + 65)) + Integer.toString(shot.x + 1)).toUpperCase());
+			System.out.println(
+					(Character.toString((char) (AIShot.y + 65)) + Integer.toString(AIShot.x + 1)).toUpperCase());
 
 			// Get user's response
 			System.out.println("HIT or MISS?");
-			input = br.readLine();
-			if (input.equalsIgnoreCase("HIT"))
-				shot.status = SquareTypes.HIT;
-			else if (input.equalsIgnoreCase("MISS"))
-				shot.status = SquareTypes.MISS;
-			else if (input.equalsIgnoreCase("SUNK"))
-				shot.status = SquareTypes.SUNK;
+			input = br.readLine().toUpperCase();
+			if (input.contains("HIT")) {
+				AIShot.status = SquareTypes.HIT;
+				System.out.println("Ship SUNK?");
+				if (input.contains("SUNK")) {
+					AIShot.status = SquareTypes.SUNK;
 
-			// Get's user's shot
-			System.out.println("Round 1. Your turn.\nWhat square would you like to shoot at? (e.g. A1)");
+				}
+			} else if (input.contains("MISS"))
+				AIShot.status = SquareTypes.MISS;
+
+			// Get user's shot
+			System.out.println("Round 1. Your turn.\nEnter coordinates to fire:");
 			input = br.readLine();
 			input.toLowerCase();
 			x = ((int) input.charAt(1)) - 1; // ASCII value for A~J = 65~74
 			y = ((int) input.charAt(0)) - 65;
 
 			// Check for hit or miss on home grid
-			if (homeGrid[y][x].shipType != 0) {
+			if (homeGrid[y][x].shipType != null) {
 				homeGrid[y][x].status = SquareTypes.MISS;
 				System.out.println("MISS");
 			} else {
