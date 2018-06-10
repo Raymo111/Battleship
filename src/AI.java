@@ -266,18 +266,20 @@ public class AI {
 		// Going left
 		if (shot.x - bounds[2] >= shipLength) // No bounds
 			for (int i = 0; i < shipLength; i++)
-				grid[i][shot.y].huntPDx -= i;
+				grid[shot.y][i].huntPDx -= i;
 		else // With bounds
 			for (int i = bounds[2]; i < shot.x; i++)
-				grid[i][shot.y].huntPDx -= shot.x - i;
+				grid[shot.y][i].huntPDx -= shot.x - i;
 
 		// Going right
 		if (bounds[3] - shot.x >= shipLength) // No bounds
 			for (int i = 0; i < shipLength; i++)
-				grid[i][shot.y].huntPDx -= i;
+				grid[shot.y][i].huntPDx -= i;
 		else // With bounds
 			for (int i = bounds[3]; i > shot.x; i--)
-				grid[i][shot.y].huntPDx -= shot.x - i;
+				grid[shot.y][i].huntPDx -= shot.x - i;
+
+		// Recombine an updated probability density distributed graph for hunt mode
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
 				grid[i][j].combinehuntPDXY();
@@ -294,7 +296,32 @@ public class AI {
 	 *            The specific ship length for which to calculate
 	 */
 	public static void updateHitPD(Square[][] grid, Square shot, int shipLength) {
+		int[] bounds = getBounds(shot, grid);
 
+		// Going up
+		for (int i = shot.y - shipLength; i < shot.y; i++)
+			if (i > bounds[0])
+				grid[i][shot.x].targetPDy += i;
+
+		// Going down
+		for (int i = shot.y + shipLength; i > shot.y; i--)
+			if (i < bounds[1])
+				grid[i][shot.x].targetPDy += (bounds[i] - i);
+
+		// Going left
+		for (int i = shot.x - shipLength; i < shot.x; i++)
+			if (i > bounds[2])
+				grid[shot.y][i].targetPDy += i;
+
+		// Going right
+		for (int i = shot.x + shipLength; i > shot.x; i--)
+			if (i < bounds[3])
+				grid[shot.y][i].targetPDy += (bounds[i] - i);
+
+		// Recombine an updated probability density distributed graph for target mode
+		for (int i = 0; i < grid.length; i++)
+			for (int j = 0; j < grid[i].length; j++)
+				grid[i][j].combinetargetPDXY();
 	}
 
 	/**
