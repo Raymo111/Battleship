@@ -42,6 +42,8 @@ public class system extends JFrame {
 				readLogin(startGame.loginText.getText());
 			} catch (FileNotFoundException e1) {
 			}
+			startGame.dispose();
+			setVisible(true);
 		}
 		public void mouseEntered(MouseEvent e) {}
 		public void mouseExited(MouseEvent e) {}
@@ -61,7 +63,6 @@ public class system extends JFrame {
 		this.setResizable(false);
 		setSize(1300, 700);
         setLocationRelativeTo(null);
-		setVisible(true);
 	}
 	public void enterGame(){
 		if(!inGame){
@@ -96,7 +97,7 @@ public class system extends JFrame {
 	    		//when the username is not found in history
 	    		
 	    	}
-	    }
+	 }
 	 public void createUser(String newName, int newIndex){
 	    	String newInfo = "";
 	    	newInfo+=newName+"\n";//first line:username
