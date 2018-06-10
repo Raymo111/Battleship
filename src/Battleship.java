@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Battleship {
 	public static int shipLengths[] = { 2, 3, 3, 4, 5 };// Each index represents the size of a individual ship
@@ -27,15 +26,17 @@ public class Battleship {
 	// Buffered reader to read user input
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// while (true)
 		newGameProcedure();
 	}
 
 	/**
 	 * Functions that only need to be run at the beginning of a new game
+	 * 
+	 * @throws IOException
 	 */
-	public static void newGameProcedure() {
+	public static void newGameProcedure() throws IOException {
 
 		// Initialize enemy grid
 		for (int i = 0; i < enemyGrid.length; i++)
@@ -49,6 +50,7 @@ public class Battleship {
 
 		// Create a new AI - God's warrior angel
 		AI Michael = new AI();
+		game(Michael);
 	}
 
 	/**
@@ -56,11 +58,12 @@ public class Battleship {
 	 * 
 	 * @throws IOException
 	 */
-	public static void game() throws IOException {
+	public static void game(AI Michael) throws IOException {
 
 		// Local variables
 		boolean AIFirst, AIWin = false, userWin = false;
 		int round = 1, x, y;
+		Square shot;
 
 		// Who goes first
 		System.out.println("You first or Michael (the AI) first?");
@@ -100,9 +103,7 @@ public class Battleship {
 				homeGrid[y][x].status = SquareTypes.HIT;
 				System.out.println("HIT");
 			}
-			enemyShotLog.add(homeGrid[y][x]);
-			System.out.println("Michael's turn.");
-
+			enemyShotLog.add(homeGrid[y][x]);// Add enemy shot to log
 		}
 
 		// Game do-while loop
@@ -111,7 +112,40 @@ public class Battleship {
 			// Increment round
 			round++;
 
-			//
+			// Get AI's shot
+			System.out.println("Round " + round + ". Michael's turn.");
+			shot = Michael.aim(null, null, enemyGrid, shipLengths);
+			homeShotLog.add(shot);// Add home shot to log
+
+			// Print AI's shot's y-x coordinate converted to Battleship standards (e.g. A1)
+			System.out.println((Character.toString((char) (shot.y + 65)) + Integer.toString(shot.x + 1)).toUpperCase());
+
+			// Get user's response
+			System.out.println("HIT or MISS?");
+			input = br.readLine();
+			if (input.equalsIgnoreCase("HIT"))
+				shot.status = SquareTypes.HIT;
+			else if (input.equalsIgnoreCase("MISS"))
+				shot.status = SquareTypes.MISS;
+			else if (input.equalsIgnoreCase("SUNK"))
+				shot.status = SquareTypes.SUNK;
+
+			// Get's user's shot
+			System.out.println("Round 1. Your turn.\nWhat square would you like to shoot at? (e.g. A1)");
+			input = br.readLine();
+			input.toLowerCase();
+			x = ((int) input.charAt(1)) - 1; // ASCII value for A~J = 65~74
+			y = ((int) input.charAt(0)) - 65;
+
+			// Check for hit or miss on home grid
+			if (homeGrid[y][x].shipType != 0) {
+				homeGrid[y][x].status = SquareTypes.MISS;
+				System.out.println("MISS");
+			} else {
+				homeGrid[y][x].status = SquareTypes.HIT;
+				System.out.println("HIT");
+			}
+			enemyShotLog.add(homeGrid[y][x]);// Add enemy shot to log
 
 		} while (!AIWin && !userWin);// Continues running until someone wins
 

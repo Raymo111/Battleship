@@ -35,7 +35,7 @@ public class AI {
 
 		// Place ships on home grid
 		try {
-			// placeShips(Battleship.homeGrid, Battleship.shipLengths);
+			placeShips(Battleship.homeGrid, Battleship.shipLengths);
 		} catch (Exception e) {
 		}
 	}
