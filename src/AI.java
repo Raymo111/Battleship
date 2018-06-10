@@ -98,11 +98,11 @@ public class AI {
 							count = 0;
 							System.out.println(i);
 							System.out.println("Y:" + y + "  X:" + x + "  endY:"
-									+ (y + ((shipLengths[i]-1) * rotationModifiers[0][rotation])) + "  endX:"
-									+ (x + ((shipLengths[i]-1) * rotationModifiers[1][rotation])));
+									+ (y + ((shipLengths[i] - 1) * rotationModifiers[0][rotation])) + "  endX:"
+									+ (x + ((shipLengths[i] - 1) * rotationModifiers[1][rotation])));
 							Battleship.homeShips[i] = new Ship(grid, grid[y][x],
 									grid[y + ((shipLengths[i] - 1) * rotationModifiers[0][rotation])][x
-											+ ((shipLengths[i]-1) * rotationModifiers[1][rotation])]);
+											+ ((shipLengths[i] - 1) * rotationModifiers[1][rotation])]);
 							break;
 						}
 						count++;
@@ -166,9 +166,9 @@ public class AI {
 				for (int k : Battleship.shipLengths) {
 					distanceX = new int[] { i, grid.length - i - 1 };
 					distanceY = new int[] { j, grid[i].length - j - 1 };
-					grid[j][i].PDx += generatePD(k, distanceX);
-					grid[j][i].PDy += generatePD(k, distanceY);
-					grid[j][i].combinePDXY();
+					grid[j][i].huntPDx += generatePD(k, distanceX);
+					grid[j][i].huntPDy += generatePD(k, distanceY);
+					grid[j][i].combinehuntPDXY();
 				}
 	}
 
@@ -250,37 +250,37 @@ public class AI {
 		// Going up
 		if (shot.y - bounds[0] >= shipLength) // No bounds
 			for (int i = 0; i < shipLength; i++)
-				grid[i][shot.x].PDy -= i;
+				grid[i][shot.x].huntPDy -= i;
 		else // With bounds
 			for (int i = bounds[0]; i < shot.y; i++)
-				grid[i][shot.x].PDy -= shot.y - i;
+				grid[i][shot.x].huntPDy -= shot.y - i;
 
 		// Going down
 		if (bounds[1] - shot.y >= shipLength) // No bounds
 			for (int i = 0; i < shipLength; i++)
-				grid[i][shot.x].PDy -= i;
+				grid[i][shot.x].huntPDy -= i;
 		else // With bounds
 			for (int i = bounds[1]; i > shot.y; i--)
-				grid[i][shot.x].PDy -= shot.y - i;
+				grid[i][shot.x].huntPDy -= shot.y - i;
 
 		// Going left
 		if (shot.x - bounds[2] >= shipLength) // No bounds
 			for (int i = 0; i < shipLength; i++)
-				grid[i][shot.y].PDx -= i;
+				grid[i][shot.y].huntPDx -= i;
 		else // With bounds
 			for (int i = bounds[2]; i < shot.x; i++)
-				grid[i][shot.y].PDx -= shot.x - i;
+				grid[i][shot.y].huntPDx -= shot.x - i;
 
 		// Going right
 		if (bounds[3] - shot.x >= shipLength) // No bounds
 			for (int i = 0; i < shipLength; i++)
-				grid[i][shot.y].PDx -= i;
+				grid[i][shot.y].huntPDx -= i;
 		else // With bounds
 			for (int i = bounds[3]; i > shot.x; i--)
-				grid[i][shot.y].PDx -= shot.x - i;
+				grid[i][shot.y].huntPDx -= shot.x - i;
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
-				grid[i][j].combinePDXY();
+				grid[i][j].combinehuntPDXY();
 	}
 
 	/**
@@ -352,7 +352,7 @@ public class AI {
 		Square target = grid[0][0];
 		for (int i = 0; i < grid[0].length; i++)
 			for (int j = 0; j < grid.length; j++)
-				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquareValue > max)
+				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquarePD > max)
 					target = grid[i][j];
 		return target;
 	}
@@ -367,7 +367,7 @@ public class AI {
 		Square target = grid[shot.y][shot.x];
 		for (int i = 0; i < grid[0].length; i++)
 			for (int j = 0; j < grid.length; j++)
-				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquareValue > max)
+				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquarePD > max)
 					target = grid[i][j];
 		return target;
 	}

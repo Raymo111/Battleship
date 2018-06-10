@@ -11,7 +11,7 @@ public class Square implements Serializable {
 	private static final long serialVersionUID = -4896377842037028342L;
 
 	public int graphArray[] = new int[Battleship.shipLengths.length];
-	public int totalSquareValue, PDx, PDy;
+	public int totalSquarePD, huntPDx, huntPDy, targetPDx, targetPDy;
 	public SquareTypes status;
 	public int x, y;
 	public int shipType; // #0 for no ship, #n for n-length ship
@@ -29,7 +29,11 @@ public class Square implements Serializable {
 		return graphArray;
 	}
 
-	public void combinePDXY() {
-		totalSquareValue = PDx + PDy;
+	public void combinehuntPDXY() {
+		totalSquarePD = huntPDx + huntPDy;
+	}
+
+	public void combinetargetPDXY() {
+		totalSquarePD = targetPDx + targetPDy;
 	}
 }
