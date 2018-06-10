@@ -57,7 +57,7 @@ public class Battleship {
 
 		// Local variables
 		boolean AIFirst, AIWin = false, userWin = false;
-		int round = 1;
+		int round = 1, x, y;
 
 		// Who goes first
 		System.out.println("You first or Michael (the AI) first?");
@@ -81,9 +81,13 @@ public class Battleship {
 
 		// Only executes once for when user goes first
 		if (!AIFirst) {
+
+			// Get's user's shot
 			System.out.println("Round 1. Your turn.\nWhat square would you like to shoot at? (e.g. A1)");
 			input = br.readLine();
 			input.toLowerCase();
+			x = ((int) input.charAt(1)) - 1;
+			y = ((int) input.charAt(0)) - 65;
 
 		}
 
