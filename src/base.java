@@ -9,6 +9,7 @@ import java.util.*;
 public class base extends JPanel{ 
     Dimension mButtonsDimen = new Dimension(270,180);
     Insets bInsets = getInsets();
+    JLabel assisDialog = new JLabel(new ImageIcon("mDialog.png"));
 	JLabel achievementButton = new JLabel(new ImageIcon("mAchievementsButton.png"));
 	JLabel taskButton = new JLabel(new ImageIcon("mTasksButton.png"));
 	JLabel gameButton = new JLabel(new ImageIcon("mGAMEButton.png"));
