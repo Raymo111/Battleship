@@ -194,41 +194,42 @@ public class AI {
 
 	/**
 	 * Selects a square to fire at after updating the probability density for a
-	 * given grid and ship lengths after a given shot
+	 * given grid and ship lengths after a given lastShot
 	 * 
 	 * @param mode
 	 *            The mode in which the AI is in (determined by hit or miss)
 	 * 
-	 * @param shot
-	 *            The shot which was fired
+	 * @param lastShot
+	 *            The lastShot which was fired
 	 * @param grid
 	 *            The grid for which to calculate
 	 * @param shipLengths
 	 *            The lengths of ships still in play
 	 */
-	public Square aim(Mode mode, Square shot, Square[][] grid, int[] shipLengths) {
+	public Square aim(Mode mode, Square lastShot, Square[][] grid, int[] shipLengths) {
 
-		// If shot was a hit, set aim mode to target, update hit PD and target shot
+		// If lastShot was a hit, set aim mode to target, update hit PD and target
+		// lastShot
 		if (mode == Mode.TARGET) {
 			for (int i = 0; i < shipLengths.length; i++)
-				updateHitPD(grid, shot, shipLengths[i]);
-			return target(grid, shot);
+				updateHitPD(grid, lastShot, shipLengths[i]);
+			return target(grid, lastShot);
 		}
 
 		// If ship was sunk, check for side-by-side ships and target those
-		else if (shot.status == SquareTypes.SUNK) {
+		else if (lastShot.status == SquareTypes.SUNK) {
 			for (int i = 0; i < grid.length; i++)
 				for (int j = 0; j < grid[0].length; j++)
-					if (shot.status == SquareTypes.HIT)
+					if (lastShot.status == SquareTypes.HIT)
 						return aim(mode, grid[i][j], grid, shipLengths);
 			mode = Mode.HUNT;
 			return hunt(grid);
 		}
 
-		// If shot was a miss, update miss PD and hunt for a target
+		// If lastShot was a miss, update miss PD and hunt for a target
 		else {
 			for (int i = 0; i < shipLengths.length; i++)
-				updateMissPD(grid, shot, shipLengths[i]);
+				updateMissPD(grid, lastShot, shipLengths[i]);
 			return hunt(grid);
 		}
 	}
@@ -238,46 +239,46 @@ public class AI {
 	 * 
 	 * @param grid
 	 *            The grid in which the square is located
-	 * @param shot
+	 * @param lastShot
 	 *            The square for which to calculate
 	 * @param shipLength
 	 *            The specific ship length for which to calculate
 	 */
-	public void updateMissPD(Square[][] grid, Square shot, int shipLength) {
+	public void updateMissPD(Square[][] grid, Square lastShot, int shipLength) {
 
-		int[] bounds = getBounds(shot, grid);
+		int[] bounds = getBounds(lastShot, grid);
 
 		// Going up
-		if (shot.y - bounds[0] >= shipLength) // No bounds
+		if (lastShot.y - bounds[0] >= shipLength) // No bounds
 			for (int i = 0; i < shipLength; i++)
-				grid[i][shot.x].huntPDy -= i;
+				grid[i][lastShot.x].huntPDy -= i;
 		else // With bounds
-			for (int i = bounds[0]; i < shot.y; i++)
-				grid[i][shot.x].huntPDy -= shot.y - i;
+			for (int i = bounds[0]; i < lastShot.y; i++)
+				grid[i][lastShot.x].huntPDy -= lastShot.y - i;
 
 		// Going down
-		if (bounds[1] - shot.y >= shipLength) // No bounds
+		if (bounds[1] - lastShot.y >= shipLength) // No bounds
 			for (int i = 0; i < shipLength; i++)
-				grid[i][shot.x].huntPDy -= i;
+				grid[i][lastShot.x].huntPDy -= i;
 		else // With bounds
-			for (int i = bounds[1]; i > shot.y; i--)
-				grid[i][shot.x].huntPDy -= shot.y - i;
+			for (int i = bounds[1]; i > lastShot.y; i--)
+				grid[i][lastShot.x].huntPDy -= lastShot.y - i;
 
 		// Going left
-		if (shot.x - bounds[2] >= shipLength) // No bounds
+		if (lastShot.x - bounds[2] >= shipLength) // No bounds
 			for (int i = 0; i < shipLength; i++)
-				grid[shot.y][i].huntPDx -= i;
+				grid[lastShot.y][i].huntPDx -= i;
 		else // With bounds
-			for (int i = bounds[2]; i < shot.x; i++)
-				grid[shot.y][i].huntPDx -= shot.x - i;
+			for (int i = bounds[2]; i < lastShot.x; i++)
+				grid[lastShot.y][i].huntPDx -= lastShot.x - i;
 
 		// Going right
-		if (bounds[3] - shot.x >= shipLength) // No bounds
+		if (bounds[3] - lastShot.x >= shipLength) // No bounds
 			for (int i = 0; i < shipLength; i++)
-				grid[shot.y][i].huntPDx -= i;
+				grid[lastShot.y][i].huntPDx -= i;
 		else // With bounds
-			for (int i = bounds[3]; i > shot.x; i--)
-				grid[shot.y][i].huntPDx -= shot.x - i;
+			for (int i = bounds[3]; i > lastShot.x; i--)
+				grid[lastShot.y][i].huntPDx -= lastShot.x - i;
 
 		// Recombine an updated probability density distributed graph for hunt mode
 		for (int i = 0; i < grid.length; i++)
@@ -290,33 +291,33 @@ public class AI {
 	 * 
 	 * @param grid
 	 *            The grid in which the square is located
-	 * @param shot
+	 * @param lastShot
 	 *            The square for which to calculate
 	 * @param shipLength
 	 *            The specific ship length for which to calculate
 	 */
-	public void updateHitPD(Square[][] grid, Square shot, int shipLength) {
-		int[] bounds = getBounds(shot, grid);
+	public void updateHitPD(Square[][] grid, Square lastShot, int shipLength) {
+		int[] bounds = getBounds(lastShot, grid);
 
 		// Going up
-		for (int i = shot.y - shipLength; i < shot.y; i++)
+		for (int i = lastShot.y - shipLength; i < lastShot.y; i++)
 			if (i > bounds[0])
-				grid[i][shot.x].targetPDy += i;
+				grid[i][lastShot.x].targetPDy += i;
 
 		// Going down
-		for (int i = shot.y + shipLength; i > shot.y; i--)
+		for (int i = lastShot.y + shipLength; i > lastShot.y; i--)
 			if (i < bounds[1])
-				grid[i][shot.x].targetPDy += (bounds[i] - i);
+				grid[i][lastShot.x].targetPDy += (bounds[i] - i);
 
 		// Going left
-		for (int i = shot.x - shipLength; i < shot.x; i++)
+		for (int i = lastShot.x - shipLength; i < lastShot.x; i++)
 			if (i > bounds[2])
-				grid[shot.y][i].targetPDy += i;
+				grid[lastShot.y][i].targetPDy += i;
 
 		// Going right
-		for (int i = shot.x + shipLength; i > shot.x; i--)
+		for (int i = lastShot.x + shipLength; i > lastShot.x; i--)
 			if (i < bounds[3])
-				grid[shot.y][i].targetPDy += (bounds[i] - i);
+				grid[lastShot.y][i].targetPDy += (bounds[i] - i);
 
 		// Recombine an updated probability density distributed graph for target mode
 		for (int i = 0; i < grid.length; i++)
@@ -328,41 +329,41 @@ public class AI {
 	 * Gets the boundaries for a decrement of probability density in all 4
 	 * directions
 	 * 
-	 * @param shot
-	 *            The shot that was fired
+	 * @param lastShot
+	 *            The lastShot that was fired
 	 * @param grid
 	 *            The grid for which to calculate boundaries
 	 * @return The boundaries as an int array
 	 */
-	private int[] getBounds(Square shot, Square[][] grid) {
+	private int[] getBounds(Square lastShot, Square[][] grid) {
 
 		// Boundaries set for decrementing total square values
 		int[] bounds = new int[] { -1, -1, -1, -1 };
 
 		// Going up
-		for (int i = shot.y - 1; i >= 0; i--)
-			if (grid[i][shot.x].status != SquareTypes.UNKNOWN) {
+		for (int i = lastShot.y - 1; i >= 0; i--)
+			if (grid[i][lastShot.x].status != SquareTypes.UNKNOWN) {
 				bounds[0] = i;
 				break;
 			}
 
 		// Going down
-		for (int i = shot.y + 1; i < grid.length; i++)
-			if (grid[i][shot.x].status != SquareTypes.UNKNOWN) {
+		for (int i = lastShot.y + 1; i < grid.length; i++)
+			if (grid[i][lastShot.x].status != SquareTypes.UNKNOWN) {
 				bounds[1] = i;
 				break;
 			}
 
 		// Going left
-		for (int i = shot.x - 1; i >= 0; i--)
-			if (grid[shot.y][i].status != SquareTypes.UNKNOWN) {
+		for (int i = lastShot.x - 1; i >= 0; i--)
+			if (grid[lastShot.y][i].status != SquareTypes.UNKNOWN) {
 				bounds[2] = i;
 				break;
 			}
 
 		// Going right
-		for (int i = shot.x + 1; i < grid.length; i++)
-			if (grid[shot.y][i].status != SquareTypes.UNKNOWN) {
+		for (int i = lastShot.x + 1; i < grid.length; i++)
+			if (grid[lastShot.y][i].status != SquareTypes.UNKNOWN) {
 				bounds[3] = i;
 				break;
 			}
@@ -391,9 +392,9 @@ public class AI {
 	 * 
 	 * @return The target to fire at
 	 */
-	public Square target(Square[][] grid, Square shot) {
+	public Square target(Square[][] grid, Square lastShot) {
 		int max = 0;
-		Square target = shot;
+		Square target = lastShot;
 		for (int i = 0; i < grid[0].length; i++)
 			for (int j = 0; j < grid.length; j++)
 				if (grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquarePD > max) {

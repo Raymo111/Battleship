@@ -7,6 +7,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Battleship {
@@ -20,6 +21,8 @@ public class Battleship {
 	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of enemy grid
 	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// state of home grid
 	public static Ship[] homeShips = new Ship[shipLengths.length];// A list of home ships
+	public static ArrayList<Square> enemyShotLog = new ArrayList<Square>(20);// A log of enemy shots
+	public static ArrayList<Square> homeShotLog = new ArrayList<Square>(20);// A log of AI's shots
 
 	// Buffered reader to read user input
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -88,6 +91,17 @@ public class Battleship {
 			input.toLowerCase();
 			x = ((int) input.charAt(1)) - 1; // ASCII value for A~J = 65~74
 			y = ((int) input.charAt(0)) - 65;
+
+			// Check for hit or miss on home grid
+			if (homeGrid[y][x].shipType != 0) {
+				homeGrid[y][x].status = SquareTypes.MISS;
+				System.out.println("MISS");
+			} else {
+				homeGrid[y][x].status = SquareTypes.HIT;
+				System.out.println("HIT");
+			}
+			enemyShotLog.add(homeGrid[y][x]);
+			System.out.println("Michael's turn.");
 
 		}
 
