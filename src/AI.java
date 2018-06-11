@@ -34,10 +34,7 @@ public class AI {
 		generatePDDG(Battleship.homeGrid);
 
 		// Place ships on home grid
-		try {
-			placeShips(Battleship.homeGrid, Battleship.shipLengths);
-		} catch (Exception e) {
-		}
+		placeShips(Battleship.homeGrid, Battleship.shipLengths);
 	}
 
 	/**
