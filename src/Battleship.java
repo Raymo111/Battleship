@@ -98,10 +98,17 @@ public class Battleship implements java.io.Serializable {
 		if (!AIFirst) {
 
 			// Get user's shot
-			System.out.println("Round 1. Your turn.\nWhat square would you like to shoot at? (e.g. A1)");
+			System.out.println("Round 1. Your turn.\nEnter coordinates to fire:");
 			input = br.readLine().toUpperCase();
 			x = Integer.parseInt(input.substring(1, 2)) - 1;
 			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
+			if (x == 1) {// Get second digit, could be 10
+				try {
+					if (Integer.parseInt(input.substring(2, 3)) == 0)
+						x = 9;
+				} catch (Exception e) {
+				}
+			}
 
 			// Check for hit or miss on home grid
 			userShot = homeGrid[y][x];
@@ -123,14 +130,16 @@ public class Battleship implements java.io.Serializable {
 		}
 
 		// Game do-while loop
-		do {
+		do
+
+		{
 
 			// Increment round
 			round++;
 
 			// Get AI's shot
 			System.out.println("Round " + round + ". Michael's turn.");
-			AIShot = Michael.aim(AI.Mode.HUNT, AIShot, enemyGrid, shipLengths);
+			AIShot = Michael.aim(AIShot, enemyGrid, shipLengths);
 			homeShotLog.add(AIShot);// Add home shot to log
 
 			// Print AI's shot's y-x coordinate converted to Battleship standards (e.g. A1)
@@ -153,6 +162,13 @@ public class Battleship implements java.io.Serializable {
 			input = br.readLine().toUpperCase();
 			x = Integer.parseInt(input.substring(1, 2)) - 1;
 			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
+			if (x == 1) {// Get second digit, could be 10
+				try {
+					if (Integer.parseInt(input.substring(2, 3)) == 0)
+						x = 9;
+				} catch (Exception e) {
+				}
+			}
 
 			// Check for hit or miss on home grid
 			userShot = homeGrid[y][x];

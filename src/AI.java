@@ -11,6 +11,9 @@ public class AI {
 	private static Random rand = new Random();
 	private static Scanner sc = new Scanner(System.in);
 
+	// Start with hunt mode
+	private Mode mode = Mode.HUNT;
+
 	/**
 	 * An enum for which mode the AI is in.
 	 * 
@@ -22,9 +25,6 @@ public class AI {
 	public enum Mode {
 		HUNT, TARGET
 	}
-
-	// Start with hunt mode
-	Mode mode = Mode.HUNT;
 
 	// Constructor
 	public AI() {
@@ -242,36 +242,40 @@ public class AI {
 	 * @param shipLengths
 	 *            The lengths of ships still in play
 	 */
-	public Square aim(Mode mode, Square lastShot, Square[][] grid, int[] shipLengths) {
+	public Square aim(Square lastShot, Square[][] grid, int[] shipLengths) {
 
 		// Try-catch to handle exceptions
 		try {
 
 			// If lastShot was a hit, set aim mode to target, update hit PD and target
 			if (mode == Mode.TARGET || lastShot.status == SquareTypes.HIT) {
-				for (int i = 0; i < shipLengths.length; i++) {
-					lastShot.huntPDx = 0;
-					lastShot.huntPDy = 0;
-					lastShot.targetPDx = 0;
-					lastShot.targetPDy = 0;
-					lastShot.combinehuntPDXY();
-					lastShot.combinetargetPDXY();
+				for (int i = 0; i < shipLengths.length; i++)
 					updateHitPD(grid, lastShot, shipLengths[i]);
-				}
 				mode = Mode.TARGET;
 				return target(grid, lastShot);
 			}
 
 			// If ship was sunk, check for side-by-side ships and target those
 			else if (lastShot.status == SquareTypes.SUNK) {
+				lastShot.huntPDx = 0;
+				lastShot.huntPDy = 0;
+				lastShot.targetPDx = 0;
+				lastShot.targetPDy = 0;
+				lastShot.combinehuntPDXY();
+				lastShot.combinetargetPDXY();
 				mode = Mode.HUNT;
-				return aim(mode, null, grid, shipLengths);
+				return aim(null, grid, shipLengths);
 			}
 
 			// If lastShot was a miss, update miss PD and hunt for a target
 			else if (lastShot.status == SquareTypes.MISS)
-				for (int i = 0; i < shipLengths.length; i++)
-					updateMissPD(grid, lastShot, shipLengths[i]);
+				if (mode == Mode.HUNT)
+					for (int i = 0; i < shipLengths.length; i++)
+						updateMissPD(grid, lastShot, shipLengths[i]);
+				else
+					for (int i = 0; i < shipLengths.length; i++)
+						updateHitPD(grid, lastShot, shipLengths[i]);
+
 		} catch (Exception e) {
 		}
 
