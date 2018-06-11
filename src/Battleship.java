@@ -67,9 +67,10 @@ public class Battleship implements java.io.Serializable {
 
 		// Local variables
 		boolean AIFirst, AIWin = false, userWin = false;
-		int round = 1, x, y, shipNumber = 0;// The index of a ship in homeShips array
+		int round = 0, x, y, shipNumber = 0;// The index of a ship in homeShips array
 		Square userShot = null, AIShot = null;
 		Ship ship = homeShips[0];
+		boolean flag;
 
 		// Who goes first
 		System.out.println("You first or Michael (the AI) first?");
@@ -99,20 +100,25 @@ public class Battleship implements java.io.Serializable {
 
 			// Check for hit or miss on home grid
 			userShot = homeGrid[y][x];
-			if (userShot.shipType != null) {// Miss
+			if (userShot.shipType == null) {// Miss
 				userShot.status = SquareTypes.MISS;
 				System.out.println("MISS");
 			} else {// Hit
+				flag = true;
 				for (int i = 0; i < homeShips.length; i++)
 					for (int j = 0; j < homeShips[i].location.length; j++)
 						if (homeShips[i].location[j] == userShot) {
 							ship = homeShips[i];
 							i = shipNumber;
 							if (ship.location[j].status == SquareTypes.UNKNOWN) {
-								homeShipsSunk[i] = false;
+								flag = false;
 								break;
 							}
 						}
+				if (flag)
+					homeShipsSunk[shipNumber] = true;
+				else
+					homeShipsSunk[shipNumber] = false;
 				homeGrid[y][x].status = SquareTypes.HIT;
 				if (homeShipsSunk[shipNumber])
 					System.out.println("HIT, SUNK " + homeShips[shipNumber].shipName);
@@ -120,6 +126,7 @@ public class Battleship implements java.io.Serializable {
 					System.out.println("HIT, " + ship.shipName);
 			}
 			enemyShotLog.add(homeGrid[y][x]);// Add enemy shot to log
+			round++;
 		}
 
 		// Game do-while loop
@@ -151,13 +158,13 @@ public class Battleship implements java.io.Serializable {
 				AIShot.status = SquareTypes.MISS;
 
 			// Get user's shot
-			System.out.println("Round 1. Your turn.\nEnter coordinates to fire:");
+			System.out.println("Round " + round + ". Your turn.\nEnter coordinates to fire:");
 			input = br.readLine().toUpperCase();
 			x = Integer.parseInt(input.substring(1, 2)) - 1;
 			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
 
 			// Check for hit or miss on home grid
-			if (homeGrid[y][x].shipType != null) {// Miss
+			if (homeGrid[y][x].shipType == null) {// Miss
 				homeGrid[y][x].status = SquareTypes.MISS;
 				System.out.println("MISS");
 			} else {// Hit
