@@ -48,7 +48,7 @@ public class AI {
 	 * @param shipLengths
 	 *            The lengths of ships to place
 	 */
-	public static void placeShips(Square[][] grid, int[] shipLengths) {
+	public void placeShips(Square[][] grid, int[] shipLengths) {
 		System.out.println("Select the mode. \n1-PDM\n2-Random");
 
 		int mode = 0;
@@ -99,7 +99,7 @@ public class AI {
 							System.out.println("Y:" + y + "  X:" + x + "  endY:"
 									+ (y + ((shipLengths[i] - 1) * rotationModifiers[0][rotation])) + "  endX:"
 									+ (x + ((shipLengths[i] - 1) * rotationModifiers[1][rotation])));
-							
+
 							Battleship.homeShips[i] = new Ship(grid, grid[y][x],
 									grid[y + ((shipLengths[i] - 1) * rotationModifiers[0][rotation])][x
 											+ ((shipLengths[i] - 1) * rotationModifiers[1][rotation])]);

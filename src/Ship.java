@@ -14,7 +14,6 @@ public class Ship {
 
 	public Ship(Square[][] grid, Square start, Square end) {
 		int shipLength;
-		int mod;
 		if (start.x == end.x) {// Vertical ship
 			shipLength = Math.abs(end.y - start.y) + 1;
 			location = new Square[shipLength];
