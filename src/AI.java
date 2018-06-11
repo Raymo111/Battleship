@@ -180,12 +180,10 @@ public class AI {
 		int sign = -1;
 		if (rotation % 2 == 0)
 			sign = 1;
-		for (int i = 0; i < Math.abs(endX - X); i++)
-			for (int j = 0; j < Math.abs(endY - Y); j++)
-				if (Battleship.homeGrid[Y + (sign * j)][X + (sign * i)].shipType != null) {
+		for (int i = 0; i < Math.abs(endX - X) + 1; i++)
+			for (int j = 0; j < Math.abs(endY - Y) + 1; j++)
+				if (Battleship.homeGrid[Y + (sign * j)][X + (sign * i)].shipType != null)
 					return false;
-				}
-
 		return true;
 	}
 
