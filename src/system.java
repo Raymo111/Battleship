@@ -11,6 +11,19 @@ public class system extends JFrame {
 	int userIndex;
 	login startGame;
 	String[] userInfo = new String[38];
+	
+	/*
+	 * dewae to execute code in game from Battleships:
+	 * 2 Files: systemLog, inputLog
+	 * game write to inputLog, read from systemLog
+	 * Battleship write to systemLog, read from inputLog
+	 * 
+	 * yea we have a system log now
+	 */
+	
+	Battleship oYa = new Battleship();
+	File sysLog = new File("systemLog.txt");
+	File inpLog = new File("inputLog.txt");
 
 	MouseListener directory = new MouseListener() {
 		public void mouseClicked(MouseEvent event) {
@@ -282,7 +295,27 @@ public class system extends JFrame {
 			System.out.println(userInfo[i]);
 		}
 	}
-	
+	/**
+	 * The procedure type method write a line of text into the inputLog.
+	 * @param text the text command converted from action on GUI
+	 * @throws IOException exceptions of not finding the log
+	 */
+	public void write(String text) throws IOException{
+		PrintWriter logWriter = new PrintWriter(new FileWriter(inpLog));
+		logWriter.println(text);//write to replace the history with new command
+		logWriter.close();//close the FileWriter
+	}//end method
+	/**
+	 * The procedure type method read a line of text from the systemLog.
+	 * @return command from Battleship object in systemLog.
+	 * @throws IOException exceptions of finding the log
+	 */
+	public String read() throws IOException{
+		BufferedReader systemReader = new BufferedReader(new FileReader(sysLog));
+		String command = systemReader.readLine();//record the command
+		systemReader.close();//close the BufferedReader
+		return command;//return the command String
+	}//end method
 	public static void main(String[] args) throws IOException {
 		system theGame = new system();
 	}
