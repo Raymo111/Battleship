@@ -9,6 +9,7 @@ import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
 import java.util.*;
+import java.io.*;
 
 public class game extends JPanel{
     Insets bInsets = getInsets();
@@ -57,7 +58,7 @@ public class game extends JPanel{
 			
 		}
     };
-	MouseListener unitBehavior = new MouseListener(){
+	MouseListener unitDis = new MouseListener(){
 		public void mouseClicked(MouseEvent e) {
 			if(!timer.isRunning()){
 				timer.start();
@@ -161,8 +162,8 @@ public class game extends JPanel{
 				enemMap[i][j].setBackground(fogBlue);
 				userMap[i][j].setOpaque(true);
 				enemMap[i][j].setOpaque(true);
-				userMap[i][j].addMouseListener(unitBehavior);
-				enemMap[i][j].addMouseListener(unitBehavior);
+				userMap[i][j].addMouseListener(unitDis);
+				enemMap[i][j].addMouseListener(unitDis);
 				add(userMap[i][j]);
 				add(enemMap[i][j]);
 			}
@@ -189,6 +190,8 @@ public class game extends JPanel{
 		}//end for
 		return formatedTime.substring(0, formatedTime.length() - 1);//returnt the answer
 	}//end method
+
+	
 	public static void main(String[] args){
 		JFrame f = new JFrame();
 		f.add(new game());
