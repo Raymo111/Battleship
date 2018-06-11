@@ -17,31 +17,29 @@ public class Ship {
 		if (start.x == end.x) {// Vertical ship
 			shipLength = Math.abs(end.y - start.y) + 1;
 			location = new Square[shipLength];
-			if (start.y > end.y) {
+			if (start.y > end.y)
 				for (int i = 0; i < shipLength; i++) {// ship down
 					location[i] = grid[start.y + i][start.x];
 					grid[start.y + i][start.x].shipType = this;
 				}
-			} else {
+			else
 				for (int i = 0; i < shipLength; i++) {// ship up
 					location[i] = grid[start.y - i][start.x];
 					grid[start.y - i][start.x].shipType = this;
 				}
-			}
 		} else {// Horizontal ship
 			shipLength = Math.abs(end.x - start.x) + 1;
 			location = new Square[shipLength];
-			if (start.x > end.x) {
+			if (start.x > end.x)
 				for (int i = 0; i < shipLength; i++) {// ship right
 					location[i] = grid[start.y][start.x + i];
 					grid[start.y][start.x + i].shipType = this;
 				}
-			} else {
+			else
 				for (int i = 0; i < shipLength; i++) {// ship left
 					location[i] = grid[start.y][start.x - i];
 					grid[start.y][start.x - i].shipType = this;
 				}
-			}
 		}
 
 		ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);
