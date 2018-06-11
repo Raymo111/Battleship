@@ -55,6 +55,7 @@ public class Battleship implements java.io.Serializable {
 
 		// Create a new AI - God's warrior angel
 		AI Michael = new AI();
+		display2Darray(homeGrid);
 		game(Michael);
 	}
 
@@ -202,8 +203,12 @@ public class Battleship implements java.io.Serializable {
 			System.out.println();
 		}
 		for (int i = 0; i < array.length; i++) {
-			for (int j = 0; j < array.length; j++)
-				System.out.print("|" + array[i][j].shipType);
+			for (int j = 0; j < array.length; j++) {
+				if (array[i][j].shipType != null && array[i][j].shipType.shipName != null)
+					System.out.print("|" + array[i][j].shipType.shipName.charAt(0));
+				else
+					System.out.print("| ");
+			}
 			System.out.println();
 		}
 	}
