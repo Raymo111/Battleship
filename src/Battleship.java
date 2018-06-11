@@ -27,7 +27,8 @@ public class Battleship implements java.io.Serializable {
 	public static Ship[] homeShips = new Ship[shipLengths.length];// A list of home ships
 	public static ArrayList<Square> enemyShotLog = new ArrayList<Square>(20);// A log of enemy shots
 	public static ArrayList<Square> homeShotLog = new ArrayList<Square>(20);// A log of AI's shots
-	public static ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);// A list of used ship names
+	public static ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);// A list of used
+																										// ship names
 
 	// Buffered reader to read user input
 	private static BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
@@ -106,26 +107,8 @@ public class Battleship implements java.io.Serializable {
 				userShot.status = SquareTypes.MISS;
 				System.out.println("MISS");
 			} else {// Hit
-				flag = true;
-				for (int i = 0; i < homeShips.length; i++)
-					for (int j = 0; j < homeShips[i].location.length; j++)
-						if (homeShips[i].location[j] == userShot) {
-							ship = homeShips[i];
-							i = shipNumber;
-							if (ship.location[j].status == SquareTypes.UNKNOWN) {
-								flag = false;
-								break;
-							}
-						}
-				if (flag)
-					homeShipsSunk[shipNumber] = true;
-				else
-					homeShipsSunk[shipNumber] = false;
 				homeGrid[y][x].status = SquareTypes.HIT;
-				if (homeShipsSunk[shipNumber])
-					System.out.println("HIT, SUNK " + homeShips[shipNumber].shipName);
-				else
-					System.out.println("HIT, " + ship.shipName);
+				System.out.println("HIT, " + ship.shipName);
 			}
 			enemyShotLog.add(homeGrid[y][x]);// Add enemy shot to log
 			round++;
@@ -167,6 +150,7 @@ public class Battleship implements java.io.Serializable {
 				homeGrid[y][x].status = SquareTypes.MISS;
 				System.out.println("MISS");
 			} else {// Hit
+				homeGrid[y][x].status = SquareTypes.HIT;
 				flag = true;
 				for (int i = 0; i < homeShips.length; i++)
 					for (int j = 0; j < homeShips[i].location.length; j++)
@@ -178,22 +162,34 @@ public class Battleship implements java.io.Serializable {
 								break;
 							}
 						}
-				if (flag) {
+				if (flag)
 					homeShipsSunk[shipNumber] = true;
-					for (int i = 0; i < ship.location.length; i++)
-						ship.location[i].status = SquareTypes.SUNK;
-				} else
-					homeShipsSunk[shipNumber] = false;
-				homeGrid[y][x].status = SquareTypes.HIT;
-				if (homeShipsSunk[shipNumber])
-					System.out.println("HIT, SUNK " + homeShips[shipNumber].shipName);
 				else
+					homeShipsSunk[shipNumber] = false;
+				if (homeShipsSunk[shipNumber]) {
+					System.out.println("HIT, SUNK " + homeShips[shipNumber].shipName);
+
+					// Check for win (all ships sunk)
+					flag = true;
+					for (int i = 0; i < homeShipsSunk.length; i++)
+						if (!homeShipsSunk[i]) {
+							flag = false;
+							break;
+						}
+					if (flag) // User has won
+						userWin = true;
+				} else
 					System.out.println("HIT, " + ship.shipName);
 			}
 			enemyShotLog.add(homeGrid[y][x]);// Add enemy shot to log
 
 		} while (!AIWin && !userWin);// Continues running until someone wins
 
+		// If user wins
+		if (userWin)
+			System.out.println("Congrats, you have won!");
+		if (AIWin)
+			System.out.println("Sorry, you have lost.");
 	}
 
 	public static void display2Darray(Square[][] array) {
