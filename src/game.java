@@ -92,11 +92,11 @@ public class game extends JPanel{
 		for(int i =0;i<3;i++){
 			buttonEffects.add(new JLabel(new ImageIcon("gMouse.png")));
 			buttonEffects.get(i).setBounds(bInsets.left+i*120,bInsets.top,120,80);
+			buttonEffects.get(i).setVisible(false);
 			add(buttonEffects.get(i));
 			gButtons.get(i).addMouseListener(mouseEffect);
 			gButtons.get(i).setBounds(bInsets.left+10+i*120,bInsets.top+10,100,60);
 			add(gButtons.get(i));
-			buttonEffects.get(i).setVisible(false);
 		}
 		timerBoard.setBounds(bInsets.left+550,bInsets.top,200,100);
 		timerLabel.setBounds(bInsets.left+550,bInsets.top,200,100);

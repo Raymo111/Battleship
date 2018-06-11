@@ -22,6 +22,12 @@ public class system extends JFrame {
 				enterGame();
 				repaint();
 			}
+			if(source.equals(baseInter.rankingButton)){
+				System.out.println(6);
+				remove(baseInter);
+				add(rankInter);
+				repaint();
+			}
 			if(source.getIcon().toString().equals("theBackButton.png")){
 				System.out.println(0);
 				getContentPane().removeAll();
@@ -56,10 +62,13 @@ public class system extends JFrame {
 	};
 	base baseInter = new base();
 	game gameInter = new game();
+	rankings rankInter = new rankings();
 	public system() {
 		startGame = new login();
 		startGame.okButton.addMouseListener(loginOper);
-		baseInter.gameButton.addMouseListener(directory);//add directory to buttons in base interface	
+		for(int i=0;i<6;i++){
+			baseInter.mRightButtons.get(i).addMouseListener(directory);//add directory to all buttons in base interface
+		}//end for
 		gameInter.backButton.addMouseListener(directory);//add directory to buttons in game interface
 
 		addWindowListener(new java.awt.event.WindowAdapter() {//need to save the information before closing
