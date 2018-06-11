@@ -155,11 +155,12 @@ public class Battleship implements java.io.Serializable {
 			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
 
 			// Check for hit or miss on home grid
-			if (homeGrid[y][x].shipType == null) {// Miss
-				homeGrid[y][x].status = SquareTypes.MISS;
+			userShot = homeGrid[y][x];
+			if (userShot.shipType == null) {// Miss
+				userShot.status = SquareTypes.MISS;
 				System.out.println("MISS");
 			} else {// Hit
-				homeGrid[y][x].status = SquareTypes.HIT;
+				userShot.status = SquareTypes.HIT;
 				for (int i = 0; i < homeShips.length; i++)
 					for (int j = 0; j < homeShips[i].location.length; j++)
 						if (homeShips[i].location[j] == userShot) {
