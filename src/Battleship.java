@@ -54,8 +54,14 @@ public class Battleship implements java.io.Serializable {
 				homeGrid[i][j] = new Square(j, i);
 
 		// Create a new AI - God's warrior angel
-		AI Michael = new AI();
-		game(Michael);
+
+		// AI Michael = new AI();
+		AI.placeShips(homeGrid, shipLengths);
+		display2Darray(homeGrid);
+		for (int i = 0; i < homeShips.length; i++) {
+		
+		}
+		// game(Michael);
 	}
 
 	/**

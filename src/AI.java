@@ -8,8 +8,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class AI {
-	private Random rand = new Random();
-	private Scanner sc = new Scanner(System.in);
+	private static Random rand = new Random();
+	private static Scanner sc = new Scanner(System.in);
 
 	/**
 	 * An enum for which mode the AI is in.
@@ -48,7 +48,7 @@ public class AI {
 	 * @param shipLengths
 	 *            The lengths of ships to place
 	 */
-	public void placeShips(Square[][] grid, int[] shipLengths) {
+	public static void placeShips(Square[][] grid, int[] shipLengths) {
 		System.out.println("Select the mode. \n1-PDM\n2-Random");
 
 		int mode = 0;
@@ -95,6 +95,14 @@ public class AI {
 								(x + (shipLengths[i] * rotationModifiers[1][rotation])), rotation, grid)) {
 							correct = true;
 							count = 0;
+							System.out.println(i);
+							System.out.println("Y:" + y + "  X:" + x + "  endY:"
+									+ (y + ((shipLengths[i] - 1) * rotationModifiers[0][rotation])) + "  endX:"
+									+ (x + ((shipLengths[i] - 1) * rotationModifiers[1][rotation])));
+							
+							Battleship.homeShips[i] = new Ship(grid, grid[y][x],
+									grid[y + ((shipLengths[i] - 1) * rotationModifiers[0][rotation])][x
+											+ ((shipLengths[i] - 1) * rotationModifiers[1][rotation])]);
 							break;
 						}
 						count++;
@@ -125,7 +133,7 @@ public class AI {
 	 *         ship. If false, the ships placement is either outside of the board or
 	 *         is overlapping another ship
 	 */
-	public boolean checkValidShipPosition(int Y, int X, int endY, int endX, int rotation, Square[][] grid) {
+	public static boolean checkValidShipPosition(int Y, int X, int endY, int endX, int rotation, Square[][] grid) {
 
 		// first we must check to see if the end values are within the board size
 		if (endX >= grid.length || endX < 0 || endY >= grid[0].length || endY < 0)

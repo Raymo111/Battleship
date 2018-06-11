@@ -14,22 +14,37 @@ public class Ship {
 
 	public Ship(Square[][] grid, Square start, Square end) {
 		int shipLength;
+		int mod;
 		if (start.x == end.x) {// Vertical ship
 			shipLength = Math.abs(end.y - start.y) + 1;
-			location = new Square[shipLength + 1];
-			for (int i = 0; i < shipLength; i++) {
-				location[i] = grid[start.x + i][start.y];
-				grid[start.x + i][start.y].shipType = this;
+			location = new Square[shipLength];
+			if (start.y > end.y) {
+				for (int i = 0; i < shipLength; i++) {// ship down
+					location[i] = grid[start.y + i][start.x];
+					grid[start.y + i][start.x].shipType = this;
+				}
+			} else {
+				for (int i = 0; i < shipLength; i++) {// ship up
+					location[i] = grid[start.x][start.y - i];
+					grid[start.x - i][start.y].shipType = this;
+				}
 			}
 		} else {// Horizontal ship
 			shipLength = Math.abs(end.x - start.x) + 1;
-			location = new Square[shipLength + 1];
-			for (int i = 0; i < shipLength; i++) {
-				location[i] = grid[start.x][start.y + i];
-				grid[start.x][start.y + i].shipType = this;
+			location = new Square[shipLength];
+			if (start.x > end.x) {
+				for (int i = 0; i < shipLength; i++) {// ship right
+					location[i] = grid[start.y][start.x + i];
+					grid[start.y][start.x + i].shipType = this;
+				}
+			} else {
+				for (int i = 0; i < shipLength; i++) {// ship left
+					location[i] = grid[start.y][start.x - i];
+					grid[start.y][start.x - i].shipType = this;
+				}
 			}
 		}
-		location[shipLength] = end;
+
 		ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);
 		for (int i = 0; i < Battleship.shipLengths.length; i++)
 			if (Battleship.shipLengths[i] == shipLength && usedShipNames.contains(shipName)) {
