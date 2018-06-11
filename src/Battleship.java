@@ -105,6 +105,7 @@ public class Battleship implements java.io.Serializable {
 			} else {// Hit
 				for (int i = 0; i < homeShips.length; i++)
 					for (int j = 0; j < homeShips[i].location.length; j++)
+						//input: 1, You,ENTER, A1: NullPointerException
 						if (homeShips[i].location[j] == userShot) {
 							ship = homeShips[i];
 							i = shipNumber;
