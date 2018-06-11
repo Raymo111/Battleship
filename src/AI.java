@@ -70,7 +70,8 @@ public class AI {
 		rotationModifiers[0][3] = 0;
 		rotationModifiers[1][3] = -1;
 		if (mode == 1) {// PDDG placement
-
+			Square minVal[] = new Square[20];
+			
 			for (int i = 0; i < shipLengths.length; i++) {// loop for number of ships
 				boolean correct = false;
 				int count = 0;
@@ -143,8 +144,11 @@ public class AI {
 				} while (correct == false);
 			}
 		} else if (mode == 3) {// manual mode
-			Battleship.homeShips[0] = new Ship(grid, grid[0][0], grid[0][1]);
-			Battleship.homeShips[4] = new Ship(grid, grid[0][2], grid[4][2]);
+			Battleship.homeShips[0] = new Ship(grid, grid[0][2], grid[1][2]);
+			Battleship.homeShips[1] = new Ship(grid, grid[9][9], grid[7][9]);
+			Battleship.homeShips[2] = new Ship(grid, grid[9][7], grid[7][7]);
+			Battleship.homeShips[3] = new Ship(grid, grid[5][5], grid[2][5]);
+			Battleship.homeShips[4] = new Ship(grid, grid[0][0], grid[0][4]);
 		}
 	}
 
