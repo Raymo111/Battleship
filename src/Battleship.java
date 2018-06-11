@@ -151,17 +151,20 @@ public class Battleship implements java.io.Serializable {
 				System.out.println("MISS");
 			} else {// Hit
 				homeGrid[y][x].status = SquareTypes.HIT;
-				flag = true;
 				for (int i = 0; i < homeShips.length; i++)
 					for (int j = 0; j < homeShips[i].location.length; j++)
 						if (homeShips[i].location[j] == userShot) {
 							ship = homeShips[i];
 							i = shipNumber;
-							if (ship.location[j].status == SquareTypes.UNKNOWN) {
-								flag = false;
-								break;
-							}
 						}
+
+				// Check for ship sunk
+				flag = true;
+				for (int i = 0; i < ship.location.length; i++)
+					if (ship.location[i].status == SquareTypes.UNKNOWN) {
+						flag = false;
+						break;
+					}
 				if (flag)
 					homeShipsSunk[shipNumber] = true;
 				else
