@@ -24,8 +24,8 @@ public class Ship {
 				}
 			} else {
 				for (int i = 0; i < shipLength; i++) {// ship up
-					location[i] = grid[start.x][start.y - i];
-					grid[start.x - i][start.y].shipType = this;
+					location[i] = grid[start.y - i][start.x];
+					grid[start.y - i][start.x].shipType = this;
 				}
 			}
 		} else {// Horizontal ship
