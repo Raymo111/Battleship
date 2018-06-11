@@ -41,12 +41,11 @@ public class Ship {
 					grid[start.y][start.x + i].shipType = this;
 				}
 		}
-
-		ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);
 		for (int i = 0; i < Battleship.shipLengths.length; i++)
-			if (Battleship.shipLengths[i] == shipLength && !usedShipNames.contains(shipName)) {
+			if (Battleship.shipLengths[i] == shipLength
+					&& !Battleship.usedShipNames.contains(Battleship.shipNames[i])) {
 				shipName = Battleship.shipNames[i];
-				usedShipNames.add(shipName);
+				Battleship.usedShipNames.add(shipName);
 			}
 	}
 

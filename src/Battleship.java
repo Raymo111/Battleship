@@ -27,6 +27,7 @@ public class Battleship implements java.io.Serializable {
 	public static Ship[] homeShips = new Ship[shipLengths.length];// A list of home ships
 	public static ArrayList<Square> enemyShotLog = new ArrayList<Square>(20);// A log of enemy shots
 	public static ArrayList<Square> homeShotLog = new ArrayList<Square>(20);// A log of AI's shots
+	public static ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);// A list of used ship names
 
 	// Buffered reader to read user input
 	private static BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
