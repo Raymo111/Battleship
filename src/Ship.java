@@ -46,6 +46,7 @@ public class Ship {
 					&& !Battleship.usedShipNames.contains(Battleship.shipNames[i])) {
 				shipName = Battleship.shipNames[i];
 				Battleship.usedShipNames.add(shipName);
+				break;
 			}
 	}
 
