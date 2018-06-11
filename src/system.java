@@ -15,6 +15,7 @@ public class system extends JFrame {
 	MouseListener directory = new MouseListener() {
 		public void mouseClicked(MouseEvent event) {
 			JLabel source = (JLabel)event.getSource();
+			try{
 			if (source.equals(baseInter.gameButton)) {
 				System.out.println(-1);
 				remove(baseInter);
@@ -27,6 +28,9 @@ public class system extends JFrame {
 				remove(baseInter);
 				add(rankInter);
 				repaint();
+				updateRank(userIndex, "C",true);
+				updateRank(userIndex, "L",true);
+				updateRank(userIndex, "W",true);
 			}
 			if(source.getIcon().toString().equals("theBackButton.png")){
 				System.out.println(0);
@@ -34,6 +38,8 @@ public class system extends JFrame {
 				baseInter.updateInfo(userInfo[0],Integer.parseInt(userInfo[18]),Integer.parseInt(userInfo[15]));//update the base interface
 				add(baseInter);
 				repaint();
+			}}catch(Exception exp){
+				
 			}
 		}
 		public void mouseEntered(MouseEvent e) {}
@@ -41,6 +47,7 @@ public class system extends JFrame {
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
 	};
+	
 	MouseListener loginOper = new MouseListener() {
 		public void mouseClicked(MouseEvent event) {
 			try {
@@ -60,17 +67,19 @@ public class system extends JFrame {
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
 	};
+	
 	base baseInter = new base();
 	game gameInter = new game();
-	rankings rankInter = new rankings();
-	public system() {
+	rankings rankInter;
+	public system() throws IOException {
 		startGame = new login();
 		startGame.okButton.addMouseListener(loginOper);
 		for(int i=0;i<6;i++){
 			baseInter.mRightButtons.get(i).addMouseListener(directory);//add directory to all buttons in base interface
 		}//end for
 		gameInter.backButton.addMouseListener(directory);//add directory to buttons in game interface
-
+		rankInter = new rankings();//initializing the rankings interface
+		rankInter.backButton.addMouseListener(directory);
 		addWindowListener(new java.awt.event.WindowAdapter() {//need to save the information before closing
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				try {
@@ -147,7 +156,7 @@ public class system extends JFrame {
 	 * @param rankType the type of rank needs to be updated
 	 * @throws IOException Exceptions for File IO
 	 */
-	public void updateRank(int tUserIndex, String rankType) throws IOException{
+	public void updateRank(int tUserIndex, String rankType, Boolean isDisplaying) throws IOException{
 		System.out.println("------------------------------------------"+rankType);
 		File theRank = new File("rank"+rankType+".txt");
 		BufferedReader rankReader = new BufferedReader(new FileReader(theRank));
@@ -168,42 +177,61 @@ public class system extends JFrame {
 			rankReader.close();//close the IO fileReader
 			boolean placed = false;
 			for(int i =0;i<index.length;i++){
-				if(placed){
-					newIndexes+=index[i-1]+" ";
-					newValues+=val[i-1]+" ";
-				}else{
-					if(Integer.parseInt(val[i])>rankInfo){
-						newIndexes+=index[i]+" ";
-						newValues+=val[i]+" ";
+					if(placed){
+						if(Integer.parseInt(index[i-1])!=tUserIndex){
+							newIndexes+=index[i-1]+" ";
+							newValues+=val[i-1]+" ";
+							System.out.println(i+" "+1);
+						}
 					}else{
-						newIndexes+=tUserIndex+" ";
-						newValues+=rankInfo+" ";
-						placed = true;//record the placement
+						if(Integer.parseInt(val[i])>rankInfo){
+							if(Integer.parseInt(index[i])!=tUserIndex){
+								newIndexes+=index[i]+" ";
+								newValues+=val[i]+" ";
+								System.out.println(i+" "+2);
+							}
+						}else{
+							newIndexes+=tUserIndex+" ";
+							newValues+=rankInfo+" ";
+							System.out.println(i+" "+3);
+							placed = true;//record the placement
+						}//end if
 					}//end if
-				}//end if
 			}//end for
 			if(!placed){//add the user if ranked last
 				newIndexes+=tUserIndex;
 				newValues+=rankInfo;
+				System.out.println(4);
 			}else{//add the last if user is not last
-				newIndexes+=index[index.length-1];
-				newValues+=val[val.length-1];
+				if(Integer.parseInt(index[index.length-1])!=tUserIndex){
+					newIndexes+=index[index.length-1];
+					newValues+=val[val.length-1];
+					System.out.println(5);
+				}
 			}//end if
 		}catch(Exception e){//add the user directly when there is no user exists in record rank
 			System.out.println("_______________________________________________direct");
 			newIndexes+=tUserIndex;
 			newValues+=rankInfo;
+			System.out.println(6);
 		}//end try catch
 		PrintWriter rankWriter = new PrintWriter(theRank);//create PrintWriter to write the file
 		rankWriter.println(newIndexes);//write the indexes
 		rankWriter.println(newValues);//write the values
 		rankWriter.close();//close the fileWriter
-	}
+		System.out.println("rkrkrkrkrkrkrkkrkrkrkrk\n"+isDisplaying);
+
+		if(isDisplaying==true){//if the rankings needs to be displayed, convert the information
+			System.out.println("rkrkrkrkrkrkrkkrkrkrkrk\n"+isDisplaying);
+
+			rankInter.convertRank(rankType, newIndexes, newValues);
+		}//end if
+	}//end method
 	/**
 	 * The procedure type method initialize a new line in userInfo.
 	 * @param iNum the number of times information needs to be repeated
 	 * @param lineNum the number of lines the information needs to be repeated
-	 * @param state the String which contains the infomation needs to be repeated
+	 * @param state the String which contains the information needs to be repeated
 	 */
 	public void initialn(int lnIndex, int iNum,int lineNum, String state){
 		for(int i =lnIndex;i<lnIndex+lineNum;i++){
@@ -235,9 +263,9 @@ public class system extends JFrame {
 	    	initialn(27,11,1,"false");//initialize task completion
 	    	initialn(28,26,1,"false");//initialize achievement completion
 	    	initialn(29,1,3,"0");//initialize rank information
-	    	updateRank(newIndex,"C");//update for all three ranks
-	    	updateRank(newIndex,"L");
-	    	updateRank(newIndex,"W");
+	    	updateRank(newIndex,"C",false);//update for all three ranks
+	    	updateRank(newIndex,"L",false);
+	    	updateRank(newIndex,"W",false);
 	    	//initialize empty build informations
 	    	for(int i =0;i<3;i++){
 	    		initialn(32+i*2,1,1,"null");
@@ -255,7 +283,7 @@ public class system extends JFrame {
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		system theGame = new system();
 	}
 
