@@ -251,19 +251,23 @@ public class AI {
 
 			// If lastShot was a hit, set aim mode to target, update hit PD and target
 			if (mode == Mode.TARGET || lastShot.status == SquareTypes.HIT) {
-				for (int i = 0; i < shipLengths.length; i++)
+				for (int i = 0; i < shipLengths.length; i++) {
+					lastShot.huntPDx = 0;
+					lastShot.huntPDy = 0;
+					lastShot.targetPDx = 0;
+					lastShot.targetPDy = 0;
+					lastShot.combinehuntPDXY();
+					lastShot.combinetargetPDXY();
 					updateHitPD(grid, lastShot, shipLengths[i]);
+				}
 				mode = Mode.TARGET;
 				return target(grid, lastShot);
 			}
 
 			// If ship was sunk, check for side-by-side ships and target those
 			else if (lastShot.status == SquareTypes.SUNK) {
-				for (int i = 0; i < grid.length; i++)
-					for (int j = 0; j < grid[0].length; j++)
-						if (lastShot.status == SquareTypes.HIT)
-							return aim(mode, grid[i][j], grid, shipLengths);
 				mode = Mode.HUNT;
+				return aim(mode, null, grid, shipLengths);
 			}
 
 			// If lastShot was a miss, update miss PD and hunt for a target
