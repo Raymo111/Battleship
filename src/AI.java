@@ -71,7 +71,7 @@ public class AI {
 		rotationModifiers[1][3] = -1;
 		if (mode == 1) {// PDDG placement
 			Square minVal[] = new Square[20];
-			
+
 			for (int i = 0; i < shipLengths.length; i++) {// loop for number of ships
 				boolean correct = false;
 				int count = 0;
@@ -248,8 +248,9 @@ public class AI {
 
 		// Try-catch to handle exceptions
 		try {
+
 			// If lastShot was a hit, set aim mode to target, update hit PD and target
-			if (mode == Mode.TARGET) {
+			if (mode == Mode.TARGET || lastShot.status == SquareTypes.HIT) {
 				for (int i = 0; i < shipLengths.length; i++)
 					updateHitPD(grid, lastShot, shipLengths[i]);
 				mode = Mode.TARGET;
@@ -266,7 +267,7 @@ public class AI {
 			}
 
 			// If lastShot was a miss, update miss PD and hunt for a target
-			else if (lastShot.status == SquareTypes.SUNK)
+			else if (lastShot.status == SquareTypes.MISS)
 				for (int i = 0; i < shipLengths.length; i++)
 					updateMissPD(grid, lastShot, shipLengths[i]);
 		} catch (Exception e) {
