@@ -71,6 +71,41 @@ public class AI {
 		rotationModifiers[1][3] = -1;
 		if (mode == 1) {// PDDG placement
 
+			for (int i = 0; i < shipLengths.length; i++) {// loop for number of ships
+				boolean correct = false;
+				int count = 0;
+
+				int y = rand.nextInt(grid.length - 1);// random x coordinate. Start of ship
+				int x = rand.nextInt(grid[0].length - 1);// random y coordinate. Start of ship
+
+				do {
+					correct = false;
+					if (count > 4) {
+						y = rand.nextInt(grid.length - 1);// random y coordinate. Start of ship
+						x = rand.nextInt(grid[0].length - 1);// random x coordinate. Start of ship
+					}
+					for (int a = 0; a < 4; a++) {
+						int rotation = rand.nextInt(4);// random int to represent the orientation of the ship
+
+						if (checkValidShipPosition(y, x, (y + (shipLengths[i] * rotationModifiers[0][rotation])),
+								(x + (shipLengths[i] * rotationModifiers[1][rotation])), rotation, grid)) {
+							correct = true;
+							count = 0;
+							System.out.println(i);
+							System.out.println("Y:" + y + "  X:" + x + "  endY:"
+									+ (y + ((shipLengths[i] - 1) * rotationModifiers[0][rotation])) + "  endX:"
+									+ (x + ((shipLengths[i] - 1) * rotationModifiers[1][rotation])));
+
+							Battleship.homeShips[i] = new Ship(grid, grid[y][x],
+									grid[y + ((shipLengths[i] - 1) * rotationModifiers[0][rotation])][x
+											+ ((shipLengths[i] - 1) * rotationModifiers[1][rotation])]);
+							break;
+						}
+						count++;
+					}
+
+				} while (correct == false);
+			}
 		} else if (mode == 2) {// random ship placement
 			for (int i = 0; i < shipLengths.length; i++) {// loop for number of ships
 				boolean correct = false;
@@ -107,6 +142,9 @@ public class AI {
 
 				} while (correct == false);
 			}
+		} else if (mode == 3) {// manual mode
+			Battleship.homeShips[0] = new Ship(grid, grid[0][0], grid[0][1]);
+			Battleship.homeShips[4] = new Ship(grid, grid[0][2], grid[4][2]);
 		}
 	}
 
