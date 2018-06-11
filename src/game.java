@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -26,14 +27,22 @@ public class game extends JPanel{
     JLabel userBoard = new JLabel(new ImageIcon("gUserSide.png"));
     JLabel enemBoard = new JLabel(new ImageIcon("gEnemySide.png"));
     String[] labelStr = {"1","2","3","4","5","6","7","8","9","10","A","B","C","D","E","F","G","H","I","J"};
-    Color darkBlue = new Color(0,0,40);
-    Color fogBlue = new Color(0,0,80);
-    Color darkRed = new Color(150,40,40);
+    final Color darkBlue = new Color(0,0,40);
+    final Color fogBlue = new Color(0,0,80);
+    final Color darkRed = new Color(150,40,40);
+    final Color darkGreen = new Color(0,30,0);
     JLabel[][] userMap = new JLabel[10][10];
     JLabel[][] enemMap = new JLabel[10][10];
     JLabel[] mapLabels = new JLabel[40];
+    JLabel carrier = new JLabel(new ImageIcon("gCarrier.png"));
+    JLabel battship = new JLabel(new ImageIcon("gBattleship.png"));
+    JLabel cruiser = new JLabel(new ImageIcon("gCruiser.png"));
+    JLabel submarine = new JLabel(new ImageIcon("gSubmarine.png"));
+    JLabel destroyer = new JLabel(new ImageIcon("gDestroyer.png"));
     ArrayList<JLabel> gButtons = new ArrayList<JLabel>();
     ArrayList<JLabel> buttonEffects = new ArrayList<JLabel>();
+    ArrayList<JLabel> ships = new ArrayList<JLabel>();
+    int[] shipLength ={5,4,3,3,2};//positive for horizontal
     MouseListener mouseEffect = new MouseListener(){
 		public void mouseClicked(MouseEvent e) {
 			
@@ -83,10 +92,50 @@ public class game extends JPanel{
 		}
 	};
 	
+	final MouseAdapter dragger = new MouseAdapter() {
+        private JLabel selectedShip;
+        private Point shipLocation ;
+        private Point clickP;
+        public void mousePressed(final MouseEvent e) {
+            JLabel theShip = (JLabel) e.getSource();
+            if (theShip != null&& ships.contains(theShip)) {
+                selectedShip= (JLabel) theShip;
+                shipLocation = selectedShip.getLocation();
+                clickP = e.getPoint();
+                setComponentZOrder(selectedShip, 0);
+                selectedShip.repaint();
+            }
+        }
+        public void mouseDragged(final MouseEvent e) {
+            try{
+                Point newclickP = e.getPoint();
+                int newX = shipLocation.x + (newclickP.x - clickP.x);
+                int newY = shipLocation.y + (newclickP.y - clickP.y);
+//                if(){
+//                	
+//                }
+                selectedShip.setLocation(newX, newY);
+            }catch(Exception exp){
+            }
+        }
+    };
     public game(){
 		setSize(1300,700);
 		setLayout(null);
+		ships.add(carrier);
+		ships.add(battship);
+		ships.add(cruiser);
+		ships.add(submarine);
+		ships.add(destroyer);
+		for(int i =0;i<5;i++){
+    		ships.get(i).setBounds(bInsets.left+150,bInsets.top+150+i*50,50*shipLength[i],50);
+    		System.out.println(shipLength[i]);
+    		add(ships.get(i));
+    	}//end for
 		addMaps();
+		for(int i =0;i<5;i++){
+    		markShip(ships.get(i),shipLength[i]);
+		}
 		gButtons.add(backButton);
 		gButtons.add(startButton);
 		gButtons.add(leaveButton);
@@ -125,6 +174,31 @@ public class game extends JPanel{
 		setVisible(true);
 		
 	}
+
+    /**
+     * The procedure type method shadows the ship onto the grid by marking covered units green.
+     * @param theShip the target ship
+     * @param shipLength the length of the ship with format of positive indicates horizontal, negative indicates vertical
+     */
+    public void markShip(JLabel theShip, int shipLength){
+    	int unitX = (theShip.getX()-150)/50;//calculate the starting unit of at ship's origin
+    	int unitY = (theShip.getY()-150)/50;
+    	int lengthX = 1;//create 2 int variable to store the length of the shadow in units
+    	int lengthY = 1;
+    	if(shipLength>0){//if horizontal
+    		lengthX = shipLength;//reset horizontal length
+    	}else{//if vertical
+    		lengthY = -shipLength;//reset vertical length
+    	}//end if
+    	System.out.println(theShip.getX()+" "+theShip.getY());
+    	System.out.println(unitX+" "+unitY+" "+lengthX+" "+lengthY);
+    	for(int i =unitX;i<unitX+lengthX;i++){
+    		for(int j =unitY;j<unitY+lengthY;j++){
+    			System.out.println(i+" "+j);
+    			userMap[j][i].setBackground(darkGreen);
+    		}//end for
+    	}//end for
+    }//end method
 	public void addMaps(){
 		for(int i =0;i<40;i++){
 			mapLabels[i]=new JLabel(labelStr[i%20]);
@@ -169,6 +243,13 @@ public class game extends JPanel{
 			}
 		}
 	}
+//	public int convertCoor(int shipIndex, int coordinate){
+//		for(int i =0;i<10;i++){
+//			if(){
+//				
+//			}
+//		}
+//	}
 	/**
 	 * The return type method returns the formated String value of long variable for the number of milliseconds.
 	 * @param secondNum long which is the number of milliseconds
@@ -190,7 +271,17 @@ public class game extends JPanel{
 		}//end for
 		return formatedTime.substring(0, formatedTime.length() - 1);//returnt the answer
 	}//end method
-
+	private int getColorCode(Color aColor){
+		if(aColor.equals(darkBlue)){
+			return 1;
+		}else if(aColor.equals(fogBlue)){
+			return 2;
+		}else if(aColor.equals(darkRed)){
+			return 3;
+		}else{
+			return 4;
+		}
+	}
 	
 	public static void main(String[] args){
 		JFrame f = new JFrame();

@@ -9,7 +9,6 @@ import java.util.*;
 public class base extends JPanel{ 
     Dimension mButtonsDimen = new Dimension(270,180);
     Insets bInsets = getInsets();
-    JLabel assisDialog = new JLabel(new ImageIcon("mDialog.png"));
 	JLabel achievementButton = new JLabel(new ImageIcon("mAchievementsButton.png"));
 	JLabel taskButton = new JLabel(new ImageIcon("mTasksButton.png"));
 	JLabel gameButton = new JLabel(new ImageIcon("mGAMEButton.png"));
@@ -23,7 +22,6 @@ public class base extends JPanel{
 	int[] initYCoordinates = {30,50};
 	ArrayList<JLabel> mRightButtons = new ArrayList<JLabel>();
 	ArrayList<JLabel> mEffects = new ArrayList<JLabel>();
-	JLabel assistant = new JLabel(new ImageIcon("Char1.png"));
 	JLabel bgi = new JLabel(new ImageIcon("bgi.jpg"));
 	MouseListener mMousListButtons = new MouseListener(){
 		public void mouseClicked(MouseEvent e) {
@@ -81,7 +79,6 @@ public class base extends JPanel{
         contractPaneButton.setBounds(bInsets.left,bInsets.top+550,40,80);
         contractPane.setBounds(bInsets.left,bInsets.top+550,500,80);
         profileButton.setBounds(bInsets.left,bInsets.top,300,100);
-        assistant.setBounds(bInsets.left,bInsets.top,720,700);
         bgi.setBounds(bInsets.left,bInsets.top,1300,700);
         nameLabel.setBounds(bInsets.left+105,bInsets.top,150,65);
         nameLabel.setForeground(Color.white);
@@ -113,7 +110,6 @@ public class base extends JPanel{
        contractPane.addMouseListener(mMousListButtons);
        add(contractPane);
        add(profileButton);
-       add(assistant);
        add(bgi);
        setVisible(true);
 		

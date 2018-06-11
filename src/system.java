@@ -81,6 +81,23 @@ public class system extends JFrame {
 		public void mouseReleased(MouseEvent e) {}
 	};
 	
+	MouseListener commandBridge = new MouseListener(){
+
+		public void mouseClicked(MouseEvent e) {
+			
+		}
+
+		public void mouseEntered(MouseEvent e) {
+		}
+		public void mouseExited(MouseEvent e) {
+		}
+		public void mousePressed(MouseEvent e) {
+		}
+		public void mouseReleased(MouseEvent e) {
+		}
+		
+	};
+	
 	base baseInter = new base();
 	game gameInter = new game();
 	rankings rankInter;
@@ -295,27 +312,7 @@ public class system extends JFrame {
 			System.out.println(userInfo[i]);
 		}
 	}
-	/**
-	 * The procedure type method write a line of text into the inputLog.
-	 * @param text the text command converted from action on GUI
-	 * @throws IOException exceptions of not finding the log
-	 */
-	public void write(String text) throws IOException{
-		PrintWriter logWriter = new PrintWriter(new FileWriter(inpLog));
-		logWriter.println(text);//write to replace the history with new command
-		logWriter.close();//close the FileWriter
-	}//end method
-	/**
-	 * The procedure type method read a line of text from the systemLog.
-	 * @return command from Battleship object in systemLog.
-	 * @throws IOException exceptions of finding the log
-	 */
-	public String read() throws IOException{
-		BufferedReader systemReader = new BufferedReader(new FileReader(sysLog));
-		String command = systemReader.readLine();//record the command
-		systemReader.close();//close the BufferedReader
-		return command;//return the command String
-	}//end method
+
 	public static void main(String[] args) throws IOException {
 		system theGame = new system();
 	}
