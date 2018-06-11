@@ -5,8 +5,6 @@
  * Description: Battleship ships
  */
 
-import java.util.ArrayList;
-
 public class Ship {
 	public int shipLength;
 	public String shipName;

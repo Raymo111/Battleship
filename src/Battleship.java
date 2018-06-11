@@ -25,10 +25,12 @@ public class Battleship implements java.io.Serializable {
 	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// State of enemy grid
 	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// State of home grid
 	public static Ship[] homeShips = new Ship[shipLengths.length];// A list of home ships
+	public static Ship[] enemyShips = new Ship[shipLengths.length];// A list of home ships
 	public static ArrayList<Square> enemyShotLog = new ArrayList<Square>(20);// A log of enemy shots
 	public static ArrayList<Square> homeShotLog = new ArrayList<Square>(20);// A log of AI's shots
-	public static ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);// A list of used
-																										// ship names
+
+	// A list of used ship names (for ships of the same size with different names)
+	public static ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);
 
 	// Buffered reader to read user input
 	private static BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
@@ -140,8 +142,9 @@ public class Battleship implements java.io.Serializable {
 			input = br.readLine().toUpperCase();
 			if (input.contains("HIT")) {
 				AIShot.status = SquareTypes.HIT;
-				if (input.contains("SUNK"))
+				if (input.contains("SUNK")) {
 					AIShot.status = SquareTypes.SUNK;
+				}
 			} else if (input.contains("MISS"))
 				AIShot.status = SquareTypes.MISS;
 
