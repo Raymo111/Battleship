@@ -44,7 +44,7 @@ public class Ship {
 
 		ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);
 		for (int i = 0; i < Battleship.shipLengths.length; i++)
-			if (Battleship.shipLengths[i] == shipLength && usedShipNames.contains(shipName)) {
+			if (Battleship.shipLengths[i] == shipLength && !usedShipNames.contains(shipName)) {
 				shipName = Battleship.shipNames[i];
 				usedShipNames.add(shipName);
 			}

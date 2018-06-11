@@ -149,11 +149,8 @@ public class Battleship implements java.io.Serializable {
 			input = br.readLine().toUpperCase();
 			if (input.contains("HIT")) {
 				AIShot.status = SquareTypes.HIT;
-				System.out.println("Ship SUNK?");
-				if (input.contains("SUNK")) {
+				if (input.contains("SUNK"))
 					AIShot.status = SquareTypes.SUNK;
-
-				}
 			} else if (input.contains("MISS"))
 				AIShot.status = SquareTypes.MISS;
 
@@ -180,7 +177,7 @@ public class Battleship implements java.io.Serializable {
 						}
 				homeGrid[y][x].status = SquareTypes.HIT;
 				if (homeShipsSunk[shipNumber])
-					System.out.println("HIT, SUNK " + homeShips[shipNumber].shipName);
+					System.out.println("HIT, SUNK " + ship.shipName);
 				else
 					System.out.println("HIT, " + ship.shipName);
 			}
