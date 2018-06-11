@@ -204,31 +204,34 @@ public class AI {
 	 */
 	public Square aim(Mode mode, Square lastShot, Square[][] grid, int[] shipLengths) {
 
-		// If lastShot was a hit, set aim mode to target, update hit PD and target
-		// lastShot
-		if (mode == Mode.TARGET) {
-			for (int i = 0; i < shipLengths.length; i++)
-				updateHitPD(grid, lastShot, shipLengths[i]);
-			mode = Mode.TARGET;
-			return target(grid, lastShot);
+		// Try-catch to handle exceptions
+		try {
+			// If lastShot was a hit, set aim mode to target, update hit PD and target
+			if (mode == Mode.TARGET) {
+				for (int i = 0; i < shipLengths.length; i++)
+					updateHitPD(grid, lastShot, shipLengths[i]);
+				mode = Mode.TARGET;
+				return target(grid, lastShot);
+			}
+
+			// If ship was sunk, check for side-by-side ships and target those
+			else if (lastShot.status == SquareTypes.SUNK) {
+				for (int i = 0; i < grid.length; i++)
+					for (int j = 0; j < grid[0].length; j++)
+						if (lastShot.status == SquareTypes.HIT)
+							return aim(mode, grid[i][j], grid, shipLengths);
+				mode = Mode.HUNT;
+			}
+
+			// If lastShot was a miss, update miss PD and hunt for a target
+			else if (lastShot.status == SquareTypes.SUNK)
+				for (int i = 0; i < shipLengths.length; i++)
+					updateMissPD(grid, lastShot, shipLengths[i]);
+		} catch (Exception e) {
 		}
 
-		// If ship was sunk, check for side-by-side ships and target those
-		else if (lastShot.status == SquareTypes.SUNK) {
-			for (int i = 0; i < grid.length; i++)
-				for (int j = 0; j < grid[0].length; j++)
-					if (lastShot.status == SquareTypes.HIT)
-						return aim(mode, grid[i][j], grid, shipLengths);
-			mode = Mode.HUNT;
-			return hunt(grid);
-		}
-
-		// If lastShot was a miss, update miss PD and hunt for a target
-		else {
-			for (int i = 0; i < shipLengths.length; i++)
-				updateMissPD(grid, lastShot, shipLengths[i]);
-			return hunt(grid);
-		}
+		// No lastShot
+		return hunt(grid);
 	}
 
 	/**
