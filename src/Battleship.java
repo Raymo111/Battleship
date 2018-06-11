@@ -209,7 +209,7 @@ public class Battleship implements java.io.Serializable {
 				else
 					System.out.print("| ");
 			}
-			System.out.println();
+			System.out.print("|\n");
 		}
 	}
 
