@@ -13,8 +13,7 @@ public class system extends JFrame {
 	int userIndex;
 	login startGame;
 	String[] userInfo = new String[38];
-	static String log = "";
-	static boolean workDone = false;
+	static String firstHand = "";
 	/*
 	 * dewae to execute code in game from Battleships:
 	 * 2 Files: systemLog, inputLog
@@ -35,7 +34,6 @@ public class system extends JFrame {
 				add(gameInter);
 				repaint();
 				enterGame();
-				Battleship.newGameProcedure();
 			}
 			if(source.equals(baseInter.rankingButton)){
 				System.out.println(6);
@@ -88,6 +86,11 @@ public class system extends JFrame {
 			if(source.equals(gameInter.startButton)){
 				inGame = true;
 				gameInter.timer.start();
+				try {
+					Battleship.newGameProcedure();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 				//remove drag functions, start timer
 			}
 		}
@@ -144,10 +147,10 @@ public class system extends JFrame {
 					options,  
 					options[0]); 
 			if(firsthand==0){
-				writeLog("u");
+				firstHand = "u";
 				gameInter.userTurn = true;
 			}else{
-				writeLog("ai");
+				firstHand = "ai";
 				gameInter.userTurn = false;
 			}
 		}
@@ -314,10 +317,6 @@ public class system extends JFrame {
 		for(int i=0;i<38;i++){
 			System.out.println(userInfo[i]);
 		}
-	}
-	public void writeLog(String command){
-		log = command;
-		workDone = true;
 	}
 	public static void main(String[] args) throws IOException {
 		system theGame = new system();

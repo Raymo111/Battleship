@@ -81,7 +81,7 @@ public class Battleship implements java.io.Serializable {
 		System.out.println("You first or Michael (the AI) first?");
 		String input = br.readLine().toLowerCase();
 
-		// String input = readLog();
+		//~ String input = system.firstHand;
 
 		// User wants AI to go first
 		if (input.contains("a")) {
@@ -96,14 +96,13 @@ public class Battleship implements java.io.Serializable {
 		System.out.println("Place your ships on a separate grid. When you're ready, press ENTER to continue...");
 		br.readLine();
 
-		// while(!system.inGame){}//wait for the startButton to be clicked
-
 		// Only executes once for when user goes first
 		if (!AIFirst) {
 
 			// Get user's shot
 			System.out.println("Round 1. Your turn.\nEnter coordinates to fire:");
 			input = br.readLine().toUpperCase();
+			//~input = game.askFire();
 			x = Integer.parseInt(input.substring(1, 2)) - 1;
 			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
 			if (x == 1) {// Get second digit, could be 10
@@ -119,6 +118,7 @@ public class Battleship implements java.io.Serializable {
 			if (userShot.shipType == null) {// Miss
 				userShot.status = SquareTypes.MISS;
 				System.out.println("MISS");
+				//~game.fireResult("MISS");
 			} else {// Hit
 				homeGrid[y][x].status = SquareTypes.HIT;
 				for (int i = 0; i < homeShips.length; i++)
@@ -128,6 +128,7 @@ public class Battleship implements java.io.Serializable {
 							break;
 						}
 				System.out.println("HIT, " + ship.shipName);
+				//~game.fireResult("HIT");
 			}
 			enemyShotLog.add(homeGrid[y][x]);// Add enemy shot to log
 			round++;
@@ -152,7 +153,9 @@ public class Battleship implements java.io.Serializable {
 			// Get user's response
 			System.out.println("HIT or MISS?");
 			input = br.readLine().toUpperCase();
-
+			
+			//~input = game.getFire(AIShot.x,AIShot.y);
+			
 			// AI hit a ship
 			if (input.contains("HIT")) {
 				AIShot.status = SquareTypes.HIT;
@@ -171,6 +174,7 @@ public class Battleship implements java.io.Serializable {
 			// Get user's shot
 			System.out.println("Round " + round + ". Your turn.\nEnter coordinates to fire:");
 			input = br.readLine().toUpperCase();
+			//~input = game.askFire();
 			x = Integer.parseInt(input.substring(1, 2)) - 1;
 			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
 			if (x == 1) {// Get second digit, could be 10
@@ -186,6 +190,7 @@ public class Battleship implements java.io.Serializable {
 			if (userShot.shipType == null) {// Miss
 				userShot.status = SquareTypes.MISS;
 				System.out.println("MISS");
+				//~game.fireResult("MISS");
 			} else {// Hit
 				userShot.status = SquareTypes.HIT;
 				for (int i = 0; i < homeShips.length; i++)
@@ -221,6 +226,7 @@ public class Battleship implements java.io.Serializable {
 						userWin = true;
 				} else
 					System.out.println("HIT, " + ship.shipName);
+					//~game.fireResult("HIT");
 			}
 			enemyShotLog.add(homeGrid[y][x]);// Add enemy shot to log
 
@@ -229,10 +235,10 @@ public class Battleship implements java.io.Serializable {
 		// If user wins
 		if (userWin)
 			System.out.println("Congrats, you have won!");
-		// system.inGame = false;
+		//~game.endGame(true);
 		if (AIWin)
 			System.out.println("Sorry, you have lost.");
-		// system.inGame = true;
+		//-game.endGame(false);
 	}
 
 	public static void displayPD(Square[][] grid) {
@@ -262,12 +268,5 @@ public class Battleship implements java.io.Serializable {
 				System.out.print("|" + array[j][i]);
 			System.out.println();
 		}
-	}
-
-	public static String readLog() {
-		while (!system.workDone) {
-		} // wait for the system to mark processed
-		system.workDone = false;// reset for next command
-		return system.log;// return command from system
 	}
 }

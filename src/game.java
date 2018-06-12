@@ -14,7 +14,9 @@ import java.io.*;
 
 public class game extends JPanel{
     Insets bInsets = getInsets();
-    Boolean userTurn = null;
+    static Boolean userTurn = null;
+    static JLabel winWord = new JLabel(new ImageIcon("gWin.png"));
+    static JLabel losWord = new JLabel(new ImageIcon("gLose.png"));
     JLabel bgi = new JLabel(new ImageIcon("gameBgi.png"));
 	JLabel timerBoard = new JLabel(new ImageIcon("gTimer.png"));
 	JLabel timerLabel = new JLabel("00:00:00");
@@ -27,13 +29,13 @@ public class game extends JPanel{
     JLabel userBoard = new JLabel(new ImageIcon("gUserSide.png"));
     JLabel enemBoard = new JLabel(new ImageIcon("gEnemySide.png"));
     String[] labelStr = {"1","2","3","4","5","6","7","8","9","10","A","B","C","D","E","F","G","H","I","J"};
-    final Color darkBlue = new Color(0,0,40);
-    final Color fogBlue = new Color(0,0,80);
-    final Color darkRed = new Color(150,40,40);
-    final Color darkGreen = new Color(0,30,0);
+    final static Color darkBlue = new Color(0,0,40);
+    final static Color fogBlue = new Color(0,0,80);
+    final static Color darkRed = new Color(150,40,40);
+    final static Color darkGreen = new Color(0,30,0);
     ArrayList<Color> unitColor = new ArrayList<Color>();
-    JLabel[][] userMap = new JLabel[10][10];
-    JLabel[][] enemMap = new JLabel[10][10];
+    static JLabel[][] userMap = new JLabel[10][10];
+    static JLabel[][] enemMap = new JLabel[10][10];
     JLabel[] mapLabels = new JLabel[40];
     JLabel carrier = new JLabel(new ImageIcon("gCarrier.png"));
     JLabel battship = new JLabel(new ImageIcon("gBattleship.png"));
@@ -44,9 +46,24 @@ public class game extends JPanel{
     ArrayList<JLabel> buttonEffects = new ArrayList<JLabel>();
 //    ArrayList<JLabel> ships = new ArrayList<JLabel>();
     int[] shipLength ={5,4,3,3,2};//positive for horizontal
+	static int lastHitX = -1;
+	static int lastHitY = -1;
+	MouseListener returnEnd = new MouseListener(){
+		public void mouseClicked(MouseEvent arg0) {
+			((JLabel)arg0.getSource()).setVisible(false);
+		}
+		public void mouseEntered(MouseEvent arg0) {
+		}
+		public void mouseExited(MouseEvent arg0) {
+		}
+		public void mousePressed(MouseEvent arg0) {
+		}
+		public void mouseReleased(MouseEvent arg0) {
+		}
+		
+	};
     MouseListener mouseEffect = new MouseListener(){
 		public void mouseClicked(MouseEvent e) {
-			
 			try{
 				int i = gButtons.indexOf((JLabel)e.getSource());
 				buttonEffects.get(i).setVisible(false);
@@ -61,29 +78,47 @@ public class game extends JPanel{
 			int i = gButtons.indexOf((JLabel)e.getSource());
 			buttonEffects.get(i).setVisible(false);
 		}
-		public void mousePressed(MouseEvent e) {
-		}
-		public void mouseReleased(MouseEvent e) {
-		}
+		public void mousePressed(MouseEvent e) {}
+		public void mouseReleased(MouseEvent e) {}
     };
 	MouseListener unitDis = new MouseListener(){
 		public void mouseClicked(MouseEvent e) {
-			JLabel source = (JLabel)e.getSource();
-			source.setBackground(getNextColor(source.getBackground()));
+			if(!system.inGame){
+				JLabel source = (JLabel)e.getSource();
+				source.setBackground(getNextColor(source.getBackground()));
+			}
 		}
 		public void mouseEntered(MouseEvent e) {
-			
 		}
 		public void mouseExited(MouseEvent e) {
-			
 		}
 		public void mousePressed(MouseEvent e) {
-			
 		}
 		public void mouseReleased(MouseEvent e) {
-			
 		}
 	};
+	MouseListener unitFire = new MouseListener(){
+		public void mouseClicked(MouseEvent e) {
+			if(userTurn){
+				JLabel source = (JLabel)e.getSource();
+				if(source.getBackground().equals(fogBlue)){//when the unit is not hit yet
+					lastHitX = (e.getX()-150)/50;
+					lastHitY = (e.getY()-150)/50;
+					fired=true;
+				}//end if
+			}
+		}//end method
+		public void mouseEntered(MouseEvent e) {
+		}
+		public void mouseExited(MouseEvent e) {
+		}
+		public void mousePressed(MouseEvent e) {
+		}
+		public void mouseReleased(MouseEvent e) {
+		}
+	};
+
+	static boolean fired = false;
 	
 /*	final MouseAdapter dragger = new MouseAdapter() {
         private JLabel selectedShip;
@@ -118,6 +153,14 @@ public class game extends JPanel{
     public game(){
 		setSize(1300,700);
 		setLayout(null);
+		winWord.setBounds(bInsets.left,bInsets.top+190,1300,300);
+		winWord.addMouseListener(returnEnd);
+		add(winWord);
+		winWord.setVisible(false);
+		losWord.setBounds(bInsets.left,bInsets.top+190,1300,300);
+		losWord.addMouseListener(returnEnd);
+		add(losWord);
+		losWord.setVisible(false);;
 		unitColor.add(darkBlue);
 		unitColor.add(darkGreen);
 		unitColor.add(darkRed);
@@ -305,23 +348,48 @@ public class game extends JPanel{
 	private Color getNextColor(Color aColor){
 		return unitColor.get(unitColor.indexOf(aColor)+1);
 	}
-	
-	public void headsUp(int x, int y){
+
+	public static String askFire(){
+		//revalidate(); //if doesn't work
+		userTurn = true;
+		while(!fired){}
+		fired = false;
+		return 	(Character.toString((char) ( lastHitY+ 65)) + Integer.toString( lastHitX + 1)).toUpperCase();
+	}
+	public static void fireResult(String result){
+		userTurn = false;
+		if(result.equals("MISS")){
+			enemMap[lastHitY][lastHitX].setBackground(darkBlue);
+		}else{
+			enemMap[lastHitY][lastHitX].setBackground(darkRed);
+		}
+	}
+	public static String getFire(int x, int y){
 		Color unitStatus = userMap[x][y].getBackground();
 		if(unitStatus.equals(darkGreen)){
+			userMap[x][y].setBackground(darkRed);
 			int[] adx = {0,1,0,-1};
 			int[] ady = {1,0,-1,0};
 			for(int i =0;i<4;i++){
 				if(userMap[x+adx[i]][y+ady[i]].getBackground().equals(darkGreen)){
-					system.log = "HIT";
-					system.workDone = true;
-					return;
+					return "HIT";
 				}
 			}
-			
+			return "SUNK";			
 		}else {
-//			return "MISS";
+			userMap[x][y].setBorder(new LineBorder(Color.gray));;
+			return "MISS";
 		}
+	}
+	public static void endGame(boolean userWin){
+		system.inGame=false;
+		userTurn = false;
+		if(userWin){
+			winWord.setVisible(true);
+		}else{
+			losWord.setVisible(true);
+		}
+		//and reset game method
 	}
 	public static void main(String[] args){
 		JFrame f = new JFrame();
