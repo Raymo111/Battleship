@@ -6,7 +6,6 @@
  */
 import java.io.*;
 import java.util.ArrayList;
-import javax.swing.*;
 
 public class Battleship implements java.io.Serializable {
 
@@ -34,7 +33,7 @@ public class Battleship implements java.io.Serializable {
 
 	// Buffered reader to read user input
 	private static BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
-	
+
 	public static void main(String[] args) throws IOException {
 		// while (true)
 		newGameProcedure();
@@ -59,7 +58,8 @@ public class Battleship implements java.io.Serializable {
 
 		// Create a new AI - God's warrior angel
 		AI Michael = new AI();
-		display2Darray(homeGrid);
+		displayPD(enemyGrid);
+		displayShips(homeGrid);
 		game(Michael);
 	}
 
@@ -72,7 +72,7 @@ public class Battleship implements java.io.Serializable {
 
 		// Local variables
 		boolean AIFirst, AIWin = false, userWin = false;
-		int round = 0, x, y, shipNumber = 0;// The index of a ship in homeShips array
+		int round = 0, x, y, shipNumber = 0;// The index of a ship in homeShips grid
 		Square userShot = null, AIShot = null;
 		Ship ship = homeShips[0];
 		boolean flag;
@@ -95,8 +95,9 @@ public class Battleship implements java.io.Serializable {
 		// Wait for user to place ships
 		System.out.println("Place your ships on a separate grid. When you're ready, press ENTER to continue...");
 		br.readLine();
-		
-//		while(!system.inGame){}//wait for the startButton to be clicked
+
+		// while(!system.inGame){}//wait for the startButton to be clicked
+
 
 		// Only executes once for when user goes first
 		if (!AIFirst) {
@@ -134,9 +135,7 @@ public class Battleship implements java.io.Serializable {
 		}
 
 		// Game do-while loop
-		do
-
-		{
+		do {
 
 			// Increment round
 			round++;
@@ -144,6 +143,7 @@ public class Battleship implements java.io.Serializable {
 			// Get AI's shot
 			System.out.println("Round " + round + ". Michael's turn.");
 			AIShot = Michael.aim(AIShot, enemyGrid, shipLengths);
+			displayPD(enemyGrid);
 			homeShotLog.add(AIShot);// Add home shot to log
 
 			// Print AI's shot's y-x coordinate converted to Battleship standards (e.g. A1)
@@ -222,23 +222,26 @@ public class Battleship implements java.io.Serializable {
 		// If user wins
 		if (userWin)
 			System.out.println("Congrats, you have won!");
-		//	system.inGame = false;
+		// system.inGame = false;
 		if (AIWin)
 			System.out.println("Sorry, you have lost.");
-		//	system.inGame = true;
+		// system.inGame = true;
 	}
 
-	public static void display2Darray(Square[][] array) {
-		for (int i = 0; i < array.length; i++) {
-			for (int j = 0; j < array.length; j++) {
-				System.out.print("|" + array[i][j].totalSquarePD);
+	public static void displayPD(Square[][] grid) {
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[i].length; j++) {
+				System.out.printf("|%2d", grid[i][j].totalSquarePD);
 			}
 			System.out.println();
 		}
-		for (int i = 0; i < array.length; i++) {
-			for (int j = 0; j < array.length; j++) {
-				if (array[i][j].shipType != null && array[i][j].shipType.shipName != null)
-					System.out.print("|" + array[i][j].shipType.shipName.charAt(0));
+	}
+
+	public static void displayShips(Square[][] grid) {
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid.length; j++) {
+				if (grid[i][j].shipType != null && grid[i][j].shipType.shipName != null)
+					System.out.print("|" + grid[i][j].shipType.shipName.charAt(0));
 				else
 					System.out.print("| ");
 			}

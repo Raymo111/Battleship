@@ -252,22 +252,20 @@ public class AI {
 				for (int i = 0; i < shipLengths.length; i++)
 					updateHitPD(grid, lastShot, shipLengths[i]);
 				mode = Mode.TARGET;
-				return target(grid, lastShot);
+				return target(mode, grid);
 			}
 
 			// If ship was sunk, check for unsunk ships and target those
 			else if (lastShot.status == SquareTypes.SUNK) {
 				boolean flag = false;
-				Square shot = lastShot;
 				for (int i = 0; i < grid.length; i++)
 					for (int j = 0; j < grid[i].length; j++)
 						if (grid[i][j].status == SquareTypes.HIT) {
-							shot = grid[i][j];
 							flag = true;
 							break;
 						}
 				if (flag) {// More hit squares than ships sunk
-					return target(grid, shot);
+					return target(mode, grid);
 				} else {// All hit ships were sunk
 					lastShot.huntPDx = 0;
 					lastShot.huntPDy = 0;
@@ -288,16 +286,16 @@ public class AI {
 				for (int i = 0; i < shipLengths.length; i++)
 					updateMissPD(mode, grid, lastShot, shipLengths[i]);
 				if (mode == Mode.HUNT)
-					return hunt(grid);
+					return target(mode, grid);
 				else
-					return target(grid, lastShot);
+					return target(mode, grid);
 			}
 
 		} catch (Exception e) {
 		}
 
 		// No lastShot
-		return hunt(grid);
+		return target(mode, grid);
 	}
 
 	/**
@@ -390,13 +388,13 @@ public class AI {
 
 		// Going left
 		if (lastShot.x - 1 != bounds[2])
-			grid[lastShot.y][lastShot.x - 1].targetPDy += 2;
+			grid[lastShot.y][lastShot.x - 1].targetPDx += 2;
 		if (lastShot.x - 2 != bounds[2])
 			grid[lastShot.y][lastShot.x - 2].targetPDy++;
 
 		// Going right
 		if (lastShot.x + 1 != bounds[3])
-			grid[lastShot.y][lastShot.x + 1].targetPDy += 2;
+			grid[lastShot.y][lastShot.x + 1].targetPDx += 2;
 		if (lastShot.x + 2 != bounds[3])
 			grid[lastShot.y][lastShot.x + 2].targetPDy++;
 
@@ -452,36 +450,29 @@ public class AI {
 	}
 
 	/**
-	 * Finds the highest likely location of a ship from the entire grid
+	 * Finds the highest likely location of a ship from the entire grid (with
+	 * parity)
 	 * 
 	 * @return The target to fire at
 	 */
-	public Square hunt(Square[][] grid) {
+	public Square target(Mode mode, Square[][] grid) {
 		int max = 0;
-		Square hunt = grid[0][0];
-		for (int i = 0; i < grid[0].length; i++)
-			for (int j = 0; j < grid.length; j++)
-				if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquarePD > max) {
-					max = grid[i][j].totalSquarePD;
-					hunt = grid[i][j];
-				}
-		return hunt;
-	}
-
-	/**
-	 * Finds the highest likely location of a ship from a 3x3 cross of a grid
-	 * 
-	 * @return The target to fire at
-	 */
-	public Square target(Square[][] grid, Square lastShot) {
-		int max = 0;
-		Square target = lastShot;
-		for (int i = 0; i < grid[0].length; i++)
-			for (int j = 0; j < grid.length; j++)
-				if (grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquarePD > max) {
-					max = grid[i][j].totalSquarePD;
-					target = grid[i][j];
-				}
+		Square target = grid[0][0];
+		if (mode == Mode.HUNT)
+			for (int i = 0; i < grid[0].length; i++)
+				for (int j = 0; j < grid.length; j++)
+					if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN
+							&& grid[i][j].totalSquarePD > max) {
+						max = grid[i][j].totalSquarePD;
+						target = grid[i][j];
+					}
+		if (mode == Mode.TARGET)
+			for (int i = 0; i < grid[0].length; i++)
+				for (int j = 0; j < grid.length; j++)
+					if (grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquarePD > max) {
+						max = grid[i][j].totalSquarePD;
+						target = grid[i][j];
+					}
 		return target;
 	}
 
