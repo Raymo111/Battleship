@@ -97,7 +97,8 @@ public class game extends JPanel{
         private Point shipLocation ;
         private Point clickP;
         public void mousePressed(final MouseEvent e) {
-            JLabel theShip = (JLabel) e.getSource();
+            JLabel theShip = (JLabel)findComponentAt(e.getX(), e.getY());
+            System.out.println(theShip.getIcon().toString());
             if (theShip != null&& ships.contains(theShip)) {
                 selectedShip= (JLabel) theShip;
                 shipLocation = selectedShip.getLocation();
@@ -108,13 +109,15 @@ public class game extends JPanel{
         }
         public void mouseDragged(final MouseEvent e) {
             try{
+                int theIndex = ships.indexOf((JLabel)findComponentAt(e.getX(), e.getY()));
                 Point newclickP = e.getPoint();
-                int newX = shipLocation.x + (newclickP.x - clickP.x);
-                int newY = shipLocation.y + (newclickP.y - clickP.y);
-//                if(){
-//                	
-//                }
-                selectedShip.setLocation(newX, newY);
+                int newX = convertCoor(shipLength[theIndex],shipLocation.x + (newclickP.x - clickP.x));
+                int newY = convertCoor(shipLength[theIndex],-(shipLocation.y + (newclickP.y - clickP.y)));
+                if(newX!=-1&&newY!=-1){
+                    markShip(ships.get(theIndex),shipLength[theIndex],darkRed);
+                    selectedShip.setLocation(newX, newY);
+                    markShip(ships.get(theIndex),shipLength[theIndex],darkGreen);
+                }
             }catch(Exception exp){
             }
         }
@@ -129,12 +132,12 @@ public class game extends JPanel{
 		ships.add(destroyer);
 		for(int i =0;i<5;i++){
     		ships.get(i).setBounds(bInsets.left+150,bInsets.top+150+i*50,50*shipLength[i],50);
-    		System.out.println(shipLength[i]);
+//    		System.out.println(shipLength[i]);
     		add(ships.get(i));
     	}//end for
 		addMaps();
 		for(int i =0;i<5;i++){
-    		markShip(ships.get(i),shipLength[i]);
+    		markShip(ships.get(i),shipLength[i],darkGreen);
 		}
 		gButtons.add(backButton);
 		gButtons.add(startButton);
@@ -171,6 +174,17 @@ public class game extends JPanel{
 		bgi.setBounds(bInsets.left,bInsets.top,1300,700);
 		add(bgi);
 		setBackground(Color.DARK_GRAY);
+		addMouseListener(dragger);
+		addMouseMotionListener(dragger);
+		//start the game
+//		removeMouseListener(dragger);
+//		removeMouseMotionListener(dragger);
+//		for(int i =0;i<10;i++){
+//			for(int j =0;j<10;j++){
+//				userMap[i][j].addMouseListener(unitDis);
+//				enemMap[i][j].addMouseListener(unitDis);
+//			}
+//		}
 		setVisible(true);
 		
 	}
@@ -180,7 +194,7 @@ public class game extends JPanel{
      * @param theShip the target ship
      * @param shipLength the length of the ship with format of positive indicates horizontal, negative indicates vertical
      */
-    public void markShip(JLabel theShip, int shipLength){
+    public void markShip(JLabel theShip, int shipLength, Color shadow){
     	int unitX = (theShip.getX()-150)/50;//calculate the starting unit of at ship's origin
     	int unitY = (theShip.getY()-150)/50;
     	int lengthX = 1;//create 2 int variable to store the length of the shadow in units
@@ -190,14 +204,15 @@ public class game extends JPanel{
     	}else{//if vertical
     		lengthY = -shipLength;//reset vertical length
     	}//end if
-    	System.out.println(theShip.getX()+" "+theShip.getY());
-    	System.out.println(unitX+" "+unitY+" "+lengthX+" "+lengthY);
+//    	System.out.println(theShip.getX()+" "+theShip.getY());
+//    	System.out.println(unitX+" "+unitY+" "+lengthX+" "+lengthY);
     	for(int i =unitX;i<unitX+lengthX;i++){
     		for(int j =unitY;j<unitY+lengthY;j++){
-    			System.out.println(i+" "+j);
-    			userMap[j][i].setBackground(darkGreen);
+//    			System.out.println(i+" "+j);
+    			userMap[j][i].setBackground(shadow);
     		}//end for
     	}//end for
+    	theShip.setBackground(darkRed);;
     }//end method
 	public void addMaps(){
 		for(int i =0;i<40;i++){
@@ -236,20 +251,38 @@ public class game extends JPanel{
 				enemMap[i][j].setBackground(fogBlue);
 				userMap[i][j].setOpaque(true);
 				enemMap[i][j].setOpaque(true);
-				userMap[i][j].addMouseListener(unitDis);
-				enemMap[i][j].addMouseListener(unitDis);
+
 				add(userMap[i][j]);
 				add(enemMap[i][j]);
 			}
 		}
 	}
-//	public int convertCoor(int shipIndex, int coordinate){
-//		for(int i =0;i<10;i++){
-//			if(){
-//				
-//			}
-//		}
-//	}
+	/**
+	 * The return type method convert a coordinate of a ship to legal coordinates which fits the map and return -1 if out of range.
+	 * @param shipLength the length of ship, follows + if horizontal, - if vertical
+	 * @param coordinate the coordinate of the ship, follows + if x, - if y
+	 * @return the converted coordinate or -1s
+	 */
+	public int convertCoor(int shipLength, int coordinate){
+		if(coordinate<0){
+			System.out.println(shipLength+" y"+coordinate);
+		}else{
+			System.out.println(shipLength+" x"+coordinate);
+		}
+		if(Math.abs(coordinate)<150){
+			return -1;
+		}//when the new origin locates at the top or left of map: illegal
+		if(shipLength*coordinate>0){//in direction of the ship,
+			if(coordinate>650-shipLength*50){
+				return -1;
+			}//if the ship goes out of the map: illegal
+		}else{//in direction perpendicular to the ship
+			if(coordinate>600){
+				return -1;
+			}//if the ship goes out of the map: illegal
+		}//end if
+		return (coordinate/50)*50;
+	}//end method
 	/**
 	 * The return type method returns the formated String value of long variable for the number of milliseconds.
 	 * @param secondNum long which is the number of milliseconds

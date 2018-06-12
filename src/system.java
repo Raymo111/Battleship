@@ -22,8 +22,6 @@ public class system extends JFrame {
 	 */
 	
 	Battleship oYa = new Battleship();
-	File sysLog = new File("systemLog.txt");
-	File inpLog = new File("inputLog.txt");
 
 	MouseListener directory = new MouseListener() {
 		public void mouseClicked(MouseEvent event) {

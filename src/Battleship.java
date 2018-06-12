@@ -4,8 +4,7 @@
  * Date created: 30/05/2018
  * Description: Main class for battleship game
  */
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Battleship implements java.io.Serializable {
@@ -34,7 +33,7 @@ public class Battleship implements java.io.Serializable {
 
 	// Buffered reader to read user input
 	private static BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
-
+	
 	public static void main(String[] args) throws IOException {
 		// while (true)
 		newGameProcedure();
@@ -246,5 +245,17 @@ public class Battleship implements java.io.Serializable {
 				System.out.print("|" + array[j][i]);
 			System.out.println();
 		}
+	}
+	public String read()throws InterruptedException, IOException{
+		Thread.sleep(500);
+		BufferedReader logReader = new BufferedReader(new FileReader("inLog.txt"));
+		String theLine = logReader.readLine();
+		logReader.close();
+		return theLine;
+	}
+	public void write(String command) throws IOException{
+		PrintWriter logWriter = new PrintWriter(new FileWriter("ouLog.txt"));
+		logWriter.println(command);
+		logWriter.close();
 	}
 }
