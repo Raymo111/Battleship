@@ -337,7 +337,7 @@ public class AI {
 			// Going left
 			if (lastShot.x - bounds[2] >= shipLength) // No bounds
 				for (int i = 1; i < shipLength; i++)
-					grid[lastShot.y][lastShot.x - i].huntPDy -= shipLength - i;
+					grid[lastShot.y][lastShot.x - i].huntPDx -= shipLength - i;
 			else // With bounds
 				for (int i = bounds[2]; i < lastShot.x; i++)
 					grid[lastShot.y][i].huntPDx -= lastShot.x - i;
@@ -417,7 +417,7 @@ public class AI {
 	private int[] getBounds(Square lastShot, Square[][] grid) {
 
 		// Boundaries set for decrementing total square values
-		int[] bounds = new int[] { -1, -1, -1, -1 };
+		int[] bounds = new int[] { -1, -1, grid.length, grid[0].length };
 
 		// Going up
 		for (int i = lastShot.y - 1; i >= 0; i--)

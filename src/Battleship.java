@@ -80,8 +80,8 @@ public class Battleship implements java.io.Serializable {
 		// Who goes first
 		System.out.println("You first or Michael (the AI) first?");
 		String input = br.readLine().toLowerCase();
-		
-//		String input = readLog();
+
+		// String input = readLog();
 
 		// User wants AI to go first
 		if (input.contains("a")) {
@@ -97,7 +97,6 @@ public class Battleship implements java.io.Serializable {
 		br.readLine();
 
 		// while(!system.inGame){}//wait for the startButton to be clicked
-
 
 		// Only executes once for when user goes first
 		if (!AIFirst) {
@@ -256,9 +255,11 @@ public class Battleship implements java.io.Serializable {
 			System.out.println();
 		}
 	}
-	public static String readLog(){
-		while(!system.workDone){}//wait for the system to mark processed
-		system.workDone = false;//reset for next command
-		return system.log;//return command from system
+
+	public static String readLog() {
+		while (!system.workDone) {
+		} // wait for the system to mark processed
+		system.workDone = false;// reset for next command
+		return system.log;// return command from system
 	}
 }
