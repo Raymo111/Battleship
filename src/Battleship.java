@@ -143,8 +143,8 @@ public class Battleship implements java.io.Serializable {
 
 			// Get AI's shot
 			System.out.println("Round " + round + ". Michael's turn.");
-			displayPD(enemyGrid);
 			AIShot = Michael.aim(AIShot, enemyGrid, shipLengths);
+			displayPD(enemyGrid);
 			homeShotLog.add(AIShot);// Add home shot to log
 
 			// Print AI's shot's y-x coordinate converted to Battleship standards (e.g. A1)
@@ -231,8 +231,8 @@ public class Battleship implements java.io.Serializable {
 
 	public static void displayPD(Square[][] grid) {
 		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid.length; j++) {
-				System.out.print("|" + grid[i][j].totalSquarePD);
+			for (int j = 0; j < grid[i].length; j++) {
+				System.out.printf("|%2d", grid[i][j].totalSquarePD);
 			}
 			System.out.println();
 		}

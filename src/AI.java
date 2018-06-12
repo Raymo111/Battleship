@@ -388,13 +388,13 @@ public class AI {
 
 		// Going left
 		if (lastShot.x - 1 != bounds[2])
-			grid[lastShot.y][lastShot.x - 1].targetPDy += 2;
+			grid[lastShot.y][lastShot.x - 1].targetPDx += 2;
 		if (lastShot.x - 2 != bounds[2])
 			grid[lastShot.y][lastShot.x - 2].targetPDy++;
 
 		// Going right
 		if (lastShot.x + 1 != bounds[3])
-			grid[lastShot.y][lastShot.x + 1].targetPDy += 2;
+			grid[lastShot.y][lastShot.x + 1].targetPDx += 2;
 		if (lastShot.x + 2 != bounds[3])
 			grid[lastShot.y][lastShot.x + 2].targetPDy++;
 
