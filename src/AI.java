@@ -280,10 +280,18 @@ public class AI {
 				}
 			}
 
-			// If lastShot was a miss, update miss PD and hunt for a target
-			else if (lastShot.status == SquareTypes.MISS)
+			/*
+			 * If lastShot was a miss, update miss PD and hunt for a target if in hunt mode,
+			 * or target a target if in target mode
+			 */
+			else if (lastShot.status == SquareTypes.MISS) {
 				for (int i = 0; i < shipLengths.length; i++)
 					updateMissPD(mode, grid, lastShot, shipLengths[i]);
+				if (mode == Mode.HUNT)
+					return hunt(grid);
+				else
+					return target(grid, lastShot);
+			}
 
 		} catch (Exception e) {
 		}
@@ -306,46 +314,53 @@ public class AI {
 
 		int[] bounds = getBounds(lastShot, grid);
 
-		// Set last shot (miss)'s PD to 0
-		lastShot.huntPDx = 0;
-		lastShot.huntPDy = 0;
+		if (mode == Mode.HUNT) {
 
-		// Going up
-		if (lastShot.y - bounds[0] >= shipLength) // No bounds
-			for (int i = 1; i < shipLength; i++)
-				grid[lastShot.y - i][lastShot.x].huntPDy -= shipLength - i;
-		else // With bounds
-			for (int i = bounds[0]; i < lastShot.y; i++)
-				grid[i][lastShot.x].huntPDy -= lastShot.y - i;
+			// Set last shot (miss)'s PD to 0
+			lastShot.huntPDx = 0;
+			lastShot.huntPDy = 0;
 
-		// Going down
-		if (bounds[1] - lastShot.y >= shipLength) // No bounds
-			for (int i = 1; i < shipLength; i++)
-				grid[lastShot.y + i][lastShot.x].huntPDy -= shipLength - i;
-		else // With bounds
-			for (int i = bounds[1]; i > lastShot.y; i--)
-				grid[i][lastShot.x].huntPDy -= i - lastShot.y;
+			// Going up
+			if (lastShot.y - bounds[0] >= shipLength) // No bounds
+				for (int i = 1; i < shipLength; i++)
+					grid[lastShot.y - i][lastShot.x].huntPDy -= shipLength - i;
+			else // With bounds
+				for (int i = bounds[0]; i < lastShot.y; i++)
+					grid[i][lastShot.x].huntPDy -= lastShot.y - i;
 
-		// Going left
-		if (lastShot.x - bounds[2] >= shipLength) // No bounds
-			for (int i = 1; i < shipLength; i++)
-				grid[lastShot.y][lastShot.x - i].huntPDy -= shipLength - i;
-		else // With bounds
-			for (int i = bounds[2]; i < lastShot.x; i++)
-				grid[lastShot.y][i].huntPDx -= lastShot.x - i;
+			// Going down
+			if (bounds[1] - lastShot.y >= shipLength) // No bounds
+				for (int i = 1; i < shipLength; i++)
+					grid[lastShot.y + i][lastShot.x].huntPDy -= shipLength - i;
+			else // With bounds
+				for (int i = bounds[1]; i > lastShot.y; i--)
+					grid[i][lastShot.x].huntPDy -= i - lastShot.y;
 
-		// Going right
-		if (bounds[3] - lastShot.x >= shipLength) // No bounds
-			for (int i = 1; i < shipLength; i++)
-				grid[lastShot.y][lastShot.x + i].huntPDx -= shipLength - i;
-		else // With bounds
-			for (int i = bounds[3]; i > lastShot.x; i--)
-				grid[lastShot.y][i].huntPDx -= i - lastShot.x;
+			// Going left
+			if (lastShot.x - bounds[2] >= shipLength) // No bounds
+				for (int i = 1; i < shipLength; i++)
+					grid[lastShot.y][lastShot.x - i].huntPDy -= shipLength - i;
+			else // With bounds
+				for (int i = bounds[2]; i < lastShot.x; i++)
+					grid[lastShot.y][i].huntPDx -= lastShot.x - i;
 
-		// Recombine an updated probability density distributed graph for hunt mode
-		for (int i = 0; i < grid.length; i++)
-			for (int j = 0; j < grid[i].length; j++)
-				grid[i][j].combinehuntPDXY();
+			// Going right
+			if (bounds[3] - lastShot.x >= shipLength) // No bounds
+				for (int i = 1; i < shipLength; i++)
+					grid[lastShot.y][lastShot.x + i].huntPDx -= shipLength - i;
+			else // With bounds
+				for (int i = bounds[3]; i > lastShot.x; i--)
+					grid[lastShot.y][i].huntPDx -= i - lastShot.x;
+
+			// Recombine an updated probability density distributed graph for hunt mode
+			for (int i = 0; i < grid.length; i++)
+				for (int j = 0; j < grid[i].length; j++)
+					grid[i][j].combinehuntPDXY();
+		} else {
+			lastShot.targetPDx = 0;
+			lastShot.targetPDy = 0;
+			lastShot.combinetargetPDXY();
+		}
 	}
 
 	/**
@@ -363,19 +378,27 @@ public class AI {
 
 		// Going up
 		if (lastShot.y - 1 != bounds[0])
-			grid[lastShot.y - 1][lastShot.x].targetPDy++;
+			grid[lastShot.y - 1][lastShot.x].targetPDy += 2;
+		if (lastShot.y - 2 != bounds[0])
+			grid[lastShot.y - 2][lastShot.x].targetPDy++;
 
 		// Going down
 		if (lastShot.y + 1 != bounds[1])
-			grid[lastShot.y + 1][lastShot.x].targetPDy++;
+			grid[lastShot.y + 1][lastShot.x].targetPDy += 2;
+		if (lastShot.y + 2 != bounds[1])
+			grid[lastShot.y + 2][lastShot.x].targetPDy++;
 
 		// Going left
 		if (lastShot.x - 1 != bounds[2])
-			grid[lastShot.y][lastShot.x - 1].targetPDy++;
+			grid[lastShot.y][lastShot.x - 1].targetPDy += 2;
+		if (lastShot.x - 2 != bounds[2])
+			grid[lastShot.y][lastShot.x - 2].targetPDy++;
 
 		// Going right
 		if (lastShot.x + 1 != bounds[3])
-			grid[lastShot.y][lastShot.x + 1].targetPDy++;
+			grid[lastShot.y][lastShot.x + 1].targetPDy += 2;
+		if (lastShot.x + 2 != bounds[3])
+			grid[lastShot.y][lastShot.x + 2].targetPDy++;
 
 		// Recombine an updated probability density distributed graph for target mode
 		for (int i = 0; i < grid.length; i++)
