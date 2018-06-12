@@ -7,12 +7,14 @@ import java.io.*;
 import java.util.*;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 public class system extends JFrame {
 	static Boolean inGame = false;
 	int userIndex;
 	login startGame;
 	String[] userInfo = new String[38];
+	static String sos = "";
 	static String firstHand = "";
 	/*
 	 * dewae to execute code in game from Battleships:
@@ -87,7 +89,7 @@ public class system extends JFrame {
 				inGame = true;
 				gameInter.timer.start();
 				try {
-					Battleship.newGameProcedure();
+					newGameProcedure();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -148,10 +150,10 @@ public class system extends JFrame {
 					options[0]); 
 			if(firsthand==0){
 				firstHand = "u";
-				gameInter.userTurn = true;
+				game.userTurn = true;
 			}else{
 				firstHand = "ai";
-				gameInter.userTurn = false;
+				game.userTurn = false;
 			}
 		}
 	}
@@ -317,6 +319,276 @@ public class system extends JFrame {
 		for(int i=0;i<38;i++){
 			System.out.println(userInfo[i]);
 		}
+	}
+	public static String askFire(){
+		Thread sss = new Thread(new Runnable(){
+			public void run() {
+				synchronized(this){
+					 game.userTurn = true;
+//						while(!fired){}
+						try {
+							Thread.sleep(15000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						System.out.println("A1");
+						game.fired = false;
+						System.out.println(game.lastHitY+" "+game.lastHitX);
+						system.sos=(Character.toString((char) ( game.lastHitY+ 65)) + Integer.toString( game.lastHitX + 1)).toUpperCase();
+						notify();
+				 }
+			}
+	    });
+		sss.start();
+		synchronized(sss){
+			 try{
+	                System.out.println("Waiting for b to complete...");
+	                sss.wait();
+	            }catch(InterruptedException e){
+	                e.printStackTrace();
+	            }
+			 	System.out.println("done!!!");
+		}
+		System.out.println("--------- "+sos);
+		return sos;
+	}
+	public static void fireResult(String result){
+		game.userTurn = false;
+		if(result.equals("MISS")){
+			game.enemMap[game.lastHitY][game.lastHitX].setBackground(game.darkBlue);
+		}else{
+			game.enemMap[game.lastHitY][game.lastHitX].setBackground(game.darkRed);
+		}
+	}
+	/**
+	 * Functions that only need to be run at the beginning of a new game
+	 * 
+	 * @throws IOException
+	 */
+	public static void newGameProcedure() throws IOException {
+
+		// Initialize enemy grid
+		for (int i = 0; i < Battleship.enemyGrid.length; i++)
+			for (int j = 0; j < Battleship.enemyGrid[i].length; j++)
+				Battleship.enemyGrid[i][j] = new Square(j, i);
+
+		// Initialize home grid
+		for (int i = 0; i < Battleship.homeGrid.length; i++)
+			for (int j = 0; j < Battleship.homeGrid[i].length; j++)
+				Battleship.homeGrid[i][j] = new Square(j, i);
+
+		// Create a new AI - God's warrior angel
+		AI Michael = new AI();
+		Battleship.displayPD(Battleship.enemyGrid);
+		Battleship.displayShips(Battleship.homeGrid);
+		game(Michael);
+	}
+
+	/**
+	 * The actual game method
+	 * 
+	 * @throws IOException
+	 */
+	public static void game(AI Michael) throws IOException {
+
+		// Local variables
+		boolean AIFirst, AIWin = false, userWin = false;
+		int round = 0, x, y, shipNumber = 0;// The index of a ship in homeShips grid
+		Square userShot = null, AIShot = null;
+		Ship ship = Battleship.homeShips[0];
+		boolean flag;
+
+		// Who goes first
+		System.out.println("You first or Michael (the AI) first?");
+		//~String input = br.readLine().toLowerCase();
+
+		 String input =  system.firstHand;
+
+		// User wants AI to go first
+		if (input.contains("a")) {
+			AIFirst = true;
+			System.out.println("Michael is going first.");
+		} else {
+			AIFirst = false;
+			System.out.println("You are going first.");
+		}
+
+		// Wait for user to place ships
+		System.out.println("Place your ships on a separate grid. When you're ready, press ENTER to continue...");
+		//~br.readLine();
+
+		// Only executes once for when user goes first
+		if (!AIFirst) {
+
+			// Get user's shot
+			System.out.println("Round 1. Your turn.\nEnter coordinates to fire:");
+			//~input = br.readLine().toUpperCase();
+			input =  askFire();
+			x = Integer.parseInt(input.substring(1, 2)) - 1;
+			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
+			if (x == 1) {// Get second digit, could be 10
+				try {
+					if (Integer.parseInt(input.substring(2, 3)) == 0)
+						x = 9;
+				} catch (Exception e) {
+				}
+			}
+
+			// Check for hit or miss on home grid
+			userShot = Battleship.homeGrid[y][x];
+			if (userShot.shipType == null) {// Miss
+				userShot.status = SquareTypes.MISS;
+				System.out.println("MISS");
+				 fireResult("MISS");
+			} else {// Hit
+				Battleship.homeGrid[y][x].status = SquareTypes.HIT;
+				for (int i = 0; i < Battleship.homeShips.length; i++)
+					for (int j = 0; j < Battleship.homeShips[i].location.length; j++)
+						if (Battleship.homeShips[i].location[j] == userShot) {
+							ship = Battleship.homeShips[i];
+							break;
+						}
+				System.out.println("HIT, " + ship.shipName);
+				 fireResult("HIT");
+			}
+			Battleship.enemyShotLog.add(Battleship.homeGrid[y][x]);// Add enemy shot to log
+			round++;
+		}
+
+		// Game do-while loop
+		do {
+
+			// Increment round
+			round++;
+
+			// Get AI's shot
+			System.out.println("Round " + round + ". Michael's turn.");
+			AIShot = Michael.aim(AIShot, Battleship.enemyGrid, Battleship.shipLengths);
+			Battleship.displayPD(Battleship.enemyGrid);
+			Battleship.homeShotLog.add(AIShot);// Add home shot to log
+
+			// Print AI's shot's y-x coordinate converted to Battleship standards (e.g. A1)
+			System.out.println("AI's shot coordinates: "
+					+ (Character.toString((char) (AIShot.y + 65)) + Integer.toString(AIShot.x + 1)).toUpperCase());
+
+			// Get user's response
+			System.out.println("HIT or MISS?");
+			//~input = br.readLine().toUpperCase();
+			
+			input =  getFire(AIShot.x,AIShot.y);
+			
+			// AI hit a ship
+			if (input.contains("HIT")) {
+				AIShot.status = SquareTypes.HIT;
+
+				// Check if sunk
+				if (input.contains("SUNK")) {
+					AIShot.status = SquareTypes.SUNK;
+
+				}
+			}
+
+			// AI missed
+			else if (input.contains("MISS"))
+				AIShot.status = SquareTypes.MISS;
+
+			// Get user's shot
+			System.out.println("Round " + round + ". Your turn.\nEnter coordinates to fire:");
+			//~input = br.readLine().toUpperCase();
+			input =  askFire();
+			x = Integer.parseInt(input.substring(1, 2)) - 1;
+			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
+			if (x == 1) {// Get second digit, could be 10
+				try {
+					if (Integer.parseInt(input.substring(2, 3)) == 0)
+						x = 9;
+				} catch (Exception e) {
+				}
+			}
+
+			// Check for hit or miss on home grid
+			userShot = Battleship.homeGrid[y][x];
+			if (userShot.shipType == null) {// Miss
+				userShot.status = SquareTypes.MISS;
+				System.out.println("MISS");
+				 fireResult("MISS");
+			} else {// Hit
+				userShot.status = SquareTypes.HIT;
+				for (int i = 0; i < Battleship.homeShips.length; i++)
+					for (int j = 0; j < Battleship.homeShips[i].location.length; j++)
+						if (Battleship.homeShips[i].location[j] == userShot) {
+							ship = Battleship.homeShips[i];
+							shipNumber = i;
+							break;
+						}
+
+				// Check for ship sunk
+				flag = true;
+				for (int i = 0; i < ship.location.length; i++)
+					if (ship.location[i].status == SquareTypes.UNKNOWN) {
+						flag = false;
+						break;
+					}
+				if (flag)
+					Battleship.homeShipsSunk[shipNumber] = true;
+				else
+					Battleship.homeShipsSunk[shipNumber] = false;
+				if (Battleship.homeShipsSunk[shipNumber]) {
+					System.out.println("HIT, SUNK " + Battleship.homeShips[shipNumber].shipName);
+					 fireResult("HIT");
+					// Check for win (all ships sunk)
+					flag = true;
+					for (int i = 0; i < Battleship.homeShipsSunk.length; i++)
+						if (!Battleship.homeShipsSunk[i]) {
+							flag = false;
+							break;
+						}
+					if (flag) // User has won
+						userWin = true;
+				} else
+					System.out.println("HIT, " + ship.shipName);
+					 fireResult("HIT");
+			}
+			Battleship.enemyShotLog.add(Battleship.homeGrid[y][x]);// Add enemy shot to log
+
+		} while (!AIWin && !userWin);// Continues running until someone wins
+
+		// If user wins
+		if (userWin)
+			System.out.println("Congrats, you have won!");
+			 endGame(true);
+		if (AIWin)
+			System.out.println("Sorry, you have lost.");
+			 endGame(false);
+	}
+
+	public static String getFire(int x, int y){
+		Color unitStatus = game.userMap[x][y].getBackground();
+		if(unitStatus.equals(game.darkGreen)){
+			game.userMap[x][y].setBackground(game.darkRed);
+			int[] adx = {0,1,0,-1};
+			int[] ady = {1,0,-1,0};
+			for(int i =0;i<4;i++){
+				if(game.userMap[x+adx[i]][y+ady[i]].getBackground().equals(game.darkGreen)){
+					return "HIT";
+				}
+			}
+			return "SUNK";			
+		}else {
+			game.userMap[x][y].setBorder(new LineBorder(Color.gray));;
+			return "MISS";
+		}
+	}
+	public static void endGame(boolean userWin){
+		 system.inGame=false;
+		game.userTurn = false;
+		if(userWin){
+			game.winWord.setVisible(true);
+		}else{
+			game.losWord.setVisible(true);
+		}
+		//and reset game method
 	}
 	public static void main(String[] args) throws IOException {
 		system theGame = new system();
