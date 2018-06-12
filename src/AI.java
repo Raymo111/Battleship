@@ -255,7 +255,7 @@ public class AI {
 				return target(grid, lastShot);
 			}
 
-			// If ship was sunk, check for side-by-side ships and target those
+			// If ship was sunk, check for unsunk ships and target those
 			else if (lastShot.status == SquareTypes.SUNK) {
 				boolean flag = false;
 				Square shot = lastShot;
@@ -267,7 +267,7 @@ public class AI {
 							break;
 						}
 				if (flag) {// More hit squares than ships sunk
-					target(grid, shot);
+					return target(grid, shot);
 				} else {// All hit ships were sunk
 					lastShot.huntPDx = 0;
 					lastShot.huntPDy = 0;
@@ -276,8 +276,8 @@ public class AI {
 					lastShot.combinehuntPDXY();
 					lastShot.combinetargetPDXY();
 					mode = Mode.HUNT;
+					return aim(null, grid, shipLengths);
 				}
-				return aim(null, grid, shipLengths);
 			}
 
 			// If lastShot was a miss, update miss PD and hunt for a target
