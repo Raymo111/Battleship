@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class login extends JDialog {
+	Boolean firstClick = true;
 	JPanel iconInter = new JPanel();
 	JLabel bgi = new JLabel(new ImageIcon("loginBgi.png"));
 	JLabel startButton = new JLabel("CLICK TO ENTER",SwingConstants.CENTER);
@@ -51,6 +52,23 @@ public class login extends JDialog {
         loginText.setBackground(new Color(10,10,10));
         loginText.setBorder(new LineBorder(new Color(200,200,200)));
         loginText.setForeground(new Color(100,100,100));
+        loginText.addMouseListener(new MouseListener(){
+			public void mouseClicked(MouseEvent arg0) {
+				if(firstClick){
+					loginText.setText("");
+					firstClick= false;
+				}//end if
+			}//end method
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseReleased(MouseEvent e) {
+			}
+        
+        });
         loginInter.add(loginText);
         okButton.setBounds(350,144,40,20);
         okButton.setBorder(new LineBorder(new Color(200,200,200)));
