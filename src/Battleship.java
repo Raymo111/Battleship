@@ -6,6 +6,7 @@
  */
 import java.io.*;
 import java.util.ArrayList;
+import javax.swing.*;
 
 public class Battleship implements java.io.Serializable {
 
@@ -33,6 +34,13 @@ public class Battleship implements java.io.Serializable {
 
 	// Buffered reader to read user input
 	private static BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
+	
+	static JButton askFirst = new JButton();
+	static JButton waitStart = new JButton();
+	static JButton aiTurn = new JButton();
+	static JButton userTurn = new JButton();
+	static JButton uWin = new JButton();
+	static JButton uLose = new JButton();
 	
 	public static void main(String[] args) throws IOException {
 		// while (true)
@@ -77,6 +85,7 @@ public class Battleship implements java.io.Serializable {
 		boolean flag;
 
 		// Who goes first
+		askFirst.doClick();
 		System.out.println("You first or Michael (the AI) first?");
 		String input = br.readLine().toLowerCase();
 
@@ -91,6 +100,7 @@ public class Battleship implements java.io.Serializable {
 
 		// Wait for user to place ships
 		System.out.println("Place your ships on a separate grid. When you're ready, press ENTER to continue...");
+		waitStart.doClick();
 		br.readLine();
 
 		// Only executes once for when user goes first
@@ -216,8 +226,10 @@ public class Battleship implements java.io.Serializable {
 
 		// If user wins
 		if (userWin)
+			uWin.doClick();
 			System.out.println("Congrats, you have won!");
 		if (AIWin)
+			uLose.doClick();
 			System.out.println("Sorry, you have lost.");
 	}
 

@@ -1,16 +1,29 @@
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+import java.awt.*;
+import javax.swing.*;
 public class Test {
-
+	
     public static void main(String args[]) throws Exception {
-    	System.out.println((-31)/5);
+    	JButton a = new JButton();
+    	a.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("lol");
+			}
+    		
+    	});
+    	a.doClick();
 //        JFrame frame = new JFrame("Rotation Test");
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //

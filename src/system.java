@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
@@ -11,7 +13,7 @@ public class system extends JFrame {
 	int userIndex;
 	login startGame;
 	String[] userInfo = new String[38];
-	
+	int firsthand = -1;
 	/*
 	 * dewae to execute code in game from Battleships:
 	 * 2 Files: systemLog, inputLog
@@ -31,7 +33,13 @@ public class system extends JFrame {
 				System.out.println(-1);
 				remove(baseInter);
 				add(gameInter);
-				enterGame();
+				oYa.newGameProcedure();
+				synchronized (oYa) {
+					while(firsthand==-1){
+						enterGame();
+						oYa.wait();
+					}
+				}
 				repaint();
 			}
 			if(source.equals(baseInter.rankingButton)){
@@ -79,21 +87,10 @@ public class system extends JFrame {
 		public void mouseReleased(MouseEvent e) {}
 	};
 	
-	MouseListener commandBridge = new MouseListener(){
-
-		public void mouseClicked(MouseEvent e) {
+	ActionListener gameProc = new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
 			
 		}
-
-		public void mouseEntered(MouseEvent e) {
-		}
-		public void mouseExited(MouseEvent e) {
-		}
-		public void mousePressed(MouseEvent e) {
-		}
-		public void mouseReleased(MouseEvent e) {
-		}
-		
 	};
 	
 	base baseInter = new base();
@@ -132,7 +129,7 @@ public class system extends JFrame {
 		if(!inGame){
 			//will be modify to be round shape frame if there is time left
 			Object[] options = {"User","AI"};
-			int n = JOptionPane.showOptionDialog(null,
+			firsthand = JOptionPane.showOptionDialog(null,
 					"Battle started from:",
 					"First hand",
 					JOptionPane.YES_NO_OPTION,
@@ -140,7 +137,7 @@ public class system extends JFrame {
 					new ImageIcon("gNani.png"),     
 					options,  
 					options[0]); 
-			if(n==0){
+			if(firsthand==0){
 				gameInter.userTurn = true;
 			}else{
 				gameInter.userTurn = false;

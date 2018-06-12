@@ -51,7 +51,7 @@ public class LabelDragger {
                     panelClickPoint = null;
                 }
             }
-
+         
             //Moving of selected label occurs upon dragging in the panel:
             @Override
             public void mouseDragged(final MouseEvent e) {
