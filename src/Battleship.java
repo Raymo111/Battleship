@@ -58,7 +58,7 @@ public class Battleship implements java.io.Serializable {
 
 		// Create a new AI - God's warrior angel
 		AI Michael = new AI();
-		displayPD(homeGrid);
+		displayPD(enemyGrid);
 		displayShips(homeGrid);
 		game(Michael);
 	}
@@ -143,7 +143,7 @@ public class Battleship implements java.io.Serializable {
 
 			// Get AI's shot
 			System.out.println("Round " + round + ". Michael's turn.");
-			displayPD(homeGrid);
+			displayPD(enemyGrid);
 			AIShot = Michael.aim(AIShot, enemyGrid, shipLengths);
 			homeShotLog.add(AIShot);// Add home shot to log
 
