@@ -35,13 +35,6 @@ public class Battleship implements java.io.Serializable {
 	// Buffered reader to read user input
 	private static BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
 	
-	static JButton askFirst = new JButton();
-	static JButton waitStart = new JButton();
-	static JButton aiTurn = new JButton();
-	static JButton userTurn = new JButton();
-	static JButton uWin = new JButton();
-	static JButton uLose = new JButton();
-	
 	public static void main(String[] args) throws IOException {
 		// while (true)
 		newGameProcedure();
@@ -85,11 +78,14 @@ public class Battleship implements java.io.Serializable {
 		boolean flag;
 
 		// Who goes first
-		askFirst.doClick();
 		System.out.println("You first or Michael (the AI) first?");
 		String input = br.readLine().toLowerCase();
+		
+		//while(!system.workDone){}//wait for the firsthand to be chosen
+		//		system.workDone=false;
 
 		// User wants AI to go first
+		//if(system.log.contains("a")){
 		if (input.contains("a")) {
 			AIFirst = true;
 			System.out.println("Michael is going first.");
@@ -100,8 +96,9 @@ public class Battleship implements java.io.Serializable {
 
 		// Wait for user to place ships
 		System.out.println("Place your ships on a separate grid. When you're ready, press ENTER to continue...");
-		waitStart.doClick();
 		br.readLine();
+		
+		//while(!system.inGame){}//wait for the startButton to be clicked
 
 		// Only executes once for when user goes first
 		if (!AIFirst) {
@@ -226,11 +223,11 @@ public class Battleship implements java.io.Serializable {
 
 		// If user wins
 		if (userWin)
-			uWin.doClick();
 			System.out.println("Congrats, you have won!");
+		//	system.inGame = false;
 		if (AIWin)
-			uLose.doClick();
 			System.out.println("Sorry, you have lost.");
+		//	system.inGame = true;
 	}
 
 	public static void display2Darray(Square[][] array) {

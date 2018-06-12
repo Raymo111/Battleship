@@ -9,11 +9,12 @@ import java.util.*;
 import javax.swing.*;
 
 public class system extends JFrame {
-	Boolean inGame = false;
+	static Boolean inGame = false;
 	int userIndex;
 	login startGame;
 	String[] userInfo = new String[38];
-	int firsthand = -1;
+	static String log = "";
+	static boolean workDone = false;
 	/*
 	 * dewae to execute code in game from Battleships:
 	 * 2 Files: systemLog, inputLog
@@ -23,7 +24,6 @@ public class system extends JFrame {
 	 * yea we have a system log now
 	 */
 	
-	Battleship oYa = new Battleship();
 
 	MouseListener directory = new MouseListener() {
 		public void mouseClicked(MouseEvent event) {
@@ -33,14 +33,9 @@ public class system extends JFrame {
 				System.out.println(-1);
 				remove(baseInter);
 				add(gameInter);
-				oYa.newGameProcedure();
-				synchronized (oYa) {
-					while(firsthand==-1){
-						enterGame();
-						oYa.wait();
-					}
-				}
+				Battleship.newGameProcedure();
 				repaint();
+				enterGame();
 			}
 			if(source.equals(baseInter.rankingButton)){
 				System.out.println(6);
@@ -87,10 +82,20 @@ public class system extends JFrame {
 		public void mouseReleased(MouseEvent e) {}
 	};
 	
-	ActionListener gameProc = new ActionListener(){
-		public void actionPerformed(ActionEvent arg0) {
-			
+	MouseListener gameOper = new MouseListener(){
+		public void mouseClicked(MouseEvent e) {
+			Object source = e.getSource();
+			if(source.equals(gameInter.startButton)){
+				inGame = true;
+				gameInter.timer.start();
+				//remove drag functions, start timer
+			}
 		}
+		public void mouseEntered(MouseEvent e) {}
+		public void mouseExited(MouseEvent e) {}
+		public void mousePressed(MouseEvent e) {}
+		public void mouseReleased(MouseEvent e) {}
+		
 	};
 	
 	base baseInter = new base();
@@ -103,6 +108,7 @@ public class system extends JFrame {
 			baseInter.mRightButtons.get(i).addMouseListener(directory);//add directory to all buttons in base interface
 		}//end for
 		gameInter.backButton.addMouseListener(directory);//add directory to buttons in game interface
+		gameInter.startButton.addMouseListener(gameOper);
 		rankInter = new rankings();//initializing the rankings interface
 		rankInter.backButton.addMouseListener(directory);
 		addWindowListener(new java.awt.event.WindowAdapter() {//need to save the information before closing
@@ -129,7 +135,7 @@ public class system extends JFrame {
 		if(!inGame){
 			//will be modify to be round shape frame if there is time left
 			Object[] options = {"User","AI"};
-			firsthand = JOptionPane.showOptionDialog(null,
+			int firsthand = JOptionPane.showOptionDialog(null,
 					"Battle started from:",
 					"First hand",
 					JOptionPane.YES_NO_OPTION,
@@ -138,10 +144,13 @@ public class system extends JFrame {
 					options,  
 					options[0]); 
 			if(firsthand==0){
+				log = "u";
 				gameInter.userTurn = true;
 			}else{
+				log = "ai";
 				gameInter.userTurn = false;
 			}
+			workDone= true;
 		}
 	}
 	public void readLogin(String thisUsername) throws IOException{
