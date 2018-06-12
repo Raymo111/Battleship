@@ -257,13 +257,26 @@ public class AI {
 
 			// If ship was sunk, check for side-by-side ships and target those
 			else if (lastShot.status == SquareTypes.SUNK) {
-				lastShot.huntPDx = 0;
-				lastShot.huntPDy = 0;
-				lastShot.targetPDx = 0;
-				lastShot.targetPDy = 0;
-				lastShot.combinehuntPDXY();
-				lastShot.combinetargetPDXY();
-				mode = Mode.HUNT;
+				boolean flag = false;
+				Square shot = lastShot;
+				for (int i = 0; i < grid.length; i++)
+					for (int j = 0; j < grid[i].length; j++)
+						if (grid[i][j].status == SquareTypes.HIT) {
+							shot = grid[i][j];
+							flag = true;
+							break;
+						}
+				if (flag) {// More hit squares than ships sunk
+					target(grid, shot);
+				} else {// All hit ships were sunk
+					lastShot.huntPDx = 0;
+					lastShot.huntPDy = 0;
+					lastShot.targetPDx = 0;
+					lastShot.targetPDy = 0;
+					lastShot.combinehuntPDXY();
+					lastShot.combinetargetPDXY();
+					mode = Mode.HUNT;
+				}
 				return aim(null, grid, shipLengths);
 			}
 
