@@ -39,7 +39,7 @@ public class Battleship implements java.io.Serializable {
 
 	public static void main(String[] args) throws IOException {
 		// while (true)
-//		newGameProcedure();
+		newGameProcedure();
 	}
 
 	/**
