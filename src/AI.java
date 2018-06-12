@@ -327,19 +327,19 @@ public class AI {
 					grid[i][lastShot.x].huntPDy -= lastShot.y - i;
 
 			// Going down
-			if (bounds[1] - lastShot.y >= shipLength) // No bounds
+			if (bounds[2] - lastShot.y >= shipLength) // No bounds
 				for (int i = 1; i < shipLength; i++)
 					grid[lastShot.y + i][lastShot.x].huntPDy -= shipLength - i;
 			else // With bounds
-				for (int i = bounds[1]; i > lastShot.y; i--)
+				for (int i = bounds[2]; i > lastShot.y; i--)
 					grid[i][lastShot.x].huntPDy -= i - lastShot.y;
 
 			// Going left
-			if (lastShot.x - bounds[2] >= shipLength) // No bounds
+			if (lastShot.x - bounds[1] >= shipLength) // No bounds
 				for (int i = 1; i < shipLength; i++)
 					grid[lastShot.y][lastShot.x - i].huntPDx -= shipLength - i;
 			else // With bounds
-				for (int i = bounds[2]; i < lastShot.x; i++)
+				for (int i = bounds[1]; i < lastShot.x; i++)
 					grid[lastShot.y][i].huntPDx -= lastShot.x - i;
 
 			// Going right
