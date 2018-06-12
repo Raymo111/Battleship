@@ -269,12 +269,8 @@ public class AI {
 
 			// If lastShot was a miss, update miss PD and hunt for a target
 			else if (lastShot.status == SquareTypes.MISS)
-				if (mode == Mode.HUNT)
-					for (int i = 0; i < shipLengths.length; i++)
-						updateMissPD(grid, lastShot, shipLengths[i]);
-				else
-					for (int i = 0; i < shipLengths.length; i++)
-						updateHitPD(grid, lastShot, shipLengths[i]);
+				for (int i = 0; i < shipLengths.length; i++)
+					updateMissPD(mode, grid, lastShot, shipLengths[i]);
 
 		} catch (Exception e) {
 		}
@@ -293,7 +289,7 @@ public class AI {
 	 * @param shipLength
 	 *            The specific ship length for which to calculate
 	 */
-	public void updateMissPD(Square[][] grid, Square lastShot, int shipLength) {
+	public void updateMissPD(Mode mode, Square[][] grid, Square lastShot, int shipLength) {
 
 		int[] bounds = getBounds(lastShot, grid);
 
@@ -349,24 +345,20 @@ public class AI {
 		int[] bounds = getBounds(lastShot, grid);
 
 		// Going up
-		for (int i = lastShot.y - shipLength; i < lastShot.y; i++)
-			if (i > bounds[0])
-				grid[i][lastShot.x].targetPDy += i;
+		if (lastShot.y - 1 != bounds[0])
+			grid[lastShot.y - 1][lastShot.x].targetPDy++;
 
 		// Going down
-		for (int i = lastShot.y + shipLength; i > lastShot.y; i--)
-			if (i < bounds[1])
-				grid[i][lastShot.x].targetPDy += (bounds[i] - i);
+		if (lastShot.y + 1 != bounds[1])
+			grid[lastShot.y + 1][lastShot.x].targetPDy++;
 
 		// Going left
-		for (int i = lastShot.x - shipLength; i < lastShot.x; i++)
-			if (i > bounds[2])
-				grid[lastShot.y][i].targetPDy += i;
+		if (lastShot.x - 1 != bounds[2])
+			grid[lastShot.y][lastShot.x - 1].targetPDy++;
 
 		// Going right
-		for (int i = lastShot.x + shipLength; i > lastShot.x; i--)
-			if (i < bounds[3])
-				grid[lastShot.y][i].targetPDy += (bounds[i] - i);
+		if (lastShot.x + 1 != bounds[3])
+			grid[lastShot.y][lastShot.x + 1].targetPDy++;
 
 		// Recombine an updated probability density distributed graph for target mode
 		for (int i = 0; i < grid.length; i++)
