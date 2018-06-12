@@ -81,11 +81,9 @@ public class Battleship implements java.io.Serializable {
 		System.out.println("You first or Michael (the AI) first?");
 		String input = br.readLine().toLowerCase();
 		
-		//while(!system.workDone){}//wait for the firsthand to be chosen
-		//		system.workDone=false;
+//		String input = readLog();
 
 		// User wants AI to go first
-		//if(system.log.contains("a")){
 		if (input.contains("a")) {
 			AIFirst = true;
 			System.out.println("Michael is going first.");
@@ -98,7 +96,7 @@ public class Battleship implements java.io.Serializable {
 		System.out.println("Place your ships on a separate grid. When you're ready, press ENTER to continue...");
 		br.readLine();
 		
-		//while(!system.inGame){}//wait for the startButton to be clicked
+//		while(!system.inGame){}//wait for the startButton to be clicked
 
 		// Only executes once for when user goes first
 		if (!AIFirst) {
@@ -255,16 +253,9 @@ public class Battleship implements java.io.Serializable {
 			System.out.println();
 		}
 	}
-	public String read()throws InterruptedException, IOException{
-		Thread.sleep(500);
-		BufferedReader logReader = new BufferedReader(new FileReader("inLog.txt"));
-		String theLine = logReader.readLine();
-		logReader.close();
-		return theLine;
-	}
-	public void write(String command) throws IOException{
-		PrintWriter logWriter = new PrintWriter(new FileWriter("ouLog.txt"));
-		logWriter.println(command);
-		logWriter.close();
+	public static String readLog(){
+		while(!system.workDone){}//wait for the system to mark processed
+		system.workDone = false;//reset for next command
+		return system.log;//return command from system
 	}
 }

@@ -31,6 +31,7 @@ public class game extends JPanel{
     final Color fogBlue = new Color(0,0,80);
     final Color darkRed = new Color(150,40,40);
     final Color darkGreen = new Color(0,30,0);
+    ArrayList<Color> unitColor = new ArrayList<Color>();
     JLabel[][] userMap = new JLabel[10][10];
     JLabel[][] enemMap = new JLabel[10][10];
     JLabel[] mapLabels = new JLabel[40];
@@ -41,7 +42,7 @@ public class game extends JPanel{
     JLabel destroyer = new JLabel(new ImageIcon("gDestroyer.png"));
     ArrayList<JLabel> gButtons = new ArrayList<JLabel>();
     ArrayList<JLabel> buttonEffects = new ArrayList<JLabel>();
-    ArrayList<JLabel> ships = new ArrayList<JLabel>();
+//    ArrayList<JLabel> ships = new ArrayList<JLabel>();
     int[] shipLength ={5,4,3,3,2};//positive for horizontal
     MouseListener mouseEffect = new MouseListener(){
 		public void mouseClicked(MouseEvent e) {
@@ -61,22 +62,14 @@ public class game extends JPanel{
 			buttonEffects.get(i).setVisible(false);
 		}
 		public void mousePressed(MouseEvent e) {
-			
 		}
 		public void mouseReleased(MouseEvent e) {
-			
 		}
     };
 	MouseListener unitDis = new MouseListener(){
 		public void mouseClicked(MouseEvent e) {
-			if(!timer.isRunning()){
-				timer.start();
-			}
 			JLabel source = (JLabel)e.getSource();
-			//hits
-			source.setBackground(darkRed);
-			//misses
-//			source.setBackground(((LineBorder)source.getBorder()).getLineColor());
+			source.setBackground(getNextColor(source.getBackground()));
 		}
 		public void mouseEntered(MouseEvent e) {
 			
@@ -92,7 +85,7 @@ public class game extends JPanel{
 		}
 	};
 	
-	final MouseAdapter dragger = new MouseAdapter() {
+/*	final MouseAdapter dragger = new MouseAdapter() {
         private JLabel selectedShip;
         private Point shipLocation ;
         private Point clickP;
@@ -121,11 +114,16 @@ public class game extends JPanel{
             }catch(Exception exp){
             }
         }
-    };
+    };*/
     public game(){
 		setSize(1300,700);
 		setLayout(null);
-		ships.add(carrier);
+		unitColor.add(darkBlue);
+		unitColor.add(darkGreen);
+		unitColor.add(darkRed);
+		unitColor.add(fogBlue);
+		unitColor.add(darkBlue);
+/*		ships.add(carrier);
 		ships.add(battship);
 		ships.add(cruiser);
 		ships.add(submarine);
@@ -134,11 +132,11 @@ public class game extends JPanel{
     		ships.get(i).setBounds(bInsets.left+150,bInsets.top+150+i*50,50*shipLength[i],50);
 //    		System.out.println(shipLength[i]);
     		add(ships.get(i));
-    	}//end for
+    	}//end for*/
 		addMaps();
-		for(int i =0;i<5;i++){
+/*		for(int i =0;i<5;i++){
     		markShip(ships.get(i),shipLength[i],darkGreen);
-		}
+		}*/
 		gButtons.add(backButton);
 		gButtons.add(startButton);
 		gButtons.add(leaveButton);
@@ -174,17 +172,17 @@ public class game extends JPanel{
 		bgi.setBounds(bInsets.left,bInsets.top,1300,700);
 		add(bgi);
 		setBackground(Color.DARK_GRAY);
-		addMouseListener(dragger);
-		addMouseMotionListener(dragger);
+//		addMouseListener(dragger);
+//		addMouseMotionListener(dragger);
+		
 		//start the game
 //		removeMouseListener(dragger);
 //		removeMouseMotionListener(dragger);
-//		for(int i =0;i<10;i++){
-//			for(int j =0;j<10;j++){
-//				userMap[i][j].addMouseListener(unitDis);
-//				enemMap[i][j].addMouseListener(unitDis);
-//			}
-//		}
+		for(int i =0;i<10;i++){
+			for(int j =0;j<10;j++){
+				userMap[i][j].addMouseListener(unitDis);
+			}
+		}
 		setVisible(true);
 		
 	}
@@ -304,18 +302,27 @@ public class game extends JPanel{
 		}//end for
 		return formatedTime.substring(0, formatedTime.length() - 1);//returnt the answer
 	}//end method
-	private int getColorCode(Color aColor){
-		if(aColor.equals(darkBlue)){
-			return 1;
-		}else if(aColor.equals(fogBlue)){
-			return 2;
-		}else if(aColor.equals(darkRed)){
-			return 3;
-		}else{
-			return 4;
-		}
+	private Color getNextColor(Color aColor){
+		return unitColor.get(unitColor.indexOf(aColor)+1);
 	}
 	
+	public void headsUp(int x, int y){
+		Color unitStatus = userMap[x][y].getBackground();
+		if(unitStatus.equals(darkGreen)){
+			int[] adx = {0,1,0,-1};
+			int[] ady = {1,0,-1,0};
+			for(int i =0;i<4;i++){
+				if(userMap[x+adx[i]][y+ady[i]].getBackground().equals(darkGreen)){
+					system.log = "HIT";
+					system.workDone = true;
+					return;
+				}
+			}
+			
+		}else {
+//			return "MISS";
+		}
+	}
 	public static void main(String[] args){
 		JFrame f = new JFrame();
 		f.add(new game());

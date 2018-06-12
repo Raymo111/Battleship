@@ -33,9 +33,9 @@ public class system extends JFrame {
 				System.out.println(-1);
 				remove(baseInter);
 				add(gameInter);
-				Battleship.newGameProcedure();
 				repaint();
 				enterGame();
+				Battleship.newGameProcedure();
 			}
 			if(source.equals(baseInter.rankingButton)){
 				System.out.println(6);
@@ -144,13 +144,12 @@ public class system extends JFrame {
 					options,  
 					options[0]); 
 			if(firsthand==0){
-				log = "u";
+				writeLog("u");
 				gameInter.userTurn = true;
 			}else{
-				log = "ai";
+				writeLog("ai");
 				gameInter.userTurn = false;
 			}
-			workDone= true;
 		}
 	}
 	public void readLogin(String thisUsername) throws IOException{
@@ -316,7 +315,10 @@ public class system extends JFrame {
 			System.out.println(userInfo[i]);
 		}
 	}
-
+	public void writeLog(String command){
+		log = command;
+		workDone = true;
+	}
 	public static void main(String[] args) throws IOException {
 		system theGame = new system();
 	}
