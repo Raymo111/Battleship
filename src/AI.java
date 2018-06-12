@@ -306,37 +306,41 @@ public class AI {
 
 		int[] bounds = getBounds(lastShot, grid);
 
+		// Set last shot (miss)'s PD to 0
+		lastShot.huntPDx = 0;
+		lastShot.huntPDy = 0;
+
 		// Going up
 		if (lastShot.y - bounds[0] >= shipLength) // No bounds
-			for (int i = 0; i < shipLength; i++)
-				grid[i][lastShot.x].huntPDy -= i;
+			for (int i = 1; i < shipLength; i++)
+				grid[lastShot.y - i][lastShot.x].huntPDy -= shipLength - i;
 		else // With bounds
 			for (int i = bounds[0]; i < lastShot.y; i++)
 				grid[i][lastShot.x].huntPDy -= lastShot.y - i;
 
 		// Going down
 		if (bounds[1] - lastShot.y >= shipLength) // No bounds
-			for (int i = 0; i < shipLength; i++)
-				grid[i][lastShot.x].huntPDy -= i;
+			for (int i = 1; i < shipLength; i++)
+				grid[lastShot.y + i][lastShot.x].huntPDy -= shipLength - i;
 		else // With bounds
 			for (int i = bounds[1]; i > lastShot.y; i--)
-				grid[i][lastShot.x].huntPDy -= lastShot.y - i;
+				grid[i][lastShot.x].huntPDy -= i - lastShot.y;
 
 		// Going left
 		if (lastShot.x - bounds[2] >= shipLength) // No bounds
-			for (int i = 0; i < shipLength; i++)
-				grid[lastShot.y][i].huntPDx -= i;
+			for (int i = 1; i < shipLength; i++)
+				grid[lastShot.y][lastShot.x - i].huntPDy -= shipLength - i;
 		else // With bounds
 			for (int i = bounds[2]; i < lastShot.x; i++)
 				grid[lastShot.y][i].huntPDx -= lastShot.x - i;
 
 		// Going right
 		if (bounds[3] - lastShot.x >= shipLength) // No bounds
-			for (int i = 0; i < shipLength; i++)
-				grid[lastShot.y][i].huntPDx -= i;
+			for (int i = 1; i < shipLength; i++)
+				grid[lastShot.y][lastShot.x + i].huntPDx -= shipLength - i;
 		else // With bounds
 			for (int i = bounds[3]; i > lastShot.x; i--)
-				grid[lastShot.y][i].huntPDx -= lastShot.x - i;
+				grid[lastShot.y][i].huntPDx -= i - lastShot.x;
 
 		// Recombine an updated probability density distributed graph for hunt mode
 		for (int i = 0; i < grid.length; i++)
