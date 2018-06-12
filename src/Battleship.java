@@ -152,12 +152,20 @@ public class Battleship implements java.io.Serializable {
 			// Get user's response
 			System.out.println("HIT or MISS?");
 			input = br.readLine().toUpperCase();
+
+			// AI hit a ship
 			if (input.contains("HIT")) {
 				AIShot.status = SquareTypes.HIT;
+
+				// Check if sunk
 				if (input.contains("SUNK")) {
 					AIShot.status = SquareTypes.SUNK;
+
 				}
-			} else if (input.contains("MISS"))
+			}
+
+			// AI missed
+			else if (input.contains("MISS"))
 				AIShot.status = SquareTypes.MISS;
 
 			// Get user's shot

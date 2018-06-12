@@ -269,10 +269,13 @@ public class AI {
 				} else {// All hit ships were sunk
 					lastShot.huntPDx = 0;
 					lastShot.huntPDy = 0;
-					lastShot.targetPDx = 0;
-					lastShot.targetPDy = 0;
 					lastShot.combinehuntPDXY();
-					lastShot.combinetargetPDXY();
+					for (int i = 0; i < grid.length; i++)
+						for (int j = 0; j < grid[i].length; j++) {
+							grid[i][j].targetPDx = 0;
+							grid[i][j].targetPDy = 0;
+							grid[i][j].combinetargetPDXY();
+						}
 					mode = Mode.HUNT;
 					return aim(null, grid, shipLengths);
 				}
