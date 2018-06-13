@@ -654,7 +654,7 @@ public class system extends JFrame {
 					ship.location.add(AIShot);
 					break;
 				}
-/////////////problem: above lines :need to read ship type
+ //////////problem: above lines :need to read ship type
 			// Check if sunk
 			if (input.contains("SUNK")) {
 				int temp = 0;
