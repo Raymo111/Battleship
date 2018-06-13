@@ -415,7 +415,7 @@ public class system extends JFrame {
 		System.out.println("Place your ships on a separate grid. When you're ready, press ENTER to continue...");
 		for (int i = 0; i < Battleship.enemyShips.length; i++)
 			Battleship.enemyShips[i] = new Ship(Battleship.enemyGrid, Battleship.shipNames[i], Battleship.shipLengths[i]);
-
+//
 	}
 
 	public static String getFire(int y, int x){
