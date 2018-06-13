@@ -300,6 +300,13 @@ public class AI {
 		} catch (Exception e) {
 		}
 
+		// Zero out PD of last shot
+		lastShot.huntPDx = 0;
+		lastShot.huntPDy = 0;
+		lastShot.targetPDx = 0;
+		lastShot.targetPDy = 0;
+		lastShot.combinehuntPDXY();
+
 		// No lastShot
 		return target(mode, grid);
 	}
@@ -396,13 +403,13 @@ public class AI {
 		if (lastShot.x - 1 != bounds[2])
 			grid[lastShot.y][lastShot.x - 1].targetPDx += 2;
 		if (lastShot.x - 2 != bounds[2])
-			grid[lastShot.y][lastShot.x - 2].targetPDy++;
+			grid[lastShot.y][lastShot.x - 2].targetPDx++;
 
 		// Going right
 		if (lastShot.x + 1 != bounds[3])
 			grid[lastShot.y][lastShot.x + 1].targetPDx += 2;
 		if (lastShot.x + 2 != bounds[3])
-			grid[lastShot.y][lastShot.x + 2].targetPDy++;
+			grid[lastShot.y][lastShot.x + 2].targetPDx++;
 
 		// Recombine an updated probability density distributed graph for target mode
 		for (int i = 0; i < grid.length; i++)
