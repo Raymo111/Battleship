@@ -76,11 +76,18 @@ public class Battleship implements java.io.Serializable {
 		Square userShot = null, AIShot = null;
 		Ship ship = homeShips[0];
 		boolean flag;
+		String input, validate;
 
 		// Who goes first
 		System.out.println("You first or Michael (the AI) first?");
 
-		String input = br.readLine().toLowerCase();
+		while (true) {
+			input = br.readLine().toLowerCase();
+			System.out.println(input + "Are you sure?");
+			validate = br.readLine();
+			if (validate.equalsIgnoreCase("y"))
+				break;
+		}
 
 		// ~ String input = system.firstHand;
 
@@ -104,7 +111,13 @@ public class Battleship implements java.io.Serializable {
 
 			// Get user's shot
 			System.out.println("Round 1. Your turn.\nEnter coordinates to fire:");
-			input = br.readLine().toUpperCase();
+			while (true) {
+				input = br.readLine().toUpperCase();
+				System.out.println(input + "Are you sure?");
+				validate = br.readLine();
+				if (validate.equalsIgnoreCase("y"))
+					break;
+			}
 
 			// input = askFire();
 
@@ -161,7 +174,13 @@ public class Battleship implements java.io.Serializable {
 
 			// Get user's response
 			System.out.println("HIT or MISS?");
-			input = br.readLine().toUpperCase();
+			while (true) {
+				input = br.readLine().toUpperCase();
+				System.out.println(input + "Are you sure?");
+				validate = br.readLine();
+				if (validate.equalsIgnoreCase("y"))
+					break;
+			}
 
 			// input = getFire(AIShot.x,AIShot.y);
 
@@ -208,7 +227,13 @@ public class Battleship implements java.io.Serializable {
 
 			// Get user's shot
 			System.out.println("Round " + round + ". Your turn.\nEnter coordinates to fire:");
-			input = br.readLine().toUpperCase();
+			while (true) {
+				input = br.readLine().toUpperCase();
+				System.out.println(input + "Are you sure?");
+				validate = br.readLine();
+				if (validate.equalsIgnoreCase("y"))
+					break;
+			}
 
 			// input = askFire();
 
