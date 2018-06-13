@@ -36,24 +36,17 @@ public class AI {
 		generatePDDG(Battleship.enemyGrid);
 
 		// Offset PD of edges of grid?
-		System.out.println("Offset PD?");
-		while (true) {
-			input = br.readLine();
-			System.out.println("Are you sure of: " + input + "?");
-			validate = br.readLine();
-			if (validate.equalsIgnoreCase("y"))
-				break;
-		}
+		input = br.readLine();
 
 		// User wants to offset edges
 		if (input.equalsIgnoreCase("y")) {
 			for (int i = 0; i < Battleship.enemyGrid.length; i++)
 				for (int j = 0; j < Battleship.enemyGrid[i].length; j++) {
-					if (Battleship.enemyGrid[i][j].x <= 3 || Battleship.enemyGrid[i][j].x >= 6) {// x in outer 2
+					if (Battleship.enemyGrid[i][j].x <= 2 || Battleship.enemyGrid[i][j].x >= 7) {// x in outer 2
 						Battleship.enemyGrid[i][j].huntPDx += 9;
 						Battleship.enemyGrid[i][j].combinehuntPDXY();
 					}
-					if (Battleship.enemyGrid[i][j].y <= 3 || Battleship.enemyGrid[i][j].y >= 6) {// y in outer 2
+					if (Battleship.enemyGrid[i][j].y <= 2 || Battleship.enemyGrid[i][j].y >= 7) {// y in outer 2
 						Battleship.enemyGrid[i][j].huntPDy += 9;
 						Battleship.enemyGrid[i][j].combinehuntPDXY();
 					}
@@ -75,7 +68,7 @@ public class AI {
 	public void placeShips(Square[][] grid, int[] shipLengths, boolean inGui) {
 		int gameMode;
 		if (inGui) {
-			gameMode = system.difficulty+1;
+			gameMode = system.difficulty + 1;
 		} else {
 			// Get mode
 			System.out.println("Select the mode. \n1. Manual - Raymond\n2. Random\n3. Manual - David");
@@ -256,11 +249,11 @@ public class AI {
 
 			// If lastShot was a hit, set aim mode to target, update hit PD and target
 			if (lastShot.status == SquareTypes.HIT) {
+				mode = Mode.TARGET;
 				for (int i = 0; i < shipLengths.length; i++) {
 					updateMissPD(mode, grid, lastShot, shipLengths[i]);
 					updateHitPD(grid, lastShot, shipLengths[i]);
 				}
-				mode = Mode.TARGET;
 				return target(mode, grid);
 			}
 
@@ -333,49 +326,48 @@ public class AI {
 
 		int[] bounds = getBounds(lastShot, grid);
 
-		if (mode == Mode.HUNT) {
+		// Set last shot (miss)'s PD to 0
+		lastShot.huntPDx = 0;
+		lastShot.huntPDy = 0;
 
-			// Set last shot (miss)'s PD to 0
-			lastShot.huntPDx = 0;
-			lastShot.huntPDy = 0;
+		// Going up
+		if (lastShot.y - bounds[0] >= shipLength) // No bounds
+			for (int i = 1; i < shipLength; i++)
+				grid[lastShot.y - i][lastShot.x].huntPDy -= shipLength - i;
+		else // With bounds
+			for (int i = bounds[0]; i < lastShot.y; i++)
+				grid[i][lastShot.x].huntPDy -= lastShot.y - i;
 
-			// Going up
-			if (lastShot.y - bounds[0] >= shipLength) // No bounds
-				for (int i = 1; i < shipLength; i++)
-					grid[lastShot.y - i][lastShot.x].huntPDy -= shipLength - i;
-			else // With bounds
-				for (int i = bounds[0]; i < lastShot.y; i++)
-					grid[i][lastShot.x].huntPDy -= lastShot.y - i;
+		// Going down
+		if (bounds[2] - lastShot.y >= shipLength) // No bounds
+			for (int i = 1; i < shipLength; i++)
+				grid[lastShot.y + i][lastShot.x].huntPDy -= shipLength - i;
+		else // With bounds
+			for (int i = bounds[2]; i > lastShot.y; i--)
+				grid[i][lastShot.x].huntPDy -= i - lastShot.y;
 
-			// Going down
-			if (bounds[2] - lastShot.y >= shipLength) // No bounds
-				for (int i = 1; i < shipLength; i++)
-					grid[lastShot.y + i][lastShot.x].huntPDy -= shipLength - i;
-			else // With bounds
-				for (int i = bounds[2]; i > lastShot.y; i--)
-					grid[i][lastShot.x].huntPDy -= i - lastShot.y;
+		// Going left
+		if (lastShot.x - bounds[1] >= shipLength) // No bounds
+			for (int i = 1; i < shipLength; i++)
+				grid[lastShot.y][lastShot.x - i].huntPDx -= shipLength - i;
+		else // With bounds
+			for (int i = bounds[1]; i < lastShot.x; i++)
+				grid[lastShot.y][i].huntPDx -= lastShot.x - i;
 
-			// Going left
-			if (lastShot.x - bounds[1] >= shipLength) // No bounds
-				for (int i = 1; i < shipLength; i++)
-					grid[lastShot.y][lastShot.x - i].huntPDx -= shipLength - i;
-			else // With bounds
-				for (int i = bounds[1]; i < lastShot.x; i++)
-					grid[lastShot.y][i].huntPDx -= lastShot.x - i;
+		// Going right
+		if (bounds[3] - lastShot.x >= shipLength) // No bounds
+			for (int i = 1; i < shipLength; i++)
+				grid[lastShot.y][lastShot.x + i].huntPDx -= shipLength - i;
+		else // With bounds
+			for (int i = bounds[3]; i > lastShot.x; i--)
+				grid[lastShot.y][i].huntPDx -= i - lastShot.x;
 
-			// Going right
-			if (bounds[3] - lastShot.x >= shipLength) // No bounds
-				for (int i = 1; i < shipLength; i++)
-					grid[lastShot.y][lastShot.x + i].huntPDx -= shipLength - i;
-			else // With bounds
-				for (int i = bounds[3]; i > lastShot.x; i--)
-					grid[lastShot.y][i].huntPDx -= i - lastShot.x;
+		// Recombine an updated probability density distributed graph for hunt mode
+		for (int i = 0; i < grid.length; i++)
+			for (int j = 0; j < grid[i].length; j++)
+				grid[i][j].combinehuntPDXY();
 
-			// Recombine an updated probability density distributed graph for hunt mode
-			for (int i = 0; i < grid.length; i++)
-				for (int j = 0; j < grid[i].length; j++)
-					grid[i][j].combinehuntPDXY();
-		} else {
+		if (mode == Mode.TARGET && lastShot.status == SquareTypes.MISS) {
 			lastShot.targetPDx = 0;
 			lastShot.targetPDy = 0;
 			lastShot.combinetargetPDXY();
