@@ -114,10 +114,7 @@ public class system extends JFrame {
 			}
 			startGame.dispose();
 			check();
-			baseInter.updateInfo(userInfo[0], Integer.parseInt(userInfo[18]), Integer.parseInt(userInfo[15]));// initialize
-																												// the
-																												// base
-																												// interface
+			baseInter.updateInfo(userInfo[0], Integer.parseInt(userInfo[18]), Integer.parseInt(userInfo[15]));// initialize base
 			add(baseInter);
 			setVisible(true);
 		}

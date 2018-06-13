@@ -1,6 +1,4 @@
 Please enter a username
 Him
-Ben
-
-ARCHANGEL
-ARCHAGNEL
+BenARCHANGLE
+ARCHANGLE
