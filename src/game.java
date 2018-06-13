@@ -21,6 +21,10 @@ public class game extends JPanel{
     JLabel bgi = new JLabel(new ImageIcon("gameBgi.png"));
 	JLabel timerBoard = new JLabel(new ImageIcon("gTimer.png"));
 	static JLabel timerLabel = new JLabel("00:00:00");
+	static JLabel uHit = new JLabel("0");
+	static JLabel uMis = new JLabel("0");
+	static JLabel eHit = new JLabel("0");
+	static JLabel eMis = new JLabel("0");
 	static Timer timer;
 	long timeUsed = 0;
 	long lastRecordTime = System.currentTimeMillis();
@@ -181,6 +185,26 @@ public class game extends JPanel{
 		timerLabel.setForeground(Color.white);
 		timerLabel.setHorizontalAlignment(JLabel.CENTER);
 		timerLabel.setFont(new Font(timerLabel.getFont().getName(),Font.PLAIN,40));
+		uHit.setBounds(bInsets.left+420,bInsets.top+15,40,40);
+		uHit.setForeground(Color.white);
+		uHit.setHorizontalAlignment(JLabel.CENTER);
+		uHit.setFont(new Font(uHit.getFont().getName(),Font.PLAIN,30));
+		add(uHit);
+		uMis.setBounds(bInsets.left+480,bInsets.top+55,40,40);
+		uMis.setForeground(Color.white);
+		uMis.setHorizontalAlignment(JLabel.CENTER);
+		uMis.setFont(new Font(uMis.getFont().getName(),Font.PLAIN,30));
+		add(uMis);
+		eHit.setBounds(bInsets.left+840,bInsets.top+15,40,40);
+		eHit.setForeground(Color.white);
+		eHit.setHorizontalAlignment(JLabel.CENTER);
+		eHit.setFont(new Font(eHit.getFont().getName(),Font.PLAIN,30));
+		add(eHit);
+		eMis.setBounds(bInsets.left+780,bInsets.top+55,40,40);
+		eMis.setForeground(Color.white);
+		eMis.setHorizontalAlignment(JLabel.CENTER);
+		eMis.setFont(new Font(eMis.getFont().getName(),Font.PLAIN,30));
+		add(eMis);
 		timer = new Timer(1000, new ActionListener() {//initialize the timer
 			public void actionPerformed(ActionEvent e) {
 				long thisTime = System.currentTimeMillis();//record the current time
@@ -330,6 +354,9 @@ public class game extends JPanel{
 	}//end method
 	private Color getNextColor(Color aColor){
 		return unitColor.get(unitColor.indexOf(aColor)+1);
+	}
+	public static void countIncre(JLabel var){
+		var.setText(Integer.toString(Integer.parseInt(var.getText())+1));
 	}
 	public static void main(String[] args){
 		JFrame f = new JFrame();

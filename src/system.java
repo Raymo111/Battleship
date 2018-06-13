@@ -95,6 +95,10 @@ public class system extends JFrame {
 				inGame = true;
 				game.firstClick=true;
 				game.timer.restart();
+				game.eHit.setText("0");
+				game.eMis.setText("0");
+				game.uHit.setText("0");
+				game.uMis.setText("0");
 				try {
 					newGameProcedure();
 				} catch (IOException e1) {
@@ -349,8 +353,10 @@ public class system extends JFrame {
 	public static void fireResult(String result){
 		game.userTurn = false;
 		if(result.equals("MISS")){
+			game.countIncre(game.uMis);
 			game.enemMap[y][x].setBackground(game.darkBlue);
 		}else{
+			game.countIncre(game.uHit);
 			game.enemMap[y][x].setBackground(game.darkRed);
 		}
 	}
@@ -412,10 +418,11 @@ public class system extends JFrame {
 
 	}
 
-	public static String getFire(int x, int y){
+	public static String getFire(int y, int x){
 		Color unitStatus = game.userMap[x][y].getBackground();
 		if(unitStatus.equals(game.darkGreen)){
 			game.userMap[x][y].setBackground(game.darkRed);
+			game.countIncre(game.eHit);
 			int[] adx = {0,1,0,-1};
 			int[] ady = {1,0,-1,0};
 			for(int i =0;i<4;i++){
@@ -434,7 +441,8 @@ public class system extends JFrame {
 			if(game.userMap[x][y].getBackground().equals(game.darkBlue)){
 				game.userMap[x][y].setBackground(game.fogBlue);
 			}
-			game.userMap[x][y].setBorder(new LineBorder(Color.gray));;
+			game.userMap[x][y].setBorder(new LineBorder(Color.gray));
+			game.countIncre(game.eMis);
 			System.out.println("AI MISS");
 			return "MISS";
 		}
