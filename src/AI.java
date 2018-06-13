@@ -256,8 +256,10 @@ public class AI {
 
 			// If lastShot was a hit, set aim mode to target, update hit PD and target
 			if (lastShot.status == SquareTypes.HIT) {
-				for (int i = 0; i < shipLengths.length; i++)
+				for (int i = 0; i < shipLengths.length; i++) {
+					updateMissPD(mode, grid, lastShot, shipLengths[i]);
 					updateHitPD(grid, lastShot, shipLengths[i]);
+				}
 				mode = Mode.TARGET;
 				return target(mode, grid);
 			}
