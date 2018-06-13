@@ -26,7 +26,7 @@ public class game extends JPanel{
 	static JLabel eHit = new JLabel("0");
 	static JLabel eMis = new JLabel("0");
 	static Timer timer;
-	long timeUsed = 0;
+	static long timeUsed = 0;
 	long lastRecordTime = System.currentTimeMillis();
     JLabel backButton = new JLabel(new ImageIcon("theBackButton.png"));
     JLabel startButton = new JLabel(new ImageIcon("gStartButton.png"));

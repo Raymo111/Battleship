@@ -1,4 +1,3 @@
 Please enter a username
-Him
-BenARCHANGLE
-ARCHANGLE
+HimARCHANGLE
+Ben

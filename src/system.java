@@ -13,7 +13,8 @@ public class system extends JFrame {
 	static Boolean inGame = false;
 	int userIndex;
 	login startGame;
-	String[] userInfo = new String[38];
+	static String[] userInfo = new String[38];
+	static String offset = "";
 	static int difficulty = -1;
 	static String firstHand = "";
 	static boolean AIFirst, AIWin, userWin;
@@ -23,16 +24,7 @@ public class system extends JFrame {
 	static boolean flag;
 	static String input, validate;
 	static AI Amadeus;//new name from Martin
-//	static JTextField askUser = new JTextField("Type command here.");
 	
-	/*
-	 * dewae to execute code in game from Battleships: 2 Files: systemLog, inputLog
-	 * game write to inputLog, read from systemLog Battleship write to systemLog,
-	 * read from inputLog
-	 * 
-	 * yea we have a system log now
-	 */
-
 	MouseListener directory = new MouseListener() {
 		public void mouseClicked(MouseEvent event) {
 			JLabel source = (JLabel) event.getSource();
@@ -222,6 +214,17 @@ public class system extends JFrame {
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), diOptions,
 						diOptions[0]);
 			} while (!areYouSure(diOptions[difficulty].toString()));
+			Object[] offsetOptions = { "Yes", "No" };
+			do {
+				int offsetInd = JOptionPane.showOptionDialog(null, "Offset edges?", "Offset?",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), offsetOptions,
+						offsetOptions[0]);
+				if (offsetInd == 0) {
+					offset = "y";
+				} else {
+					offset = "n";
+				}
+			} while (!areYouSure(firstHand));
 		}
 	}
 
@@ -528,11 +531,18 @@ public class system extends JFrame {
 			return "MISS";
 		}
 	}
-
+	public static void getExp(long expInAddition){
+		userInfo[19]= Long.toString(Long.parseLong(userInfo[19])+expInAddition);
+		userInfo[18]= Long.toString(calLv(expInAddition));
+	}
+	public static long calLv(long exp){
+		return (long) Math.floor((25+Math.sqrt(625+100*exp))/50);
+	}
 	public static void endGame(boolean userWin) {
 		system.inGame = false;
 		game.userTurn = false;
 		game.timer.stop();
+		getExp(1800/(game.timeUsed/1000));
 		if (userWin) {
 			game.winWord.setVisible(true);
 		} else {
