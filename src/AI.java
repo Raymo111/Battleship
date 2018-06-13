@@ -465,8 +465,8 @@ public class AI {
 		int max = 0;
 		ArrayList<Square> targets = new ArrayList<Square>();
 		if (mode == Mode.HUNT)
-			for (int i = 0; i < grid[0].length; i++)
-				for (int j = 0; j < grid.length; j++) {
+			for (int i = 0; i < grid.length; i++)
+				for (int j = 0; j < grid[0].length; j++) {
 					if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN
 							&& grid[i][j].totalSquarePD > max) {
 						max = grid[i][j].totalSquarePD;
