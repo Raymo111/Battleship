@@ -33,7 +33,6 @@ public class AI {
 
 		// Generate Probability Density Distributed Graph for both grids
 		generatePDDG(Battleship.enemyGrid);
-		generatePDDG(Battleship.homeGrid);
 
 		// Offset PD of edges of grid?
 		System.out.println("Offset PD?");
@@ -47,12 +46,17 @@ public class AI {
 
 		// User wants to offset edges
 		if (input.equalsIgnoreCase("y")) {
-
-		}
-
-		// User does not want to offset edges
-		else {
-
+			for (int i = 0; i < Battleship.homeGrid.length; i++)
+				for (int j = 0; j < Battleship.homeGrid[i].length; j++) {
+					if (Battleship.homeGrid[i][j].x <= 1 || Battleship.homeGrid[i][j].x >= 8) {// x in outer 2
+						Battleship.homeGrid[i][j].huntPDx += 6;
+						Battleship.homeGrid[i][j].combinehuntPDXY();
+					}
+					if (Battleship.homeGrid[i][j].y <= 1 || Battleship.homeGrid[i][j].y >= 8) {// y in outer 2
+						Battleship.homeGrid[i][j].huntPDy += 6;
+						Battleship.homeGrid[i][j].combinehuntPDXY();
+					}
+				}
 		}
 
 		// Place ships on home grid
