@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 /*
  * Authors: Raymond Li, David Tuck
@@ -8,34 +9,39 @@
 public class Ship {
 	public int shipLength;
 	public String shipName;
-	public Square[] location;
+	public ArrayList<Square> location;
+
+	public Ship(Square[][] grid, String startShipName, int startShipLength) {
+		shipName = startShipName;
+		shipLength = startShipLength;
+	}
 
 	public Ship(Square[][] grid, Square start, Square end) {
 		int shipLength;
 		if (start.x == end.x) {// Vertical ship
 			shipLength = Math.abs(end.y - start.y) + 1;
-			location = new Square[shipLength];
+			location = new ArrayList<Square>(shipLength);
 			if (start.y > end.y)
 				for (int i = 0; i < shipLength; i++) {// ship up
-					location[i] = grid[start.y - i][start.x];
+					location.set(i, grid[start.y - i][start.x]);
 					grid[start.y - i][start.x].shipType = this;
 				}
 			else
 				for (int i = 0; i < shipLength; i++) {// ship down
-					location[i] = grid[start.y + i][start.x];
+					location.set(i, grid[start.y + i][start.x]);
 					grid[start.y + i][start.x].shipType = this;
 				}
 		} else {// Horizontal ship
 			shipLength = Math.abs(end.x - start.x) + 1;
-			location = new Square[shipLength];
+			location = new ArrayList<Square>(shipLength);
 			if (start.x > end.x)
 				for (int i = 0; i < shipLength; i++) {// ship left
-					location[i] = grid[start.y][start.x - i];
+					location.set(i, grid[start.y][start.x - i]);
 					grid[start.y][start.x - i].shipType = this;
 				}
 			else
 				for (int i = 0; i < shipLength; i++) {// ship right
-					location[i] = grid[start.y][start.x + i];
+					location.set(i, grid[start.y][start.x + i]);
 					grid[start.y][start.x + i].shipType = this;
 				}
 		}
