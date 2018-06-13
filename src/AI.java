@@ -147,7 +147,7 @@ public class AI {
 				} while (correct == false);
 			}
 		} else if (gameMode == 3) {// Anti-PD placement by David
-			Battleship.homeShips[0] = new Ship(grid, grid[0][2], grid[1][2]);
+			Battleship.homeShips[0] = new Ship(grid, grid[1][2], grid[2][2]);
 			Battleship.homeShips[1] = new Ship(grid, grid[9][9], grid[7][9]);
 			Battleship.homeShips[2] = new Ship(grid, grid[9][7], grid[7][7]);
 			Battleship.homeShips[3] = new Ship(grid, grid[5][5], grid[2][5]);
