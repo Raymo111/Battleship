@@ -38,6 +38,9 @@ public class system extends JFrame {
 			JLabel source = (JLabel) event.getSource();
 			try {
 				if (source.equals(baseInter.gameButton)) {
+					if(baseInter.futurePost.isVisible()){
+						baseInter.futurePost.setVisible(false);
+					}
 					System.out.println(-1);
 					remove(baseInter);
 					add(gameInter);
@@ -46,6 +49,9 @@ public class system extends JFrame {
 					return;
 				}
 				if (source.equals(baseInter.rankingButton)) {
+					if(baseInter.futurePost.isVisible()){
+						baseInter.futurePost.setVisible(false);
+					}
 					System.out.println(6);
 					remove(baseInter);
 					add(rankInter);
@@ -56,6 +62,9 @@ public class system extends JFrame {
 					return;
 				}
 				if (source.equals(baseInter.achievementButton)) {
+					if(baseInter.futurePost.isVisible()){
+						baseInter.futurePost.setVisible(false);
+					}
 					System.out.println(8);
 					remove(baseInter);
 					add(achiInter);
@@ -69,10 +78,10 @@ public class system extends JFrame {
 				if (source.getIcon().toString().equals("theBackButton.png")) {
 					System.out.println(0);
 					getContentPane().removeAll();
-					baseInter.updateInfo(userInfo[0], Integer.parseInt(userInfo[18]), Integer.parseInt(userInfo[15]));// update
-																														// the
-																														// base
-																														// interface
+					baseInter.updateInfo(userInfo[0], Integer.parseInt(userInfo[18]), Integer.parseInt(userInfo[15]));// update base
+					if(baseInter.futurePost.isVisible()){
+						baseInter.futurePost.setVisible(false);
+					}
 					add(baseInter);
 					repaint();
 					return;
