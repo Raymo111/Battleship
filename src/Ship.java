@@ -23,12 +23,12 @@ public class Ship {
 			location = new ArrayList<Square>(shipLength);
 			if (start.y > end.y)
 				for (int i = 0; i < shipLength; i++) {// ship up
-					location.set(i, grid[start.y - i][start.x]);
+					location.add(grid[start.y - i][start.x]);
 					grid[start.y - i][start.x].shipType = this;
 				}
 			else
 				for (int i = 0; i < shipLength; i++) {// ship down
-					location.set(i, grid[start.y + i][start.x]);
+					location.add(grid[start.y + i][start.x]);
 					grid[start.y + i][start.x].shipType = this;
 				}
 		} else {// Horizontal ship
@@ -36,12 +36,12 @@ public class Ship {
 			location = new ArrayList<Square>(shipLength);
 			if (start.x > end.x)
 				for (int i = 0; i < shipLength; i++) {// ship left
-					location.set(i, grid[start.y][start.x - i]);
+					location.add(grid[start.y][start.x - i]);
 					grid[start.y][start.x - i].shipType = this;
 				}
 			else
 				for (int i = 0; i < shipLength; i++) {// ship right
-					location.set(i, grid[start.y][start.x + i]);
+					location.add(grid[start.y][start.x + i]);
 					grid[start.y][start.x + i].shipType = this;
 				}
 		}

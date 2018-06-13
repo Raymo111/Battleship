@@ -7,12 +7,7 @@
 import java.io.*;
 import java.util.ArrayList;
 
-public class Battleship implements java.io.Serializable {
-
-	/**
-	 * Generated serial version UID for serialization (part of machine learning)
-	 */
-	private static final long serialVersionUID = 5377521207075619332L;
+public class Battleship {
 
 	public static int shipLengths[] = { 2, 3, 3, 4, 5 };// Each index represents the size of a individual ship
 
