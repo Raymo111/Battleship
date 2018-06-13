@@ -188,6 +188,17 @@ public class Battleship implements java.io.Serializable {
 							break;
 						}
 					enemyShipsSunk[temp] = true;
+
+					// Check if AI has won
+					AIWin = true;
+					for (boolean b : enemyShipsSunk)
+						if (!b) {
+							AIWin = false;
+							break;
+						}
+					if (AIWin) {
+						break;
+					}
 				}
 			}
 
@@ -267,9 +278,6 @@ public class Battleship implements java.io.Serializable {
 		// If user wins
 		if (userWin)
 			System.out.println("Congrats, you have won!");
-
-		if (AIWin)
-			System.out.println("Sorry, you have lost.");
 
 		// endGame(true);
 
