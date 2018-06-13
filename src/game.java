@@ -15,6 +15,7 @@ import java.io.*;
 public class game extends JPanel{
     Insets bInsets = getInsets();
     static Boolean userTurn = null;
+    static boolean firstClick = true; 
     static JLabel winWord = new JLabel(new ImageIcon("gWin.png"));
     static JLabel losWord = new JLabel(new ImageIcon("gLose.png"));
     JLabel bgi = new JLabel(new ImageIcon("gameBgi.png"));
@@ -46,8 +47,6 @@ public class game extends JPanel{
     ArrayList<JLabel> buttonEffects = new ArrayList<JLabel>();
 //    ArrayList<JLabel> ships = new ArrayList<JLabel>();
     int[] shipLength ={5,4,3,3,2};//positive for horizontal
-	static int lastHitX = -1;
-	static int lastHitY = -1;
 	MouseListener returnEnd = new MouseListener(){
 		public void mouseClicked(MouseEvent arg0) {
 			((JLabel)arg0.getSource()).setVisible(false);
@@ -99,17 +98,39 @@ public class game extends JPanel{
 	};
 	MouseListener unitFire = new MouseListener(){
 		public void mouseClicked(MouseEvent e) {
-			if(userTurn){
+			if(userTurn&&system.inGame){
 				JLabel source = (JLabel)e.getSource();
 				if(source.getBackground().equals(fogBlue)){//when the unit is not hit yet
-					lastHitX = (e.getX()-150)/50;
-					lastHitY = (e.getY()-150)/50;
-					fired=true;
-					System.out.println("----Hit: "+lastHitX+" "+lastHitY);
-					system.AIcheck();
-					system.AIFire();
-					system.userCheck();
-					system.checkWin();
+					System.out.println("Round 1. Your turn.\nEnter coordinates to fire:");
+					int hitX = 0;
+					int hitY = 0;
+					for(int i=0;i<10;i++){
+						boolean found = false;
+						for(int j =0;j<10;j++){
+							if(enemMap[i][j].equals(source)){
+								hitX = j;
+								hitY = i;
+								found = true;
+								break;
+							}
+						}
+						if(found){
+							break;
+						}
+					}
+					system.input = system.convertMessage(hitX, hitY);
+					System.out.println("----Hit: "+hitX+" "+hitY+" "+system.input);
+					if(system.areYouSure(system.input)){
+						system.AIcheck(!(firstClick)&&(system.firstHand.equals("User")));
+						system.AIRound();
+						System.out.println(system.AIWin+" "+system.userWin);
+						if(system.AIWin ||system.userWin){
+							system.checkWin();
+						}
+					}
+					if(firstClick){
+						firstClick = false;
+					}
 				}//end if
 			}
 		}//end method
@@ -122,8 +143,6 @@ public class game extends JPanel{
 		public void mouseReleased(MouseEvent e) {
 		}
 	};
-
-	static boolean fired = false;
 	
 /*	final MouseAdapter dragger = new MouseAdapter() {
         private JLabel selectedShip;
