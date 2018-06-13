@@ -20,8 +20,8 @@ public class game extends JPanel{
     static JLabel losWord = new JLabel(new ImageIcon("gLose.png"));
     JLabel bgi = new JLabel(new ImageIcon("gameBgi.png"));
 	JLabel timerBoard = new JLabel(new ImageIcon("gTimer.png"));
-	JLabel timerLabel = new JLabel("00:00:00");
-	Timer timer;
+	static JLabel timerLabel = new JLabel("00:00:00");
+	static Timer timer;
 	long timeUsed = 0;
 	long lastRecordTime = System.currentTimeMillis();
     JLabel backButton = new JLabel(new ImageIcon("theBackButton.png"));
@@ -98,6 +98,14 @@ public class game extends JPanel{
 	};
 	MouseListener unitFire = new MouseListener(){
 		public void mouseClicked(MouseEvent e) {
+			System.out.println("Click at the time when : userTurn?"+userTurn+" inGame?"+system.inGame);
+			if((!userTurn)&&system.inGame&&firstClick){
+				system.AIRound();
+				System.out.println(system.AIWin+" "+system.userWin);
+				if(system.AIWin ||system.userWin){
+					system.checkWin();
+				}
+			}
 			if(userTurn&&system.inGame){
 				JLabel source = (JLabel)e.getSource();
 				if(source.getBackground().equals(fogBlue)){//when the unit is not hit yet

@@ -94,7 +94,7 @@ public class system extends JFrame {
 			if(source.equals(gameInter.startButton)){
 				inGame = true;
 				game.firstClick=true;
-				gameInter.timer.start();
+				game.timer.restart();
 				try {
 					newGameProcedure();
 				} catch (IOException e1) {
@@ -393,6 +393,7 @@ public class system extends JFrame {
 		userShot = null;
 		AIShot = null;
 		ship = Battleship.homeShips[0];
+		game.timerLabel.setText("00:00:00");
 		// Who goes first
 		System.out.println("You first or Michael (the AI) first?");
 
@@ -432,6 +433,9 @@ public class system extends JFrame {
 			System.out.println("AI SUNK");
 			return "SUNK";			
 		}else {
+			if(game.userMap[x][y].getBackground().equals(game.darkBlue)){
+				game.userMap[x][y].setBackground(game.fogBlue);
+			}
 			game.userMap[x][y].setBorder(new LineBorder(Color.gray));;
 			System.out.println("AI MISS");
 			return "MISS";
@@ -440,6 +444,7 @@ public class system extends JFrame {
 	public static void endGame(boolean userWin){
 		system.inGame=false;
 		game.userTurn = false;
+		game.timer.stop();
 		if(userWin){
 			game.winWord.setVisible(true);
 		}else{
@@ -558,6 +563,7 @@ public class system extends JFrame {
 						AIWin = false;
 						break;
 					}
+				System.out.println("and AIWin? "+AIWin);
 			}
 		}
 
@@ -565,6 +571,7 @@ public class system extends JFrame {
 		else if (input.contains("MISS")){
 			AIShot.status = SquareTypes.MISS;
 		}
+		game.userTurn=true;
 	}
 	public static void checkWin(){
 			// If user wins
