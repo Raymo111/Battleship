@@ -152,7 +152,7 @@ public class game extends JPanel{
     public game(){
 		setSize(1300,700);
 		setLayout(null);
-		system.askUser.setBounds(bInsets.left,bInsets.top+400,50,60);
+		system.askUser.setBounds(bInsets.left+150,bInsets.top+150,500,500);
 		add(system.askUser);
 		winWord.setBounds(bInsets.left,bInsets.top+190,1300,300);
 		winWord.addMouseListener(returnEnd);
