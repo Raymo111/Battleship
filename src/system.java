@@ -22,7 +22,7 @@ public class system extends JFrame {
 	static Ship ship;
 	static boolean flag;
 	static String input, validate;
-	static AI Michael;
+	static AI Amadeus;//new name from Martin
 //	static JTextField askUser = new JTextField("Type command here.");
 	
 	/*
@@ -460,7 +460,7 @@ public class system extends JFrame {
 				Battleship.homeGrid[i][j] = new Square(j, i);
 
 		// Create a new AI - God's warrior angel
-		Michael = new AI(true);
+		Amadeus = new AI(true);
 		Battleship.displayPD(Battleship.enemyGrid);
 		Battleship.displayShips(Battleship.homeGrid);
 		game();
@@ -481,13 +481,13 @@ public class system extends JFrame {
 		ship = Battleship.homeShips[0];
 		game.timerLabel.setText("00:00:00");
 		// Who goes first
-		System.out.println("You first or Michael (the AI) first?");
+		System.out.println("You first or Amadeus (the AI) first?");
 
 		input = firstHand;
 		// User wants AI to go first
 		if (input.contains("A")) {
 			AIFirst = true;
-			System.out.println("Michael is going first.");
+			System.out.println("Amadeus is going first.");
 		} else {
 			AIFirst = false;
 			System.out.println("You are going first.");
@@ -524,6 +524,7 @@ public class system extends JFrame {
 			if (game.userMap[x][y].getBackground().equals(game.darkBlue)) {
 				game.userMap[x][y].setBackground(game.fogBlue);
 			}
+			
 			game.userMap[x][y].setBorder(new LineBorder(Color.gray));
 			game.countIncre(game.eMis);
 			System.out.println("AI MISS");
@@ -613,8 +614,8 @@ public class system extends JFrame {
 	public static void AIRound() {
 		round++;
 		// Get AI's shot
-		System.out.println("Round " + round + ". Michael's turn.");
-		AIShot = Michael.aim(AIShot, Battleship.enemyGrid, Battleship.shipLengths);
+		System.out.println("Round " + round + ". Amadeus's turn.");
+		AIShot = Amadeus.aim(AIShot, Battleship.enemyGrid, Battleship.shipLengths);
 		Battleship.displayPD(Battleship.enemyGrid);
 		Battleship.homeShotLog.add(AIShot);// Add home shot to log
 
