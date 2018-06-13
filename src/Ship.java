@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Ship {
 	public int shipLength;
 	public String shipName;
-	public ArrayList<Square> location;
+	public ArrayList<Square> location = new ArrayList<Square>();
 
 	public Ship(Square[][] grid, String startShipName, int startShipLength) {
 		shipName = startShipName;
