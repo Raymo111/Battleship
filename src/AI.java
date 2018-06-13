@@ -75,7 +75,7 @@ public class AI {
 	public void placeShips(Square[][] grid, int[] shipLengths, boolean inGui) {
 		int gameMode;
 		if (inGui) {
-			gameMode = system.difficulty;
+			gameMode = system.difficulty+1;
 		} else {
 			// Get mode
 			System.out.println("Select the mode. \n1. Manual - Raymond\n2. Random\n3. Manual - David");
