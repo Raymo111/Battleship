@@ -34,10 +34,28 @@ public class AI {
 
 		// Generate Probability Density Distributed Graph for both grids
 		generatePDDG(Battleship.enemyGrid);
+<<<<<<< HEAD
 
 		// Offset PD of edges of grid?
 		input = br.readLine();
 
+=======
+		
+		if(inGui){
+			input = system.offset;
+		}else{
+			// Offset PD of edges of grid?
+			System.out.println("Offset PD?");
+			while (true) {
+				input = br.readLine();
+				System.out.println("Are you sure of: " + input + "?");
+				validate = br.readLine();
+				if (validate.equalsIgnoreCase("y"))
+					break;
+			}
+		}
+		
+>>>>>>> cd45ec8eecca23c50adc87cc90bb2ec6f2034b83
 		// User wants to offset edges
 		if (input.equalsIgnoreCase("y")) {
 			for (int i = 0; i < Battleship.enemyGrid.length; i++)

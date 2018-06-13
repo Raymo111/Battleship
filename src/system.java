@@ -13,7 +13,8 @@ public class system extends JFrame {
 	static Boolean inGame = false;
 	int userIndex;
 	login startGame;
-	String[] userInfo = new String[38];
+	static String[] userInfo = new String[38];
+	static String offset = "";
 	static int difficulty = -1;
 	static String firstHand = "";
 	static boolean AIFirst, AIWin, userWin;
@@ -23,16 +24,9 @@ public class system extends JFrame {
 	static boolean flag;
 	static String input, validate;
 	static AI Amadeus;//new name from Martin
-//	static JTextField askUser = new JTextField("Type command here.");
+	final static Color[] shipColors = {game.darkBlue,new Color(0,200,0), new Color(0,170,0), new Color(0,140,0),new Color(0,110,0),new Color(0,80,0),game.darkBlue};
 	
-	/*
-	 * dewae to execute code in game from Battleships: 2 Files: systemLog, inputLog
-	 * game write to inputLog, read from systemLog Battleship write to systemLog,
-	 * read from inputLog
-	 * 
-	 * yea we have a system log now
-	 */
-
+	
 	MouseListener directory = new MouseListener() {
 		public void mouseClicked(MouseEvent event) {
 			JLabel source = (JLabel) event.getSource();
@@ -87,7 +81,7 @@ public class system extends JFrame {
 					return;
 				}
 			} catch (Exception exp) {
-
+					
 			}
 		}
 
@@ -135,7 +129,7 @@ public class system extends JFrame {
 	MouseListener gameOper = new MouseListener() {
 		public void mouseClicked(MouseEvent e) {
 			Object source = e.getSource();
-			if (source.equals(gameInter.startButton)) {
+			if (source.equals(gameInter.startButton)&&(!inGame)) {
 				inGame = true;
 				game.firstClick = true;
 				game.timer.restart();
@@ -222,6 +216,18 @@ public class system extends JFrame {
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), diOptions,
 						diOptions[0]);
 			} while (!areYouSure(diOptions[difficulty].toString()));
+			Object[] offsetOptions = { "Yes", "No" };
+			int offsetInd;
+			do {
+				offsetInd = JOptionPane.showOptionDialog(null, "Offset edges?", "Offset?",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), offsetOptions,
+						offsetOptions[0]);
+				if (offsetInd == 0) {
+					offset = "y";
+				} else {
+					offset = "n";
+				}
+			} while (!areYouSure(offsetOptions[offsetInd].toString()));
 		}
 	}
 
@@ -498,9 +504,15 @@ public class system extends JFrame {
 	}
 
 	public static String getFire(int y, int x) {
-//		return askUser.getText();
 		Color unitStatus = game.userMap[x][y].getBackground();
-		if (unitStatus.equals(game.darkGreen)) {
+		if (unitStatus.getBlue()==0) {
+			String shipName = "";
+			for(int i =1;i<6;i++){
+				if(unitStatus.equals(shipColors[i])){
+					shipName=Battleship.shipNames[i-1].toUpperCase();
+					break;
+				}
+			}
 			game.userMap[x][y].setBackground(game.darkRed);
 			game.countIncre(game.eHit);
 			int[] adx = { 0, 1, 0, -1 };
@@ -509,14 +521,14 @@ public class system extends JFrame {
 				int newx = x + adx[i];
 				int newy = y + ady[i];
 				if (newx > 0 && newx < 10 && newy > 0 && newy < 10) {
-					if (game.userMap[newx][newy].getBackground().equals(game.darkGreen)) {
-						System.out.println("AI HIT");
-						return "HIT";
+					if (game.userMap[newx][newy].getBackground().getBlue()!=0) {
+						System.out.println("AI HIT "+shipName);
+						return "HIT "+shipName;
 					}
 				}
 			}
-			System.out.println("AI SUNK");
-			return "SUNK";
+			System.out.println("AI SUNK "+shipName);
+			return "SUNK "+shipName;
 		} else {
 			if (game.userMap[x][y].getBackground().equals(game.darkBlue)) {
 				game.userMap[x][y].setBackground(game.fogBlue);
@@ -528,11 +540,18 @@ public class system extends JFrame {
 			return "MISS";
 		}
 	}
-
+	public static void getExp(long expInAddition){
+		userInfo[19]= Long.toString(Long.parseLong(userInfo[19])+expInAddition);
+		userInfo[18]= Long.toString(calLv(expInAddition));
+	}
+	public static long calLv(long exp){
+		return (long) Math.floor((25+Math.sqrt(625+100*exp))/50);
+	}
 	public static void endGame(boolean userWin) {
 		system.inGame = false;
 		game.userTurn = false;
 		game.timer.stop();
+		getExp(1800/(game.timeUsed/1000));
 		if (userWin) {
 			game.winWord.setVisible(true);
 		} else {
@@ -630,18 +649,19 @@ public class system extends JFrame {
 			// Get ship name
 			for (int i = 0; i < Battleship.shipNames.length; i++)
 				if (input.contains(Battleship.shipNames[i].toUpperCase())) {
+					System.out.println("found ship: "+Battleship.shipNames[i]);
 					ship = Battleship.enemyShips[i];
 					ship.location.add(AIShot);
 					break;
 				}
-
+/////////////problem: above lines :need to read ship type
 			// Check if sunk
 			if (input.contains("SUNK")) {
 				int temp = 0;
 				for (int i = 0; i < ship.location.size(); i++)// Set all location squares of ship to status sunk
 					ship.location.get(i).status = SquareTypes.SUNK;
 				for (int i = 0; i < Battleship.shipNames.length; i++)
-					if (ship.shipName.equals(Battleship.shipNames[i])) {
+					if (ship.shipName.equals(Battleship.shipNames[i].toUpperCase())) {
 						temp = i;
 						break;
 					}

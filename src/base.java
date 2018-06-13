@@ -65,9 +65,9 @@ public class base extends JPanel{
 	String userName;
 	int level;
 	int contractNum;
-	JLabel nameLabel = new JLabel("asdfasfafadfadfasfa");
-	JLabel levelLabel = new JLabel("99");
-	JLabel contractLabel = new JLabel("22");
+	JLabel nameLabel = new JLabel();
+	JLabel levelLabel = new JLabel();
+	JLabel contractLabel = new JLabel();
 	public base(){
 		setSize(1300,700);
 		setLayout(null);
