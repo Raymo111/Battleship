@@ -17,7 +17,7 @@ public class achGUI extends JFrame implements ActionListener{
 		setLayout(new FlowLayout());
 		menuBar.setVisible(true);
 		setVisible(true);
-	}
+	} 
 	
 	public void InitializeGrid() {
 		add(seaFriendly);

@@ -14,6 +14,7 @@ public class system extends JFrame {
 	int userIndex;
 	login startGame;
 	String[] userInfo = new String[38];
+	static int difficulty=-1;
 	static String firstHand = "";
 	static boolean AIFirst, AIWin, userWin;
 	static int round, x, y, shipNumber;// The index of a ship in homeShips grid
@@ -22,6 +23,8 @@ public class system extends JFrame {
 	static boolean flag;
 	static String input, validate;
 	static AI Michael;
+	
+	
 	/*
 	 * dewae to execute code in game from Battleships:
 	 * 2 Files: systemLog, inputLog
@@ -42,6 +45,7 @@ public class system extends JFrame {
 				add(gameInter);
 				repaint();
 				enterGame();
+				return;
 			}
 			if(source.equals(baseInter.rankingButton)){
 				System.out.println(6);
@@ -51,6 +55,14 @@ public class system extends JFrame {
 				updateRank(userIndex, "C",true);
 				updateRank(userIndex, "L",true);
 				updateRank(userIndex, "W",true);
+				return;
+			}
+			if(source.equals(baseInter.achievementButton)){
+				System.out.println(8);
+				remove(baseInter);
+				add(achiInter);
+				repaint();
+				return;
 			}
 			if(source.getIcon().toString().equals("theBackButton.png")){
 				System.out.println(0);
@@ -58,6 +70,7 @@ public class system extends JFrame {
 				baseInter.updateInfo(userInfo[0],Integer.parseInt(userInfo[18]),Integer.parseInt(userInfo[15]));//update the base interface
 				add(baseInter);
 				repaint();
+				return;
 			}}catch(Exception exp){
 				
 			}
@@ -117,6 +130,7 @@ public class system extends JFrame {
 	base baseInter = new base();
 	game gameInter = new game();
 	rankings rankInter;
+	Achievements achiInter = new Achievements();
 	public system() throws IOException {
 		startGame = new login();
 		startGame.okButton.addMouseListener(loginOper);
@@ -127,6 +141,7 @@ public class system extends JFrame {
 		gameInter.startButton.addMouseListener(gameOper);
 		rankInter = new rankings();//initializing the rankings interface
 		rankInter.backButton.addMouseListener(directory);
+		achiInter.backButton.addMouseListener(directory);
 		addWindowListener(new java.awt.event.WindowAdapter() {//need to save the information before closing
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				try {
@@ -165,6 +180,17 @@ public class system extends JFrame {
 					game.userTurn = false;
 				}
 			}while(!areYouSure(firstHand));
+			Object[] diOptions = {"Expert - Raymond","Random","Expert - David"};
+			do{
+				difficulty = JOptionPane.showOptionDialog(null,
+						"Choose a difficulty level:",
+						"Difficulty",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						new ImageIcon("gNani.png"),     
+						diOptions,  
+						diOptions[0]); 
+			}while(!areYouSure(diOptions[difficulty].toString()));
 		}
 	}
 	public static boolean areYouSure(String confirmInfo){
@@ -378,7 +404,7 @@ public class system extends JFrame {
 				Battleship.homeGrid[i][j] = new Square(j, i);
 
 		// Create a new AI - God's warrior angel
-		Michael = new AI();
+		Michael = new AI(true);
 		Battleship.displayPD(Battleship.enemyGrid);
 		Battleship.displayShips(Battleship.homeGrid);
 		game();

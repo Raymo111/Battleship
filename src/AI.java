@@ -30,7 +30,7 @@ public class AI {
 	}
 
 	// Constructor
-	public AI() throws IOException {
+	public AI(boolean inGui) throws IOException {
 
 		// Generate Probability Density Distributed Graph for both grids
 		generatePDDG(Battleship.enemyGrid);
@@ -61,7 +61,7 @@ public class AI {
 		}
 
 		// Place ships on home grid
-		placeShips(Battleship.homeGrid, Battleship.shipLengths);
+		placeShips(Battleship.homeGrid, Battleship.shipLengths,inGui);
 	}
 
 	/**
@@ -72,24 +72,28 @@ public class AI {
 	 * @param shipLengths
 	 *            The lengths of ships to place
 	 */
-	public void placeShips(Square[][] grid, int[] shipLengths) {
-
-		// Get mode
-		System.out.println("Select the mode. \n1. Manual - Raymond\n2. Random\n3. Manual - David");
-		while (true) {
-			try {
-				input = br.readLine();
-				Integer.parseInt(input);
-				System.out.println("Are you sure of: " + input + "?");
-				validate = br.readLine();
-				if (validate.equalsIgnoreCase("y"))
-					break;
-			} catch (Exception e) {
-				System.err.println("Input integer.");
+	public void placeShips(Square[][] grid, int[] shipLengths, boolean inGui) {
+		int gameMode;
+		if(inGui){
+			gameMode = system.difficulty;
+		}else{
+			// Get mode
+			System.out.println("Select the mode. \n1. Manual - Raymond\n2. Random\n3. Manual - David");
+			while (true) {
+				try {
+					input = br.readLine();
+					Integer.parseInt(input);
+					System.out.println("Are you sure of: " + input + "?");
+					validate = br.readLine();
+					if (validate.equalsIgnoreCase("y"))
+						break;
+				} catch (Exception e) {
+					System.err.println("Input integer.");
+				}
 			}
+			gameMode = Integer.parseInt(input);
 		}
-		int gameMode = Integer.parseInt(input);
-
+		
 		int[][] rotationModifiers = new int[2][4];
 		// [0][i]=y
 		// [1][i]=x
