@@ -106,6 +106,10 @@ public class game extends JPanel{
 					lastHitY = (e.getY()-150)/50;
 					fired=true;
 					System.out.println("----Hit: "+lastHitX+" "+lastHitY);
+					system.AIcheck();
+					system.AIFire();
+					system.userCheck();
+					system.checkWin();
 				}//end if
 			}
 		}//end method

@@ -14,14 +14,14 @@ public class Battleship {
 	// Each index represents the size of a individual ship
 	public static String shipNames[] = { "Destroyer", "Cruiser", "Submarine", "Battleship", "Aircraft Carrier" };
 	public static int boardSizeXY[] = { 10, 10 };// x and y size of the board
-	private static boolean[] enemyShipsSunk = new boolean[shipLengths.length];// Which enemy ships are sunk
+	public static boolean[] enemyShipsSunk = new boolean[shipLengths.length];// Which enemy ships are sunk
 	public static boolean[] homeShipsSunk = new boolean[shipLengths.length];// Which home ships are sunk
 	public static Square[][] enemyGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// State of enemy grid
 	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// State of home grid
 	public static Ship[] homeShips = new Ship[shipLengths.length];// A list of home ships
 	public static Ship[] enemyShips = new Ship[shipLengths.length];// A list of home ships
-	private static ArrayList<Square> enemyShotLog = new ArrayList<Square>(20);// A log of enemy shots
-	private static ArrayList<Square> homeShotLog = new ArrayList<Square>(20);// A log of AI's shots
+	public static ArrayList<Square> enemyShotLog = new ArrayList<Square>(20);// A log of enemy shots
+	public static ArrayList<Square> homeShotLog = new ArrayList<Square>(20);// A log of AI's shots
 
 	// A list of used ship names (for ships of the same size with different names)
 	public static ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);

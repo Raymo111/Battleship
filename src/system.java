@@ -14,8 +14,8 @@ public class system extends JFrame {
 	int userIndex;
 	login startGame;
 	String[] userInfo = new String[38];
-	static String sos = "";
 	static String firstHand = "";
+	static String sure = "";
 	/*
 	 * dewae to execute code in game from Battleships:
 	 * 2 Files: systemLog, inputLog
@@ -138,23 +138,38 @@ public class system extends JFrame {
 	}
 	public void enterGame(){
 		if(!inGame){
-			//will be modify to be round shape frame if there is time left
-			Object[] options = {"User","AI"};
-			int firsthand = JOptionPane.showOptionDialog(null,
-					"Battle started from:",
-					"First hand",
-					JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE,
-					new ImageIcon("gNani.png"),     
-					options,  
-					options[0]); 
-			if(firsthand==0){
-				firstHand = "u";
-				game.userTurn = true;
-			}else{
-				firstHand = "ai";
-				game.userTurn = false;
-			}
+			do{
+				Object[] options = {"User","AI"};
+				int firsthand = JOptionPane.showOptionDialog(null,
+						"Battle started from:",
+						"First hand",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						new ImageIcon("gNani.png"),     
+						options,  
+						options[0]); 
+				if(firsthand==0){
+					firstHand = "u";
+					game.userTurn = true;
+				}else{
+					firstHand = "ai";
+					game.userTurn = false;
+				}
+				Object[] optionsAg = {"Yes","No"};
+				int confirm = JOptionPane.showOptionDialog(null,
+						"Are you sure? First hand: "+firstHand,
+						"First hand Confirm",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						new ImageIcon("gNani.png"),     
+						optionsAg,  
+						optionsAg[0]); 
+				if(confirm==0){
+					sure = "y";
+				}else{
+					sure = "n";
+				}
+			}while(!sure.equals("y"));
 		}
 	}
 	public void readLogin(String thisUsername) throws IOException{
@@ -321,37 +336,9 @@ public class system extends JFrame {
 		}
 	}
 	public static String askFire(){
-		Thread sss = new Thread(new Runnable(){
-			public void run() {
-				synchronized(this){
-					 game.userTurn = true;
-//						while(!fired){}
-						try {
-							Thread.sleep(15000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						System.out.println("A1");
-						game.fired = false;
-						System.out.println(game.lastHitY+" "+game.lastHitX);
-						system.sos=(Character.toString((char) ( game.lastHitY+ 65)) + Integer.toString( game.lastHitX + 1)).toUpperCase();
-						notify();
-				 }
-			}
-	    });
-		sss.start();
-		synchronized(sss){
-			 try{
-	                System.out.println("Waiting for b to complete...");
-	                sss.wait();
-	            }catch(InterruptedException e){
-	                e.printStackTrace();
-	            }
-			 	System.out.println("done!!!");
-		}
-		System.out.println("--------- "+sos);
-		return sos;
+		game.fired = false;
+		System.out.println(game.lastHitY+" "+game.lastHitX);
+		return (Character.toString((char) ( game.lastHitY+ 65)) + Integer.toString( game.lastHitX + 1)).toUpperCase();
 	}
 	public static void fireResult(String result){
 		game.userTurn = false;
@@ -398,13 +385,19 @@ public class system extends JFrame {
 		Square userShot = null, AIShot = null;
 		Ship ship = Battleship.homeShips[0];
 		boolean flag;
+		String input, validate;
 
 		// Who goes first
 		System.out.println("You first or Michael (the AI) first?");
-		//~String input = br.readLine().toLowerCase();
 
-		 String input =  system.firstHand;
-
+		while (true) {
+			input = firstHand;
+			System.out.println(input + "Are you sure?");
+			validate = sure;
+			if (validate.equalsIgnoreCase("y"))
+				break;
+		}
+		sure = "n";
 		// User wants AI to go first
 		if (input.contains("a")) {
 			AIFirst = true;
@@ -414,17 +407,26 @@ public class system extends JFrame {
 			System.out.println("You are going first.");
 		}
 
-		// Wait for user to place ships
+		// Place user's ships
 		System.out.println("Place your ships on a separate grid. When you're ready, press ENTER to continue...");
-		//~br.readLine();
+		for (int i = 0; i < Battleship.enemyShips.length; i++)
+			Battleship.enemyShips[i] = new Ship(Battleship.enemyGrid, Battleship.shipNames[i], Battleship.shipLengths[i]);
 
 		// Only executes once for when user goes first
 		if (!AIFirst) {
 
 			// Get user's shot
 			System.out.println("Round 1. Your turn.\nEnter coordinates to fire:");
-			//~input = br.readLine().toUpperCase();
-			input =  askFire();
+			while (true) {
+				input = br.readLine().toUpperCase();
+				System.out.println(input + "Are you sure?");
+				validate = br.readLine();
+				if (validate.equalsIgnoreCase("y"))
+					break;
+			}
+
+			// input = askFire();
+
 			x = Integer.parseInt(input.substring(1, 2)) - 1;
 			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
 			if (x == 1) {// Get second digit, could be 10
@@ -440,17 +442,21 @@ public class system extends JFrame {
 			if (userShot.shipType == null) {// Miss
 				userShot.status = SquareTypes.MISS;
 				System.out.println("MISS");
-				 fireResult("MISS");
+
+				// fireResult("MISS");
+
 			} else {// Hit
 				Battleship.homeGrid[y][x].status = SquareTypes.HIT;
 				for (int i = 0; i < Battleship.homeShips.length; i++)
-					for (int j = 0; j < Battleship.homeShips[i].location.length; j++)
-						if (Battleship.homeShips[i].location[j] == userShot) {
+					for (int j = 0; j < Battleship.homeShips[i].location.size(); j++)
+						if (Battleship.homeShips[i].location.get(j) == userShot) {
 							ship = Battleship.homeShips[i];
 							break;
 						}
 				System.out.println("HIT, " + ship.shipName);
-				 fireResult("HIT");
+
+				// fireResult("HIT");
+
 			}
 			Battleship.enemyShotLog.add(Battleship.homeGrid[y][x]);// Add enemy shot to log
 			round++;
@@ -474,18 +480,50 @@ public class system extends JFrame {
 
 			// Get user's response
 			System.out.println("HIT or MISS?");
-			//~input = br.readLine().toUpperCase();
-			
-			input =  getFire(AIShot.x,AIShot.y);
-			
+			while (true) {
+				input = br.readLine().toUpperCase();
+				System.out.println(input + "Are you sure?");
+				validate = br.readLine();
+				if (validate.equalsIgnoreCase("y"))
+					break;
+			}
+
+			// input = getFire(AIShot.x,AIShot.y);
+
 			// AI hit a ship
 			if (input.contains("HIT")) {
 				AIShot.status = SquareTypes.HIT;
 
+				// Get ship name
+				for (int i = 0; i < Battleship.shipNames.length; i++)
+					if (input.contains(Battleship.shipNames[i].toUpperCase())) {
+						ship = Battleship.enemyShips[i];
+						ship.location.add(AIShot);
+						break;
+					}
+
 				// Check if sunk
 				if (input.contains("SUNK")) {
-					AIShot.status = SquareTypes.SUNK;
+					int temp = 0;
+					for (int i = 0; i < ship.location.size(); i++)// Set all location squares of ship to status sunk
+						ship.location.get(i).status = SquareTypes.SUNK;
+					for (int i = 0; i < Battleship.shipNames.length; i++)
+						if (ship.shipName.equals(Battleship.shipNames[i])) {
+							temp = i;
+							break;
+						}
+					Battleship.enemyShipsSunk[temp] = true;
 
+					// Check if AI has won
+					AIWin = true;
+					for (boolean b : Battleship.enemyShipsSunk)
+						if (!b) {
+							AIWin = false;
+							break;
+						}
+					if (AIWin) {
+						break;
+					}
 				}
 			}
 
@@ -495,8 +533,16 @@ public class system extends JFrame {
 
 			// Get user's shot
 			System.out.println("Round " + round + ". Your turn.\nEnter coordinates to fire:");
-			//~input = br.readLine().toUpperCase();
-			input =  askFire();
+			while (true) {
+				input = br.readLine().toUpperCase();
+				System.out.println(input + "Are you sure?");
+				validate = br.readLine();
+				if (validate.equalsIgnoreCase("y"))
+					break;
+			}
+
+			// input = askFire();
+
 			x = Integer.parseInt(input.substring(1, 2)) - 1;
 			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
 			if (x == 1) {// Get second digit, could be 10
@@ -512,12 +558,14 @@ public class system extends JFrame {
 			if (userShot.shipType == null) {// Miss
 				userShot.status = SquareTypes.MISS;
 				System.out.println("MISS");
-				 fireResult("MISS");
+
+				// fireResult("MISS");
+
 			} else {// Hit
 				userShot.status = SquareTypes.HIT;
 				for (int i = 0; i < Battleship.homeShips.length; i++)
-					for (int j = 0; j < Battleship.homeShips[i].location.length; j++)
-						if (Battleship.homeShips[i].location[j] == userShot) {
+					for (int j = 0; j < Battleship.homeShips[i].location.size(); j++)
+						if (Battleship.homeShips[i].location.get(j) == userShot) {
 							ship = Battleship.homeShips[i];
 							shipNumber = i;
 							break;
@@ -525,8 +573,8 @@ public class system extends JFrame {
 
 				// Check for ship sunk
 				flag = true;
-				for (int i = 0; i < ship.location.length; i++)
-					if (ship.location[i].status == SquareTypes.UNKNOWN) {
+				for (int i = 0; i < ship.location.size(); i++)
+					if (ship.location.get(i).status == SquareTypes.UNKNOWN) {
 						flag = false;
 						break;
 					}
@@ -536,7 +584,9 @@ public class system extends JFrame {
 					Battleship.homeShipsSunk[shipNumber] = false;
 				if (Battleship.homeShipsSunk[shipNumber]) {
 					System.out.println("HIT, SUNK " + Battleship.homeShips[shipNumber].shipName);
-					 fireResult("HIT");
+
+					// fireResult("HIT");
+
 					// Check for win (all ships sunk)
 					flag = true;
 					for (int i = 0; i < Battleship.homeShipsSunk.length; i++)
@@ -548,7 +598,9 @@ public class system extends JFrame {
 						userWin = true;
 				} else
 					System.out.println("HIT, " + ship.shipName);
-					 fireResult("HIT");
+
+				// fireResult("HIT");
+
 			}
 			Battleship.enemyShotLog.add(Battleship.homeGrid[y][x]);// Add enemy shot to log
 
@@ -557,10 +609,14 @@ public class system extends JFrame {
 		// If user wins
 		if (userWin)
 			System.out.println("Congrats, you have won!");
-			 endGame(true);
+
+		// endGame(true);
+
 		if (AIWin)
 			System.out.println("Sorry, you have lost.");
-			 endGame(false);
+
+		// endGame(false);
+
 	}
 
 	public static String getFire(int x, int y){
@@ -589,6 +645,18 @@ public class system extends JFrame {
 			game.losWord.setVisible(true);
 		}
 		//and reset game method
+	}
+	public static void AIcheck(){
+		
+	}
+	public static void AIFire(){
+		
+	}
+	public static void userCheck(){
+		
+	}
+	public static void checkWin(){
+		
 	}
 	public static void main(String[] args) throws IOException {
 		system theGame = new system();
