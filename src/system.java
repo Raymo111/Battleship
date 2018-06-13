@@ -24,7 +24,7 @@ public class system extends JFrame {
 	static boolean flag;
 	static String input, validate;
 	static AI Amadeus;//new name from Martin
-	final static Color[] shipColors = {game.darkBlue,new Color(0,200,0), new Color(0,170,0), new Color(0,140,0),new Color(0,110,0),new Color(0,80,0),game.darkBlue};
+	final static Color[] unitColor = {game.darkBlue,new Color(0,200,0), new Color(0,170,0), new Color(0,140,0),new Color(0,110,0),new Color(0,80,0),game.darkBlue,game.fogBlue,game.darkRed};
 	
 	
 	MouseListener directory = new MouseListener() {
@@ -72,6 +72,11 @@ public class system extends JFrame {
 				if (source.getIcon().toString().equals("theBackButton.png")) {
 					System.out.println(0);
 					getContentPane().removeAll();
+					if(inGame){
+						game.startGame();
+					}else{
+						game.saveGame();
+					}
 					baseInter.updateInfo(userInfo[0], Integer.parseInt(userInfo[18]), Integer.parseInt(userInfo[15]));// update base
 					if(baseInter.futurePost.isVisible()){
 						baseInter.futurePost.setVisible(false);
@@ -508,7 +513,7 @@ public class system extends JFrame {
 		if (unitStatus.getBlue()==0) {
 			String shipName = "";
 			for(int i =1;i<6;i++){
-				if(unitStatus.equals(shipColors[i])){
+				if(unitStatus.equals(unitColor[i])){
 					shipName=Battleship.shipNames[i-1].toUpperCase();
 					break;
 				}
