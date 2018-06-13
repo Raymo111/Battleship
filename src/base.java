@@ -18,6 +18,7 @@ public class base extends JPanel{
 	JLabel profileButton = new JLabel(new ImageIcon("mProfileButton.png"));
 	JLabel contractPane = new JLabel(new ImageIcon("mContractPane.png"));
 	JLabel contractPaneButton = new JLabel(new ImageIcon("mContractPaneButton.png"));
+    JLabel futurePost = new JLabel(new ImageIcon("futureFeatures.png"));
 	int initXCoordinate=700;
 	int[] initYCoordinates = {30,50};
 	ArrayList<JLabel> mRightButtons = new ArrayList<JLabel>();
@@ -110,6 +111,10 @@ public class base extends JPanel{
        contractPane.addMouseListener(mMousListButtons);
        add(contractPane);
        add(profileButton);
+       futurePost.setBounds(bInsets.left,bInsets.top,650,700);
+       add(futurePost);
+       futurePost.setVisible(false);
+       futurePost.addMouseListener(game.returnEnd);
        add(bgi);
        setVisible(true);
 		

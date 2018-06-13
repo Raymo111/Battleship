@@ -44,7 +44,7 @@ public class game extends JPanel{
     JLabel[] mapLabels = new JLabel[40];
     ArrayList<JLabel> gButtons = new ArrayList<JLabel>();
     ArrayList<JLabel> buttonEffects = new ArrayList<JLabel>();
-	MouseListener returnEnd = new MouseListener(){
+	static MouseListener returnEnd = new MouseListener(){
 		public void mouseClicked(MouseEvent arg0) {
 			((JLabel)arg0.getSource()).setVisible(false);
 		}
@@ -218,6 +218,7 @@ public class game extends JPanel{
 		add(userBoard);
 		enemBoard.setBounds(bInsets.left+750,bInsets.top,400,125);
 		add(enemBoard);
+		
 		bgi.setBounds(bInsets.left,bInsets.top,1300,700);
 		add(bgi);
 		setBackground(Color.DARK_GRAY);
