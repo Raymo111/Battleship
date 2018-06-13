@@ -62,6 +62,10 @@ public class system extends JFrame {
 					repaint();
 					return;
 				}
+				if(source.equals(baseInter.taskButton)||source.equals(baseInter.factoryButton)||source.equals(baseInter.settingButton)){
+					baseInter.futurePost.setVisible(true);
+					return;
+				}
 				if (source.getIcon().toString().equals("theBackButton.png")) {
 					System.out.println(0);
 					getContentPane().removeAll();
