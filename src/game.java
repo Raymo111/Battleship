@@ -37,7 +37,7 @@ public class game extends JPanel{
     final static Color darkBlue = new Color(0,0,40);
     final static Color fogBlue = new Color(0,0,80);
     final static Color darkRed = new Color(150,40,40);
-    final static Color darkGreen = new Color(0,30,0);
+    final static Color darkGreen = new Color(0,80,0);
     ArrayList<Color> unitColor = new ArrayList<Color>();
     static JLabel[][] userMap = new JLabel[10][10];
     static JLabel[][] enemMap = new JLabel[10][10];
@@ -152,6 +152,8 @@ public class game extends JPanel{
     public game(){
 		setSize(1300,700);
 		setLayout(null);
+		system.askUser.setBounds(bInsets.left,bInsets.top+400,50,60);
+		add(system.askUser);
 		winWord.setBounds(bInsets.left,bInsets.top+190,1300,300);
 		winWord.addMouseListener(returnEnd);
 		add(winWord);

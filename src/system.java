@@ -23,7 +23,7 @@ public class system extends JFrame {
 	static boolean flag;
 	static String input, validate;
 	static AI Michael;
-
+	static JTextField askUser = new JTextField();
 	
 	/*
 	 * dewae to execute code in game from Battleships: 2 Files: systemLog, inputLog
@@ -501,33 +501,34 @@ public class system extends JFrame {
 	}
 
 	public static String getFire(int y, int x) {
-		Color unitStatus = game.userMap[x][y].getBackground();
-		if (unitStatus.equals(game.darkGreen)) {
-			game.userMap[x][y].setBackground(game.darkRed);
-			game.countIncre(game.eHit);
-			int[] adx = { 0, 1, 0, -1 };
-			int[] ady = { 1, 0, -1, 0 };
-			for (int i = 0; i < 4; i++) {
-				int newx = x + adx[i];
-				int newy = y + ady[i];
-				if (newx > 0 && newx < 10 && newy > 0 && newy < 10) {
-					if (game.userMap[newx][newy].getBackground().equals(game.darkGreen)) {
-						System.out.println("AI HIT");
-						return "HIT";
-					}
-				}
-			}
-			System.out.println("AI SUNK");
-			return "SUNK";
-		} else {
-			if (game.userMap[x][y].getBackground().equals(game.darkBlue)) {
-				game.userMap[x][y].setBackground(game.fogBlue);
-			}
-			game.userMap[x][y].setBorder(new LineBorder(Color.gray));
-			game.countIncre(game.eMis);
-			System.out.println("AI MISS");
-			return "MISS";
-		}
+		return askUser.getText();
+//		Color unitStatus = game.userMap[x][y].getBackground();
+//		if (unitStatus.equals(game.darkGreen)) {
+//			game.userMap[x][y].setBackground(game.darkRed);
+//			game.countIncre(game.eHit);
+//			int[] adx = { 0, 1, 0, -1 };
+//			int[] ady = { 1, 0, -1, 0 };
+//			for (int i = 0; i < 4; i++) {
+//				int newx = x + adx[i];
+//				int newy = y + ady[i];
+//				if (newx > 0 && newx < 10 && newy > 0 && newy < 10) {
+//					if (game.userMap[newx][newy].getBackground().equals(game.darkGreen)) {
+//						System.out.println("AI HIT");
+//						return "HIT";
+//					}
+//				}
+//			}
+//			System.out.println("AI SUNK");
+//			return "SUNK";
+//		} else {
+//			if (game.userMap[x][y].getBackground().equals(game.darkBlue)) {
+//				game.userMap[x][y].setBackground(game.fogBlue);
+//			}
+//			game.userMap[x][y].setBorder(new LineBorder(Color.gray));
+//			game.countIncre(game.eMis);
+//			System.out.println("AI MISS");
+//			return "MISS";
+//		}
 	}
 
 	public static void endGame(boolean userWin) {
