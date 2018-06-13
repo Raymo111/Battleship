@@ -52,7 +52,7 @@ public class Battleship {
 				homeGrid[i][j] = new Square(j, i);
 
 		// Create a new AI - God's warrior angel
-		AI Michael = new AI();
+		AI Michael = new AI(false);
 		displayPD(enemyGrid);
 		displayShips(homeGrid);
 		game(Michael);

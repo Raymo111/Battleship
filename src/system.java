@@ -14,6 +14,7 @@ public class system extends JFrame {
 	int userIndex;
 	login startGame;
 	String[] userInfo = new String[38];
+	static int difficulty=-1;
 	static String firstHand = "";
 	static boolean AIFirst, AIWin, userWin;
 	static int round, x, y, shipNumber;// The index of a ship in homeShips grid
@@ -22,7 +23,7 @@ public class system extends JFrame {
 	static boolean flag;
 	static String input, validate;
 	static AI Michael;
-	 
+	
 	
 	/*
 	 * dewae to execute code in game from Battleships:
@@ -178,6 +179,17 @@ public class system extends JFrame {
 					firstHand = "AI";
 					game.userTurn = false;
 				}
+			}while(!areYouSure(firstHand));
+			do{
+				Object[] options = {"Expert - Raymond","Random","Expert - David"};
+				difficulty = JOptionPane.showOptionDialog(null,
+						"Choose a difficulty level:",
+						"Difficulty",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						new ImageIcon("gNani.png"),     
+						options,  
+						options[0]); 
 			}while(!areYouSure(firstHand));
 		}
 	}
@@ -392,7 +404,7 @@ public class system extends JFrame {
 				Battleship.homeGrid[i][j] = new Square(j, i);
 
 		// Create a new AI - God's warrior angel
-		Michael = new AI();
+		Michael = new AI(true);
 		Battleship.displayPD(Battleship.enemyGrid);
 		Battleship.displayShips(Battleship.homeGrid);
 		game();
