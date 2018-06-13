@@ -24,6 +24,7 @@ public class system extends JFrame {
 	static String input, validate;
 	static AI Michael;
 
+	
 	/*
 	 * dewae to execute code in game from Battleships: 2 Files: systemLog, inputLog
 	 * game write to inputLog, read from systemLog Battleship write to systemLog,
