@@ -22,6 +22,7 @@ public class system extends JFrame {
 	static boolean flag;
 	static String input, validate;
 	static AI Michael;
+	 
 	
 	/*
 	 * dewae to execute code in game from Battleships:
