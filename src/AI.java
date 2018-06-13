@@ -38,8 +38,8 @@ public class AI {
 		if (inGui)
 			input = system.offset;
 		else {
-			// Offset PD of edges of grid?
 
+			// Offset PD of edges of grid?
 			System.out.println("Offset PD?");
 			input = br.readLine();
 		}
