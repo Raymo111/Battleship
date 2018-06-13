@@ -20,8 +20,8 @@ public class Battleship {
 	public static Square[][] homeGrid = new Square[boardSizeXY[0]][boardSizeXY[1]];// State of home grid
 	public static Ship[] homeShips = new Ship[shipLengths.length];// A list of home ships
 	public static Ship[] enemyShips = new Ship[shipLengths.length];// A list of home ships
-	public static ArrayList<Square> enemyShotLog = new ArrayList<Square>(20);// A log of enemy shots
-	public static ArrayList<Square> homeShotLog = new ArrayList<Square>(20);// A log of AI's shots
+	private static ArrayList<Square> enemyShotLog = new ArrayList<Square>(20);// A log of enemy shots
+	private static ArrayList<Square> homeShotLog = new ArrayList<Square>(20);// A log of AI's shots
 
 	// A list of used ship names (for ships of the same size with different names)
 	public static ArrayList<String> usedShipNames = new ArrayList<String>(Battleship.shipNames.length);
@@ -78,7 +78,7 @@ public class Battleship {
 
 		while (true) {
 			input = br.readLine().toLowerCase();
-			System.out.println(input + "Are you sure?");
+			System.out.println("Are you sure of: " + input + "?");
 			validate = br.readLine();
 			if (validate.equalsIgnoreCase("y"))
 				break;
@@ -108,7 +108,7 @@ public class Battleship {
 			System.out.println("Round 1. Your turn.\nEnter coordinates to fire:");
 			while (true) {
 				input = br.readLine().toUpperCase();
-				System.out.println(input + "Are you sure?");
+				System.out.println("Are you sure of: " + input + "?");
 				validate = br.readLine();
 				if (validate.equalsIgnoreCase("y"))
 					break;
@@ -171,7 +171,7 @@ public class Battleship {
 			System.out.println("HIT or MISS?");
 			while (true) {
 				input = br.readLine().toUpperCase();
-				System.out.println(input + "Are you sure?");
+				System.out.println("Are you sure of: " + input + "?");
 				validate = br.readLine();
 				if (validate.equalsIgnoreCase("y"))
 					break;
@@ -224,7 +224,7 @@ public class Battleship {
 			System.out.println("Round " + round + ". Your turn.\nEnter coordinates to fire:");
 			while (true) {
 				input = br.readLine().toUpperCase();
-				System.out.println(input + "Are you sure?");
+				System.out.println("Are you sure of: " + input + "?");
 				validate = br.readLine();
 				if (validate.equalsIgnoreCase("y"))
 					break;

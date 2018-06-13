@@ -4,12 +4,14 @@
  * Date created: 2018-05-30
  * Description: The artificial intelligence used to select where to fire
  */
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Random;
-import java.util.Scanner;
 
 public class AI {
 	private static Random rand = new Random();
-	private static Scanner sc = new Scanner(System.in);
+	private static BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
+	private static String input, validate;
 
 	// Start with hunt mode
 	private Mode mode = Mode.HUNT;
@@ -27,11 +29,31 @@ public class AI {
 	}
 
 	// Constructor
-	public AI() {
+	public AI() throws IOException {
 
 		// Generate Probability Density Distributed Graph for both grids
 		generatePDDG(Battleship.enemyGrid);
 		generatePDDG(Battleship.homeGrid);
+
+		// Offset PD of edges of grid?
+		System.out.println("Offset PD?");
+		while (true) {
+			input = br.readLine();
+			System.out.println("Are you sure of: " + input + "?");
+			validate = br.readLine();
+			if (validate.equalsIgnoreCase("y"))
+				break;
+		}
+
+		// User wants to offset edges
+		if (input.equalsIgnoreCase("y")) {
+
+		}
+
+		// User does not want to offset edges
+		else {
+
+		}
 
 		// Place ships on home grid
 		placeShips(Battleship.homeGrid, Battleship.shipLengths);
@@ -46,15 +68,23 @@ public class AI {
 	 *            The lengths of ships to place
 	 */
 	public void placeShips(Square[][] grid, int[] shipLengths) {
-		System.out.println("Select the mode. \n1-PDM\n2-Random");
 
-		int mode = 0;
-
-		try {
-			mode = sc.nextInt();
-		} catch (Exception e) {
-			System.err.println("Input integer.");
+		// Get mode
+		System.out.println("Select the mode. \n1. Manual - Raymond\n2. Random\n3. Manual - David");
+		while (true) {
+			try {
+				input = br.readLine();
+				Integer.parseInt(input);
+				System.out.println("Are you sure of: " + input + "?");
+				validate = br.readLine();
+				if (validate.equalsIgnoreCase("y"))
+					break;
+			} catch (Exception e) {
+				System.err.println("Input integer.");
+			}
 		}
+		int gameMode = Integer.parseInt(input);
+
 		int[][] rotationModifiers = new int[2][4];
 		// [0][i]=y
 		// [1][i]=x
@@ -69,13 +99,13 @@ public class AI {
 
 		rotationModifiers[0][3] = 0;
 		rotationModifiers[1][3] = -1;
-		if (mode == 1) {// Anti-PD placement by Raymond
+		if (gameMode == 1) {// Anti-PD placement by Raymond
 			Battleship.homeShips[0] = new Ship(grid, grid[0][7], grid[0][9]);
 			Battleship.homeShips[1] = new Ship(grid, grid[0][4], grid[0][6]);
 			Battleship.homeShips[2] = new Ship(grid, grid[9][6], grid[9][9]);
 			Battleship.homeShips[3] = new Ship(grid, grid[1][5], grid[1][9]);
 			Battleship.homeShips[4] = new Ship(grid, grid[4][3], grid[5][3]);
-		} else if (mode == 2) {// random ship placement
+		} else if (gameMode == 2) {// random ship placement
 			for (int i = 0; i < shipLengths.length; i++) {// loop for number of ships
 				boolean correct = false;
 				int count = 0;
@@ -111,7 +141,7 @@ public class AI {
 
 				} while (correct == false);
 			}
-		} else if (mode == 3) {// Anti-PD placement by David
+		} else if (gameMode == 3) {// Anti-PD placement by David
 			Battleship.homeShips[0] = new Ship(grid, grid[0][2], grid[1][2]);
 			Battleship.homeShips[1] = new Ship(grid, grid[9][9], grid[7][9]);
 			Battleship.homeShips[2] = new Ship(grid, grid[9][7], grid[7][7]);
