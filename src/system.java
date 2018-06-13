@@ -79,7 +79,7 @@ public class system extends JFrame {
 					return;
 				}
 			} catch (Exception exp) {
-
+					
 			}
 		}
 
@@ -127,7 +127,7 @@ public class system extends JFrame {
 	MouseListener gameOper = new MouseListener() {
 		public void mouseClicked(MouseEvent e) {
 			Object source = e.getSource();
-			if (source.equals(gameInter.startButton)) {
+			if (source.equals(gameInter.startButton)&&(!inGame)) {
 				inGame = true;
 				game.firstClick = true;
 				game.timer.restart();
@@ -215,8 +215,9 @@ public class system extends JFrame {
 						diOptions[0]);
 			} while (!areYouSure(diOptions[difficulty].toString()));
 			Object[] offsetOptions = { "Yes", "No" };
+			int offsetInd;
 			do {
-				int offsetInd = JOptionPane.showOptionDialog(null, "Offset edges?", "Offset?",
+				offsetInd = JOptionPane.showOptionDialog(null, "Offset edges?", "Offset?",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), offsetOptions,
 						offsetOptions[0]);
 				if (offsetInd == 0) {
@@ -224,7 +225,7 @@ public class system extends JFrame {
 				} else {
 					offset = "n";
 				}
-			} while (!areYouSure(firstHand));
+			} while (!areYouSure(offsetOptions[offsetInd].toString()));
 		}
 	}
 
@@ -644,7 +645,7 @@ public class system extends JFrame {
 					ship.location.add(AIShot);
 					break;
 				}
-
+/////////////problem: above lines :need to read ship type
 			// Check if sunk
 			if (input.contains("SUNK")) {
 				int temp = 0;
