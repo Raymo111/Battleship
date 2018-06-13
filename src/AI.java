@@ -305,11 +305,13 @@ public class AI {
 		}
 
 		// Zero out PD of last shot
-		lastShot.huntPDx = 0;
-		lastShot.huntPDy = 0;
-		lastShot.targetPDx = 0;
-		lastShot.targetPDy = 0;
-		lastShot.combinehuntPDXY();
+		if (lastShot != null) {
+			lastShot.huntPDx = 0;
+			lastShot.huntPDy = 0;
+			lastShot.targetPDx = 0;
+			lastShot.targetPDy = 0;
+			lastShot.combinehuntPDXY();
+		}
 
 		// No lastShot
 		return target(mode, grid);
