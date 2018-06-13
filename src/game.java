@@ -37,8 +37,6 @@ public class game extends JPanel{
     final static Color darkBlue = new Color(0,0,40);
     final static Color fogBlue = new Color(0,0,80);
     final static Color darkRed = new Color(150,40,40);
-    final static Color darkGreen = new Color(0,80,0);
-    ArrayList<Color> unitColor = new ArrayList<Color>();
     static JLabel[][] userMap = new JLabel[10][10];
     static JLabel[][] enemMap = new JLabel[10][10];
     JLabel[] mapLabels = new JLabel[40];
@@ -81,7 +79,7 @@ public class game extends JPanel{
 		public void mouseClicked(MouseEvent e) {
 			if(!system.inGame){
 				JLabel source = (JLabel)e.getSource();
-				source.setBackground(getNextColor(source.getBackground()));
+				setDis(source);
 			}
 		}
 		public void mouseEntered(MouseEvent e) {
@@ -161,12 +159,7 @@ public class game extends JPanel{
 		losWord.setBounds(bInsets.left,bInsets.top+190,1300,300);
 		losWord.addMouseListener(returnEnd);
 		add(losWord);
-		losWord.setVisible(false);;
-		unitColor.add(darkBlue);
-		unitColor.add(darkGreen);
-		unitColor.add(darkRed);
-		unitColor.add(fogBlue);
-		unitColor.add(darkBlue);
+		losWord.setVisible(false);
 		addMaps();
 		gButtons.add(backButton);
 		gButtons.add(startButton);
@@ -294,6 +287,7 @@ public class game extends JPanel{
 			for(int j=0;j<10;j++){
 				userMap[i][j]=new JLabel();
 				enemMap[i][j]=new JLabel();
+				userMap[i][j].setHorizontalAlignment(JLabel.CENTER);
 				userMap[i][j].setBounds(bInsets.left+150+50*j,bInsets.top+150+50*i,50,50);
 				enemMap[i][j].setBounds(bInsets.left+650+50*j,bInsets.top+150+50*i,50,50);
 				userMap[i][j].setBorder(new LineBorder(Color.white));
@@ -355,8 +349,25 @@ public class game extends JPanel{
 		}//end for
 		return formatedTime.substring(0, formatedTime.length() - 1);//returnt the answer
 	}//end method
-	private Color getNextColor(Color aColor){
-		return unitColor.get(unitColor.indexOf(aColor)+1);
+	private void setDis(JLabel theUnit){
+		int colorIndex = -1;
+		for(int i =0;i<6;i++){
+			if(theUnit.getBackground().equals(system.shipColors[i])){
+				colorIndex = i+1;
+				break;
+			}
+		}
+		theUnit.setBackground(system.shipColors[colorIndex]);
+		if(colorIndex>3){
+			theUnit.setForeground(Color.white);
+		}else{
+			theUnit.setForeground(Color.black);
+		}
+		if(colorIndex==6){
+			theUnit.setText("");
+		}else{
+			theUnit.setText(Battleship.shipNames[colorIndex-1].substring(0,2));
+		}
 	}
 	public static void countIncre(JLabel var){
 		var.setText(Integer.toString(Integer.parseInt(var.getText())+1));

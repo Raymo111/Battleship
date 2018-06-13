@@ -24,6 +24,8 @@ public class system extends JFrame {
 	static boolean flag;
 	static String input, validate;
 	static AI Amadeus;//new name from Martin
+	final static Color[] shipColors = {game.darkBlue,new Color(0,200,0), new Color(0,170,0), new Color(0,140,0),new Color(0,110,0),new Color(0,80,0),game.darkBlue};
+	
 	
 	MouseListener directory = new MouseListener() {
 		public void mouseClicked(MouseEvent event) {
@@ -502,9 +504,15 @@ public class system extends JFrame {
 	}
 
 	public static String getFire(int y, int x) {
-//		return askUser.getText();
 		Color unitStatus = game.userMap[x][y].getBackground();
-		if (unitStatus.equals(game.darkGreen)) {
+		if (unitStatus.getBlue()==0) {
+			String shipName = "";
+			for(int i =1;i<6;i++){
+				if(unitStatus.equals(shipColors[i])){
+					shipName=Battleship.shipNames[i-1].toUpperCase();
+					break;
+				}
+			}
 			game.userMap[x][y].setBackground(game.darkRed);
 			game.countIncre(game.eHit);
 			int[] adx = { 0, 1, 0, -1 };
@@ -513,14 +521,14 @@ public class system extends JFrame {
 				int newx = x + adx[i];
 				int newy = y + ady[i];
 				if (newx > 0 && newx < 10 && newy > 0 && newy < 10) {
-					if (game.userMap[newx][newy].getBackground().equals(game.darkGreen)) {
-						System.out.println("AI HIT");
-						return "HIT";
+					if (game.userMap[newx][newy].getBackground().getBlue()!=0) {
+						System.out.println("AI HIT "+shipName);
+						return "HIT "+shipName;
 					}
 				}
 			}
-			System.out.println("AI SUNK");
-			return "SUNK";
+			System.out.println("AI SUNK "+shipName);
+			return "SUNK "+shipName;
 		} else {
 			if (game.userMap[x][y].getBackground().equals(game.darkBlue)) {
 				game.userMap[x][y].setBackground(game.fogBlue);
@@ -641,6 +649,7 @@ public class system extends JFrame {
 			// Get ship name
 			for (int i = 0; i < Battleship.shipNames.length; i++)
 				if (input.contains(Battleship.shipNames[i].toUpperCase())) {
+					System.out.println("found ship: "+Battleship.shipNames[i]);
 					ship = Battleship.enemyShips[i];
 					ship.location.add(AIShot);
 					break;
@@ -652,7 +661,7 @@ public class system extends JFrame {
 				for (int i = 0; i < ship.location.size(); i++)// Set all location squares of ship to status sunk
 					ship.location.get(i).status = SquareTypes.SUNK;
 				for (int i = 0; i < Battleship.shipNames.length; i++)
-					if (ship.shipName.equals(Battleship.shipNames[i])) {
+					if (ship.shipName.equals(Battleship.shipNames[i].toUpperCase())) {
 						temp = i;
 						break;
 					}
