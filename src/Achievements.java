@@ -1,13 +1,9 @@
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
-/**
- * 
- * @author Martin Xu
- *
- */
+
 public class Achievements extends JPanel implements MouseListener{
-	private final static int num=16;
+	private final static int num=14;
 	private static JLabel BackButton=new JLabel();
 	private static JScrollPane scrollPane = new JScrollPane();
 	private static JPanel paneContent=new JPanel();
@@ -19,7 +15,6 @@ public class Achievements extends JPanel implements MouseListener{
 			"Too young, too simple, sometimes naive",
 			"I'm bald, I'm strong",
 			"Omae wa mou shindeiru",
-			"Main heroine of Asadora",
 			"Letter from 1976",
 			"Kimochi warui",
 			"AAAHHHHH!!! Boku no o no chikara ga!!!!!",
@@ -31,14 +26,12 @@ public class Achievements extends JPanel implements MouseListener{
 			"Performance Artist",
 			"24",
 			"El psy congroo",
-			"Jinrui Hokan"
 	};
 	
 	private static final String[]reqirements=new String[] {
 			"win 100 battles",
 			"win 1000 battles",
 			"win 2000 battles",
-			"lose 10 battles",
 			"lose 100 battles",
 			"lose 1000 battles",
 			"lose 2000 battles",
@@ -50,7 +43,6 @@ public class Achievements extends JPanel implements MouseListener{
 			"fight 5000 battles",
 			"total 24 hours played",
 			"total 2036 hours played",
-			"Complete all other achievements"
 	};
 
 	Insets bInsets;
@@ -61,7 +53,7 @@ public class Achievements extends JPanel implements MouseListener{
 		bInsets=getInsets();
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setBounds(bInsets.left+150,bInsets.top+20,1300,700);	
+        scrollPane.setBounds(bInsets.left+150,bInsets.top+20,1250,650);	
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setOpaque(false);
         makeLabel();
@@ -76,9 +68,9 @@ public class Achievements extends JPanel implements MouseListener{
 		paneContent.setLayout(new BoxLayout(paneContent,BoxLayout.Y_AXIS));
 		for(int i=0;i<num;i++) {
 			if(accomplished[i]) {
-				achievementsNoShadow[i]=new JLabel(new ImageIcon("bkgBasicNoShadow.png"));
+				achievementsNoShadow[i]=new JLabel(new ImageIcon("A"+i+".png"));
 			}else {
-				achievementsNoShadow[i]=new JLabel(new ImageIcon("bkgBasicBWNoShadow.png"));
+				achievementsNoShadow[i]=new JLabel(new ImageIcon("L.png"));
 			}
 			paneContent.add(achievementsNoShadow[i]);
 		}

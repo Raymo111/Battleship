@@ -1,20 +1,20 @@
-Journey of a thousand miles starts with one step|win 1 battle
-the Success kid|win 100 battles
+﻿Chicken dinner|win 1 battle
+Too young, too simple, sometimes naive|win 100 battles
 I'm bald, I'm strong|win 1000 battles
 Omae wa mou shindeiru|win 2000 battles
 Main heroine of Asadora|lose 10 battles
 Letter from 1976|lose 100 battles
-I have not failed. I've just found 1000 ways that won't work|lose 1000 battles
-Never, never, never give up|lose 2000 battles
-It's a trap|miss 100 times
+Kimochi warui|lose 1000 battles
+AAAHHHHH!!! Boku no o no chikara ga!!!!!|lose 2000 battles
+Potato aiming|miss 100 times
 Do u no dewae|miss 1000 times
-Can't touch this|miss 5000 times
+Chinese national men’s soccer team|miss 5000 times
 ______________________________________________________
 Somebody toucha my spaghet|fight 10 battles
 Dormammu i've come to bargain|fight 100 battles
 This is Sparta!|fight 1000 battles
 Battleships: Infinity War|fight 2018 battles
-SHINJI GET INTO THE ROBOT!!!!!!!|fight 5000 battles
+Performance Artist|fight 5000 battles
 24|total 24 hours played
 El psy congroo|total 2036 hours played
 Jinrui Hokan|Complete all other achievements
@@ -26,3 +26,6 @@ Senpai noticed me|one character intimacy achieve 100%
 Bad romance|dismantle 10 characters
 A snap of fingers|dismantle 50 characters
 It's bigger from the inside|expand capacity by 100
+
+
+_____________________________________________________
