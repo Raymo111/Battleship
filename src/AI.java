@@ -61,7 +61,7 @@ public class AI {
 		}
 
 		// Place ships on home grid
-		placeShips(Battleship.homeGrid, Battleship.shipLengths,inGui);
+		placeShips(Battleship.homeGrid, Battleship.shipLengths, inGui);
 	}
 
 	/**
@@ -74,9 +74,9 @@ public class AI {
 	 */
 	public void placeShips(Square[][] grid, int[] shipLengths, boolean inGui) {
 		int gameMode;
-		if(inGui){
+		if (inGui) {
 			gameMode = system.difficulty;
-		}else{
+		} else {
 			// Get mode
 			System.out.println("Select the mode. \n1. Manual - Raymond\n2. Random\n3. Manual - David");
 			while (true) {
@@ -93,7 +93,7 @@ public class AI {
 			}
 			gameMode = Integer.parseInt(input);
 		}
-		
+
 		int[][] rotationModifiers = new int[2][4];
 		// [0][i]=y
 		// [1][i]=x
