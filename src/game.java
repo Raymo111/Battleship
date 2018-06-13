@@ -105,6 +105,7 @@ public class game extends JPanel{
 					lastHitX = (e.getX()-150)/50;
 					lastHitY = (e.getY()-150)/50;
 					fired=true;
+					System.out.println("----Hit: "+lastHitX+" "+lastHitY);
 				}//end if
 			}
 		}//end method
@@ -224,6 +225,7 @@ public class game extends JPanel{
 		for(int i =0;i<10;i++){
 			for(int j =0;j<10;j++){
 				userMap[i][j].addMouseListener(unitDis);
+				enemMap[i][j].addMouseListener(unitFire);
 			}
 		}
 		setVisible(true);
@@ -347,49 +349,6 @@ public class game extends JPanel{
 	}//end method
 	private Color getNextColor(Color aColor){
 		return unitColor.get(unitColor.indexOf(aColor)+1);
-	}
-
-	public static String askFire(){
-		//revalidate(); //if doesn't work
-		userTurn = true;
-		while(!fired){}
-		fired = false;
-		return 	(Character.toString((char) ( lastHitY+ 65)) + Integer.toString( lastHitX + 1)).toUpperCase();
-	}
-	public static void fireResult(String result){
-		userTurn = false;
-		if(result.equals("MISS")){
-			enemMap[lastHitY][lastHitX].setBackground(darkBlue);
-		}else{
-			enemMap[lastHitY][lastHitX].setBackground(darkRed);
-		}
-	}
-	public static String getFire(int x, int y){
-		Color unitStatus = userMap[x][y].getBackground();
-		if(unitStatus.equals(darkGreen)){
-			userMap[x][y].setBackground(darkRed);
-			int[] adx = {0,1,0,-1};
-			int[] ady = {1,0,-1,0};
-			for(int i =0;i<4;i++){
-				if(userMap[x+adx[i]][y+ady[i]].getBackground().equals(darkGreen)){
-					return "HIT";
-				}
-			}
-			return "SUNK";			
-		}else {
-			userMap[x][y].setBorder(new LineBorder(Color.gray));;
-			return "MISS";
-		}
-	}
-	public static void endGame(boolean userWin){
-		system.inGame=false;
-		userTurn = false;
-		if(userWin){
-			winWord.setVisible(true);
-		}else{
-			losWord.setVisible(true);
-		}
-		//and reset game method
 	}
 	public static void main(String[] args){
 		JFrame f = new JFrame();
