@@ -96,8 +96,8 @@ public class game extends JPanel{
 			System.out.println("Click at the time when : userTurn?"+userTurn+" inGame?"+system.inGame);
 			if((!userTurn)&&system.inGame&&firstClick){
 				system.AIRound();
-				System.out.println(system.AIWin+" "+system.userWin);
-				if(system.AIWin ||system.userWin){
+				System.out.println(uHit.getText().equals("17") +" "+eHit.getText().equals("17"));
+				if(uHit.getText().equals("17") ||eHit.getText().equals("17")){
 					system.checkWin();
 				}
 			}
@@ -126,8 +126,8 @@ public class game extends JPanel{
 					if(system.areYouSure(system.input)){
 						system.AIcheck(!(firstClick)&&(system.firstHand.equals("User")));
 						system.AIRound();
-						System.out.println(system.AIWin+" "+system.userWin);
-						if(system.AIWin ||system.userWin){
+						System.out.println(uHit.getText().equals("17")+" "+eHit.getText().equals("17"));
+						if(uHit.getText().equals("17")||eHit.getText().equals("17")){
 							system.checkWin();
 						}
 					}

@@ -618,7 +618,7 @@ public class system extends JFrame {
 						userWin = true;
 				} else
 					System.out.println("HIT, " + ship.shipName);
-				fireResult("HIT");
+					fireResult("HIT");
 			} else {
 				System.out.println("HIT, " + ship.shipName);
 				fireResult("HIT");
@@ -687,11 +687,11 @@ public class system extends JFrame {
 
 	public static void checkWin() {
 		// If user wins
-		if (userWin) {
+		if (game.uHit.getText().equals("17")) {
 			System.out.println("Congrats, you have won!");
 			endGame(true);
 		}
-		if (AIWin) {
+		if (game.eHit.getText().equals("17")) {
 			System.out.println("Sorry, you have lost.");
 			endGame(false);
 		}
