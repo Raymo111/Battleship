@@ -38,15 +38,8 @@ public class game extends JPanel{
     static JLabel[][] userMap = new JLabel[10][10];
     static JLabel[][] enemMap = new JLabel[10][10];
     JLabel[] mapLabels = new JLabel[40];
-    JLabel carrier = new JLabel(new ImageIcon("gCarrier.png"));
-    JLabel battship = new JLabel(new ImageIcon("gBattleship.png"));
-    JLabel cruiser = new JLabel(new ImageIcon("gCruiser.png"));
-    JLabel submarine = new JLabel(new ImageIcon("gSubmarine.png"));
-    JLabel destroyer = new JLabel(new ImageIcon("gDestroyer.png"));
     ArrayList<JLabel> gButtons = new ArrayList<JLabel>();
     ArrayList<JLabel> buttonEffects = new ArrayList<JLabel>();
-//    ArrayList<JLabel> ships = new ArrayList<JLabel>();
-    int[] shipLength ={5,4,3,3,2};//positive for horizontal
 	MouseListener returnEnd = new MouseListener(){
 		public void mouseClicked(MouseEvent arg0) {
 			((JLabel)arg0.getSource()).setVisible(false);
@@ -109,7 +102,7 @@ public class game extends JPanel{
 			if(userTurn&&system.inGame){
 				JLabel source = (JLabel)e.getSource();
 				if(source.getBackground().equals(fogBlue)){//when the unit is not hit yet
-					System.out.println("Round 1. Your turn.\nEnter coordinates to fire:");
+					System.out.println("Round "+system.round+". Your turn.\nEnter coordinates to fire:");
 					int hitX = 0;
 					int hitY = 0;
 					for(int i=0;i<10;i++){
@@ -152,36 +145,6 @@ public class game extends JPanel{
 		}
 	};
 	
-/*	final MouseAdapter dragger = new MouseAdapter() {
-        private JLabel selectedShip;
-        private Point shipLocation ;
-        private Point clickP;
-        public void mousePressed(final MouseEvent e) {
-            JLabel theShip = (JLabel)findComponentAt(e.getX(), e.getY());
-            System.out.println(theShip.getIcon().toString());
-            if (theShip != null&& ships.contains(theShip)) {
-                selectedShip= (JLabel) theShip;
-                shipLocation = selectedShip.getLocation();
-                clickP = e.getPoint();
-                setComponentZOrder(selectedShip, 0);
-                selectedShip.repaint();
-            }
-        }
-        public void mouseDragged(final MouseEvent e) {
-            try{
-                int theIndex = ships.indexOf((JLabel)findComponentAt(e.getX(), e.getY()));
-                Point newclickP = e.getPoint();
-                int newX = convertCoor(shipLength[theIndex],shipLocation.x + (newclickP.x - clickP.x));
-                int newY = convertCoor(shipLength[theIndex],-(shipLocation.y + (newclickP.y - clickP.y)));
-                if(newX!=-1&&newY!=-1){
-                    markShip(ships.get(theIndex),shipLength[theIndex],darkRed);
-                    selectedShip.setLocation(newX, newY);
-                    markShip(ships.get(theIndex),shipLength[theIndex],darkGreen);
-                }
-            }catch(Exception exp){
-            }
-        }
-    };*/
     public game(){
 		setSize(1300,700);
 		setLayout(null);
@@ -198,20 +161,7 @@ public class game extends JPanel{
 		unitColor.add(darkRed);
 		unitColor.add(fogBlue);
 		unitColor.add(darkBlue);
-/*		ships.add(carrier);
-		ships.add(battship);
-		ships.add(cruiser);
-		ships.add(submarine);
-		ships.add(destroyer);
-		for(int i =0;i<5;i++){
-    		ships.get(i).setBounds(bInsets.left+150,bInsets.top+150+i*50,50*shipLength[i],50);
-//    		System.out.println(shipLength[i]);
-    		add(ships.get(i));
-    	}//end for*/
 		addMaps();
-/*		for(int i =0;i<5;i++){
-    		markShip(ships.get(i),shipLength[i],darkGreen);
-		}*/
 		gButtons.add(backButton);
 		gButtons.add(startButton);
 		gButtons.add(leaveButton);

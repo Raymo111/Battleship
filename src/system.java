@@ -141,8 +141,6 @@ public class system extends JFrame {
 		setSize(1300, 700);
         setLocationRelativeTo(null);
 	}
-	public void updateGame(){
-	}
 	public void enterGame(){
 		if(!inGame){
 			do{
@@ -453,10 +451,11 @@ public class system extends JFrame {
 		//and reset game method
 	}
 	public static void AIcheck(boolean isNotFirst){
+		System.out.println("isFirst? "+(!isNotFirst));
 		if(!isNotFirst){
 			round++;
 		}
-		x = Integer.parseInt(input.substring(1, 2)) - 1;
+		x = Integer.parseInt(input.substring(1, input.length())) - 1;
 		y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
 		System.out.println("check "+round+" "+x+" "+y);
 		if (x == 1) {// Get second digit, could be 10
