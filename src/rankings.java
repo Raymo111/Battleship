@@ -20,7 +20,7 @@ public class rankings extends JPanel {
     ArrayList<JLabel> subTypes = new ArrayList<JLabel>();
     String collectionRank,levelRank,winRank;
     ArrayList<String> nameList = new ArrayList<String>();
-    MouseListener mouseEffect = new MouseListener(){
+    MouseListener backMouseEffect = new MouseListener(){
 		public void mouseClicked(MouseEvent e) {
 			buttonEffect.setVisible(false);
 		}
@@ -39,6 +39,13 @@ public class rankings extends JPanel {
 			if(source.equals(collectionButton)){
 				System.out.println(777);
 				rankBoard.setText(collectionRank);
+				return;
+			}if(source.equals(levelButton)){
+				rankBoard.setText(levelRank);
+				return;
+			}if(source.equals(winButton)){
+				rankBoard.setText(winRank);
+				return;
 			}
 		}
 		public void mouseEntered(MouseEvent e) {
@@ -69,7 +76,7 @@ public class rankings extends JPanel {
 		}
 		nameReader.close();//close the BufferedReadeer
 		backButton.setBounds(bInsets.left+10,bInsets.top+10,100,60);
-		backButton.addMouseListener(mouseEffect);
+		backButton.addMouseListener(backMouseEffect);
 		add(backButton);
 		buttonEffect.setBounds(bInsets.left,bInsets.top,120,80);
 		add(buttonEffect);
@@ -86,6 +93,7 @@ public class rankings extends JPanel {
 		rankBoard.setForeground(Color.white);
 		rankBoard.setText("------------------------------------");
 		rankBoard.setHorizontalAlignment(JLabel.CENTER);
+		rankBoard.setFont(new Font(rankBoard.getFont().getName(),Font.PLAIN,40));;
 		add(rankBoard);
 		userScreen.setBounds(bInsets.left+185,bInsets.top+80,1050,200);
 		add(userScreen);
@@ -109,7 +117,7 @@ public class rankings extends JPanel {
 			}else if(rankType.equals("L")){
 				convertedContent+="Lv."+getValue[i-1]+"<br>";
 			}else{
-				convertedContent+=getValue[i-1]+"wins <br>";
+				convertedContent+=getValue[i-1]+" wins <br>";
 			}//end if
 			System.out.println(-i);
 		}//end for

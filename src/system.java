@@ -42,6 +42,7 @@ public class system extends JFrame {
 				add(gameInter);
 				repaint();
 				enterGame();
+				return;
 			}
 			if(source.equals(baseInter.rankingButton)){
 				System.out.println(6);
@@ -51,6 +52,14 @@ public class system extends JFrame {
 				updateRank(userIndex, "C",true);
 				updateRank(userIndex, "L",true);
 				updateRank(userIndex, "W",true);
+				return;
+			}
+			if(source.equals(baseInter.achievementButton)){
+				System.out.println(8);
+				remove(baseInter);
+				add(achiInter);
+				repaint();
+				return;
 			}
 			if(source.getIcon().toString().equals("theBackButton.png")){
 				System.out.println(0);
@@ -58,6 +67,7 @@ public class system extends JFrame {
 				baseInter.updateInfo(userInfo[0],Integer.parseInt(userInfo[18]),Integer.parseInt(userInfo[15]));//update the base interface
 				add(baseInter);
 				repaint();
+				return;
 			}}catch(Exception exp){
 				
 			}
@@ -117,6 +127,7 @@ public class system extends JFrame {
 	base baseInter = new base();
 	game gameInter = new game();
 	rankings rankInter;
+	Achievements achiInter = new Achievements();
 	public system() throws IOException {
 		startGame = new login();
 		startGame.okButton.addMouseListener(loginOper);
@@ -127,6 +138,7 @@ public class system extends JFrame {
 		gameInter.startButton.addMouseListener(gameOper);
 		rankInter = new rankings();//initializing the rankings interface
 		rankInter.backButton.addMouseListener(directory);
+		achiInter.backButton.addMouseListener(directory);
 		addWindowListener(new java.awt.event.WindowAdapter() {//need to save the information before closing
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				try {

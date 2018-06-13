@@ -3,8 +3,22 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Achievements extends JPanel implements MouseListener{
+    JLabel backButton = new JLabel(new ImageIcon("theBackButton.png"));
+    JLabel buttonEffect = new JLabel(new ImageIcon("gMouse.png"));
+    MouseListener backMouseEffect = new MouseListener(){
+		public void mouseClicked(MouseEvent e) {
+			buttonEffect.setVisible(false);
+		}
+		public void mouseEntered(MouseEvent e) {
+			buttonEffect.setVisible(true);
+		}
+		public void mouseExited(MouseEvent e) {
+			buttonEffect.setVisible(false);
+		}
+		public void mousePressed(MouseEvent e) {}
+		public void mouseReleased(MouseEvent e) {}
+    };
 	private final static int num=14;
-	private static JLabel BackButton=new JLabel();
 	private static JScrollPane scrollPane = new JScrollPane();
 	private static JPanel paneContent=new JPanel();
 	private static JLabel[] achievementsNoShadow=new JLabel[num];
@@ -51,6 +65,12 @@ public class Achievements extends JPanel implements MouseListener{
 		setSize(1300,700);
 		setLayout(null);
 		bInsets=getInsets();
+		backButton.setBounds(bInsets.left+10,bInsets.top+10,100,60);
+		backButton.addMouseListener(backMouseEffect);
+		add(backButton);
+		buttonEffect.setBounds(bInsets.left,bInsets.top,120,80);
+		add(buttonEffect);
+		buttonEffect.setVisible(false);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBounds(bInsets.left+150,bInsets.top+20,1250,650);	
