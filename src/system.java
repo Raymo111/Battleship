@@ -180,17 +180,17 @@ public class system extends JFrame {
 					game.userTurn = false;
 				}
 			}while(!areYouSure(firstHand));
+			Object[] diOptions = {"Expert - Raymond","Random","Expert - David"};
 			do{
-				Object[] options = {"Expert - Raymond","Random","Expert - David"};
 				difficulty = JOptionPane.showOptionDialog(null,
 						"Choose a difficulty level:",
 						"Difficulty",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE,
 						new ImageIcon("gNani.png"),     
-						options,  
-						options[0]); 
-			}while(!areYouSure(firstHand));
+						diOptions,  
+						diOptions[0]); 
+			}while(!areYouSure(diOptions[difficulty].toString()));
 		}
 	}
 	public static boolean areYouSure(String confirmInfo){
