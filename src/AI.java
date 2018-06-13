@@ -34,28 +34,15 @@ public class AI {
 
 		// Generate Probability Density Distributed Graph for both grids
 		generatePDDG(Battleship.enemyGrid);
-<<<<<<< HEAD
 
-		// Offset PD of edges of grid?
-		input = br.readLine();
-
-=======
-		
-		if(inGui){
+		if (inGui) {
 			input = system.offset;
-		}else{
+		} else {
 			// Offset PD of edges of grid?
 			System.out.println("Offset PD?");
-			while (true) {
-				input = br.readLine();
-				System.out.println("Are you sure of: " + input + "?");
-				validate = br.readLine();
-				if (validate.equalsIgnoreCase("y"))
-					break;
-			}
+			input = br.readLine();
 		}
-		
->>>>>>> cd45ec8eecca23c50adc87cc90bb2ec6f2034b83
+
 		// User wants to offset edges
 		if (input.equalsIgnoreCase("y")) {
 			for (int i = 0; i < Battleship.enemyGrid.length; i++)
@@ -94,10 +81,7 @@ public class AI {
 				try {
 					input = br.readLine();
 					Integer.parseInt(input);
-					System.out.println("Are you sure of: " + input + "?");
-					validate = br.readLine();
-					if (validate.equalsIgnoreCase("y"))
-						break;
+					break;
 				} catch (Exception e) {
 					System.err.println("Input integer.");
 				}
@@ -146,11 +130,6 @@ public class AI {
 								(x + (shipLengths[i] * rotationModifiers[1][rotation])), rotation, grid)) {
 							correct = true;
 							count = 0;
-							System.out.println(i);
-							System.out.println("Y:" + y + "  X:" + x + "  endY:"
-									+ (y + ((shipLengths[i] - 1) * rotationModifiers[0][rotation])) + "  endX:"
-									+ (x + ((shipLengths[i] - 1) * rotationModifiers[1][rotation])));
-
 							Battleship.homeShips[i] = new Ship(grid, grid[y][x],
 									grid[y + ((shipLengths[i] - 1) * rotationModifiers[0][rotation])][x
 											+ ((shipLengths[i] - 1) * rotationModifiers[1][rotation])]);
