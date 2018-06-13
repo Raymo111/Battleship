@@ -6,6 +6,7 @@
  */
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class AI {
@@ -46,15 +47,15 @@ public class AI {
 
 		// User wants to offset edges
 		if (input.equalsIgnoreCase("y")) {
-			for (int i = 0; i < Battleship.homeGrid.length; i++)
-				for (int j = 0; j < Battleship.homeGrid[i].length; j++) {
-					if (Battleship.homeGrid[i][j].x <= 1 || Battleship.homeGrid[i][j].x >= 8) {// x in outer 2
-						Battleship.homeGrid[i][j].huntPDx += 6;
-						Battleship.homeGrid[i][j].combinehuntPDXY();
+			for (int i = 0; i < Battleship.enemyGrid.length; i++)
+				for (int j = 0; j < Battleship.enemyGrid[i].length; j++) {
+					if (Battleship.enemyGrid[i][j].x <= 1 || Battleship.enemyGrid[i][j].x >= 8) {// x in outer 2
+						Battleship.enemyGrid[i][j].huntPDx += 6;
+						Battleship.enemyGrid[i][j].combinehuntPDXY();
 					}
-					if (Battleship.homeGrid[i][j].y <= 1 || Battleship.homeGrid[i][j].y >= 8) {// y in outer 2
-						Battleship.homeGrid[i][j].huntPDy += 6;
-						Battleship.homeGrid[i][j].combinehuntPDXY();
+					if (Battleship.enemyGrid[i][j].y <= 1 || Battleship.enemyGrid[i][j].y >= 8) {// y in outer 2
+						Battleship.enemyGrid[i][j].huntPDy += 6;
+						Battleship.enemyGrid[i][j].combinehuntPDXY();
 					}
 				}
 		}
@@ -462,23 +463,29 @@ public class AI {
 	 */
 	public Square target(Mode mode, Square[][] grid) {
 		int max = 0;
-		Square target = grid[0][0];
+		ArrayList<Square> targets = new ArrayList<Square>();
 		if (mode == Mode.HUNT)
 			for (int i = 0; i < grid[0].length; i++)
-				for (int j = 0; j < grid.length; j++)
+				for (int j = 0; j < grid.length; j++) {
 					if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN
 							&& grid[i][j].totalSquarePD > max) {
 						max = grid[i][j].totalSquarePD;
-						target = grid[i][j];
-					}
+						targets.clear();
+						targets.add(grid[i][j]);
+					} else if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN
+							&& grid[i][j].totalSquarePD == max)
+						targets.add(grid[i][j]);
+				}
 		if (mode == Mode.TARGET)
 			for (int i = 0; i < grid[0].length; i++)
 				for (int j = 0; j < grid.length; j++)
 					if (grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquarePD > max) {
 						max = grid[i][j].totalSquarePD;
-						target = grid[i][j];
-					}
-		return target;
+						targets.clear();
+						targets.add(grid[i][j]);
+					} else if (grid[i][j].status == SquareTypes.UNKNOWN && grid[i][j].totalSquarePD == max)
+						targets.add(grid[i][j]);
+		return targets.get(rand.nextInt(targets.size()));
 	}
 
 }
