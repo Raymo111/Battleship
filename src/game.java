@@ -9,11 +9,12 @@ import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
+
 import java.util.*;
 import java.io.*;
 
 public class game extends JPanel{
-    Insets bInsets = getInsets();
+	Insets bInsets = getInsets();
     static Boolean userTurn = null;
     static boolean firstClick = true; 
     static JLabel winWord = new JLabel(new ImageIcon("gWin.png"));
@@ -232,6 +233,16 @@ public class game extends JPanel{
     	eHit.setText("0");
     	eMis.setText("0");
     	timerLabel.setText("00:00:00");
+    	Battleship.enemyShipsSunk = new boolean[Battleship.shipLengths.length];
+    	Battleship.homeShipsSunk = new boolean[Battleship.shipLengths.length];
+    	Battleship.enemyGrid = new Square[Battleship.boardSizeXY[0]][Battleship.boardSizeXY[1]];
+    	Battleship.homeGrid = new Square[Battleship.boardSizeXY[0]][Battleship.boardSizeXY[1]];
+    	Battleship.homeShips = new Ship[Battleship.shipLengths.length];
+    	Battleship.enemyShips = new Ship[Battleship.shipLengths.length];
+    	Battleship.enemyShotLog = new ArrayList<Square>(20);
+    	Battleship.homeShotLog = new ArrayList<Square>(20);
+    	Battleship.usedShipNames = new ArrayList<String>(Battleship.shipNames.length);
+    	
     }
     /**
      * The procedure type method shadows the ship onto the grid by marking covered units green.

@@ -16,9 +16,12 @@ public class rankings extends JPanel {
     JLabel winButton = new JLabel(new ImageIcon("rWin.png"));
     JLabel screen = new JLabel(new ImageIcon("rTotalBack.png"));
     JLabel rankBoard = new JLabel();
+    JLabel userBoard = new JLabel();
+    int userRankIndex = -1;
+    String getValueL,getValueW;
     JLabel userScreen = new JLabel(new ImageIcon("rUserBack.png"));
     ArrayList<JLabel> subTypes = new ArrayList<JLabel>();
-    String collectionRank,levelRank,winRank;
+    String collectionRank = "Will be Released in Near Future",levelRank,winRank;
     ArrayList<String> nameList = new ArrayList<String>();
     MouseListener backMouseEffect = new MouseListener(){
 		public void mouseClicked(MouseEvent e) {
@@ -42,9 +45,11 @@ public class rankings extends JPanel {
 				return;
 			}if(source.equals(levelButton)){
 				rankBoard.setText(levelRank);
+				userBoard.setText(userRankIndex+".\t\t"+system.userInfo[0]+"-\t\t-"+"Lv."+getValueL);
 				return;
 			}if(source.equals(winButton)){
 				rankBoard.setText(winRank);
+				userBoard.setText(userRankIndex+".\t\t"+system.userInfo[0]+"-\t\t-"+getValueW+" win(s)");
 				return;
 			}
 		}
@@ -95,6 +100,12 @@ public class rankings extends JPanel {
 		rankBoard.setHorizontalAlignment(JLabel.CENTER);
 		rankBoard.setFont(new Font(rankBoard.getFont().getName(),Font.PLAIN,40));;
 		add(rankBoard);
+		userBoard.setBounds(bInsets.left+185,bInsets.top+80,1050,200);
+		userBoard.setForeground(Color.white);
+		userBoard.setText("-----------------------------------");
+		userBoard.setHorizontalAlignment(JLabel.CENTER);
+		userBoard.setFont(new Font(userBoard.getFont().getName(),Font.PLAIN,40));
+		add(userBoard);
 		userScreen.setBounds(bInsets.left+185,bInsets.top+80,1050,200);
 		add(userScreen);
 		screen.setBounds(bInsets.left+135,bInsets.top+50,1150,600);
@@ -111,27 +122,29 @@ public class rankings extends JPanel {
 		String[] getIndex = indexes.split(" ");
 		String[] getValue = values.split(" ");
 		for(int i=1;i<Math.min(getIndex.length+1, 11);i++){
+			if(system.userInfo[0].equals(nameList.get(Integer.parseInt(getIndex[i-1])-1))){
+				userRankIndex = i;
+				if(rankType.equals("L")){
+					getValueL = getValue[i-1];
+				}else if(rankType.equals("W")){
+					getValueW = getValue[i-1];
+				}
+			}
 			convertedContent+=i+".\t\t"+nameList.get(Integer.parseInt(getIndex[i-1])-1)+"-\t\t-";
-			if(rankType.equals("C")){
-				convertedContent+=getValue[i-1]+"%<br>";
-			}else if(rankType.equals("L")){
+			if(rankType.equals("L")){
 				convertedContent+="Lv."+getValue[i-1]+"<br>";
-			}else{
-				convertedContent+=getValue[i-1]+" wins <br>";
+			}else if(rankType.equals("W")){
+				convertedContent+=getValue[i-1]+" win(s) <br>";
 			}//end if
 			System.out.println(-i);
 		}//end for
 		convertedContent+="</html>";//end the input stream
 		System.out.println(0);
-		if(rankType.equals("C")){//record converted results
-			collectionRank = convertedContent;
-			System.out.println(10);
-
-		}else if(rankType.equals("L")){
+		if(rankType.equals("L")){
 			levelRank = convertedContent;
 			System.out.println(20);
 
-		}else{
+		}else if(rankType.equals("W")){
 			winRank = convertedContent;
 			System.out.println(30);
 

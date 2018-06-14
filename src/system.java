@@ -51,7 +51,6 @@ public class system extends JFrame {
 					remove(baseInter);
 					add(rankInter);
 					repaint();
-					updateRank(userIndex, "C", true);
 					updateRank(userIndex, "L", true);
 					updateRank(userIndex, "W", true);
 					return;
@@ -307,13 +306,11 @@ public class system extends JFrame {
 		System.out.println("------------------------------------------" + rankType);
 		File theRank = new File("rank" + rankType + ".txt");
 		BufferedReader rankReader = new BufferedReader(new FileReader(theRank));
-		int rankInfo;// record the info of rank of target player for comparisons
-		if (rankType.equals("C")) {
-			rankInfo = Integer.parseInt(userInfo[29]);
-		} else if (rankType.equals("L")) {
-			rankInfo = Integer.parseInt(userInfo[30]);
-		} else {
-			rankInfo = Integer.parseInt(userInfo[31]);
+		int rankInfo =-1;// record the info of rank of target player for comparisons
+		if (rankType.equals("L")) {
+			rankInfo = Integer.parseInt(userInfo[18]);
+		} else if(rankType.equals("W")){
+			rankInfo = Integer.parseInt(userInfo[17].split(" ")[1]);
 		} // end if
 		String newIndexes = "";// initialize empty String for the new indexes
 		String newValues = "";// initialize empty String for the new values
@@ -366,11 +363,11 @@ public class system extends JFrame {
 		rankWriter.println(newIndexes);// write the indexes
 		rankWriter.println(newValues);// write the values
 		rankWriter.close();// close the fileWriter
-		System.out.println("rkrkrkrkrkrkrkkrkrkrkrk\n" + isDisplaying);
 
 		if (isDisplaying == true) {// if the rankings needs to be displayed, convert the information
 			System.out.println("rkrkrkrkrkrkrkkrkrkrkrk\n" + isDisplaying);
-
+			System.out.println(newIndexes);
+			System.out.println(newValues);
 			rankInter.convertRank(rankType, newIndexes, newValues);
 		} // end if
 	}// end method
@@ -558,6 +555,14 @@ public class system extends JFrame {
 		userInfo[19]= Long.toString(Long.parseLong(userInfo[19])+expInAddition);
 		userInfo[18]= Long.toString(calLv(expInAddition));
 	}
+	public static void recordBattle(){
+		String[] nums = userInfo[17].split(" ");
+		int winNum = Integer.parseInt(nums[1]);
+		if(userWin){
+			winNum++;
+		}
+		userInfo[17] = (Integer.parseInt(nums[0])+1)+" "+winNum;
+	}
 	public static long calLv(long exp){
 		return (long) Math.floor((25+Math.sqrt(625+100*exp))/50);
 	}
@@ -568,6 +573,7 @@ public class system extends JFrame {
 		System.out.println("---------end "+inGame);
 		game.timer.stop();
 		getExp(18000/(game.timeUsed/1000));
+		recordBattle();
 		if (userWin) {
 			game.winWord.setVisible(true);
 		} else {
@@ -715,7 +721,7 @@ public class system extends JFrame {
 		}
 		System.out.println("What the heck?");
 	}
-
+	
 	public static void main(String[] args) throws IOException {
 		system theGame = new system();
 	}
