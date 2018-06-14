@@ -106,9 +106,9 @@ public class AI {
 		rotationModifiers[1][3] = -1;
 		if (gameMode == 1) {// Anti-PD placement by Raymond
 			Battleship.homeShips[0] = new Ship(grid, grid[0][7], grid[0][9]);
-			Battleship.homeShips[1] = new Ship(grid, grid[0][4], grid[0][6]);
+			Battleship.homeShips[1] = new Ship(grid, grid[9][0], grid[7][0]);
 			Battleship.homeShips[2] = new Ship(grid, grid[9][6], grid[9][9]);
-			Battleship.homeShips[3] = new Ship(grid, grid[1][5], grid[1][9]);
+			Battleship.homeShips[3] = new Ship(grid, grid[0][0], grid[4][0]);
 			Battleship.homeShips[4] = new Ship(grid, grid[4][3], grid[5][3]);
 		} else if (gameMode == 2) {// random ship placement
 			for (int i = 0; i < shipLengths.length; i++) {// loop for number of ships
