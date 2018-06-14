@@ -575,8 +575,9 @@ public class system extends JFrame {
 		}
 	}
 	public static void getExp(long expInAddition){
-		userInfo[19]= Long.toString(Long.parseLong(userInfo[19])+expInAddition);
-		userInfo[18]= Long.toString(calLv(expInAddition));
+		Long expUpdated = Long.parseLong(userInfo[19])+expInAddition;
+		userInfo[19]= Long.toString(expUpdated);
+		userInfo[18]= Long.toString(calLv(expUpdated));
 	}
 	public static void recordBattle(){
 		String[] nums = userInfo[17].split(" ");
