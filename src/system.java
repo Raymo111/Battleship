@@ -154,7 +154,6 @@ public class system extends JFrame {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				// remove drag functions, start timer
 			}
 		}
 
@@ -211,32 +210,38 @@ public class system extends JFrame {
 
 	public void enterGame() {
 		if (!inGame) {
-//			Object[] modeOptions = { "AI Combat", "Human against AI" };
-//			do {
-//				int firsthand = JOptionPane.showOptionDialog(null, "Choose a game mode", "Game mode",
-//						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), modeOptions,
-//						modeOptions[0]);
-//				if (firsthand == 0) {
-//					firstHand = "User";
-//					game.userTurn = true;
-//				} else {
-//					firstHand = "AI";
-//					game.userTurn = false;
-//				}
-//			} while (!areYouSure(firstHand));
+			Object[] modeOptions = { "AI Combat", "Human against AI" };
+			int modeIndex;
 			do {
-				Object[] options = { "User", "AI" };
-				int firsthand = JOptionPane.showOptionDialog(null, "Battle started from:", "First hand",
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), options,
-						options[0]);
-				if (firsthand == 0) {
+				modeIndex = JOptionPane.showOptionDialog(null, "Choose a game mode", "Game mode",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), modeOptions,
+						modeOptions[0]);
+				AIcombat = (modeIndex==0);
+			} while (!areYouSure(modeOptions[modeIndex].toString()));
+			Object[] firstHandOptions = { "User", "AI" };
+			if(AIcombat){
+				for(int i =0;i<10;i++){
+					for(int j =0;j<10;j++){
+						game.userMap[i][j].setBackground(Color.white);
+						game.userMap[i][j].removeMouseListener(gameInter.unitDis);
+					}
+				}
+				firstHandOptions[0] = "Them";
+				firstHandOptions[1] = "Us";
+			}
+			int firsthandIndex;
+			do {
+				firsthandIndex = JOptionPane.showOptionDialog(null, "Battle started from:", "First hand",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), firstHandOptions,
+						firstHandOptions[0]);
+				if (firsthandIndex == 0) {
 					firstHand = "User";
 					game.userTurn = true;
 				} else {
 					firstHand = "AI";
 					game.userTurn = false;
 				}
-			} while (!areYouSure(firstHand));
+			} while (!areYouSure(firstHandOptions[firsthandIndex].toString()));
 			Object[] diOptions = { "Expert - Raymond", "Random", "Expert - David","Extreme" };
 			do {
 				difficulty = JOptionPane.showOptionDialog(null, "Choose a difficulty level:", "Difficulty",
@@ -459,7 +464,14 @@ public class system extends JFrame {
 		return (Character.toString((char) (y + 65)) + Integer.toString(x + 1)).toUpperCase();
 	}
 
-	public static void fireResult(String result) {
+	public static void fireResult(String result, int nameIndex) {
+		if(AIcombat){
+			JOptionPane.showMessageDialog(null,
+				    "That was: "+result,
+				    "Response to other AI",
+				    JOptionPane.INFORMATION_MESSAGE,
+				    new ImageIcon("gResponse.png"));
+		}
 		game.userTurn = false;
 		if (result.equals("MISS")) {
 			game.countIncre(game.uMis);
@@ -467,6 +479,9 @@ public class system extends JFrame {
 		} else {
 			game.countIncre(game.uHit);
 			game.enemMap[y][x].setBackground(game.darkRed);
+			game.enemMap[y][x].setForeground(Color.white);
+			game.enemMap[y][x].setHorizontalAlignment(JLabel.CENTER);
+			game.enemMap[y][x].setText(result.substring(nameIndex,nameIndex+2));
 		}
 	}
 
@@ -528,7 +543,34 @@ public class system extends JFrame {
 					Battleship.shipLengths[i]);
 	}
 
-	public static String getFire(int y, int x) {
+	public static String getFire(int y, int x, String AIcoor) {
+		if(AIcombat){
+			Object[] reOptions = { "MISS", "HIT", "SUNK" };
+			int responseIndex = -1;
+			do {
+				responseIndex = JOptionPane.showOptionDialog(null, "Shot: "+AIcoor, "Get Response",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), reOptions,
+						reOptions[0]);
+			} while (!areYouSure(reOptions[responseIndex].toString()));
+			if(responseIndex==0){
+				game.countIncre(game.eMis);
+				return "MISS";
+			}else{
+				game.countIncre(game.eHit);
+				String ultResponse = "HIT, ";
+				if(responseIndex==2){
+					ultResponse += "SUNK ";
+				}
+				Object[] hitShipOptions = Battleship.shipNames;
+				int hitShipIndex = -1;
+				do {
+					hitShipIndex = JOptionPane.showOptionDialog(null, "Response from other AI?", "Get Response",
+							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), hitShipOptions,
+							hitShipOptions[0]);
+				} while (!areYouSure(hitShipOptions[hitShipIndex].toString()));
+				return ultResponse+Battleship.shipNames[hitShipIndex];
+			}
+		}
 		Color unitStatus = game.userMap[x][y].getBackground();
 		if (unitStatus.getBlue()==0) {
 			String shipName = "";
@@ -640,7 +682,7 @@ public class system extends JFrame {
 		if (userShot.shipType == null) {// Miss
 			userShot.status = SquareTypes.MISS;
 			System.out.println("MISS");
-			fireResult("MISS");
+			fireResult("MISS",-1);
 		} else {// Hit
 			Battleship.homeGrid[y][x].status = SquareTypes.HIT;
 			for (int i = 0; i < Battleship.homeShips.length; i++)
@@ -665,7 +707,7 @@ public class system extends JFrame {
 					Battleship.homeShipsSunk[shipNumber] = false;
 				if (Battleship.homeShipsSunk[shipNumber]) {
 					System.out.println("HIT, SUNK " + Battleship.homeShips[shipNumber].shipName);
-					fireResult("HIT");
+					fireResult("HIT, SUNK " + Battleship.homeShips[shipNumber].shipName,10);
 
 					// Check for win (all ships sunk)
 					flag = true;
@@ -678,11 +720,11 @@ public class system extends JFrame {
 						userWin = true;
 				} else{
 					System.out.println("HIT, " + ship.shipName);
-					fireResult("HIT");
+					fireResult("HIT, " + ship.shipName,5);
 				}
 			} else {
 				System.out.println("HIT, " + ship.shipName);
-				fireResult("HIT");
+				fireResult("HIT, " + ship.shipName,5);
 			}
 		}
 		Battleship.enemyShotLog.add(Battleship.homeGrid[y][x]);// Add enemy shot to log
@@ -695,14 +737,15 @@ public class system extends JFrame {
 		AIShot = Amadeus.aim(AIShot, Battleship.enemyGrid, Battleship.shipLengths);
 		Battleship.displayPD(Battleship.enemyGrid);
 		Battleship.homeShotLog.add(AIShot);// Add home shot to log
-
+		String AIshot = (Character.toString((char) (AIShot.y + 65)) + Integer.toString(AIShot.x + 1)).toUpperCase();
 		// Print AI's shot's y-x coordinate converted to Battleship standards (e.g. A1)
 		System.out.println("AI's shot coordinates: "
-				+ (Character.toString((char) (AIShot.y + 65)) + Integer.toString(AIShot.x + 1)).toUpperCase());
+				+ AIshot);
 		// Get user's response
 		System.out.println("HIT or MISS?");
-		input = getFire(AIShot.x, AIShot.y).toUpperCase();
+		input = getFire(AIShot.x, AIShot.y, AIshot).toUpperCase();
 		System.out.println("getInput--------------: "+input);
+
 		// AI hit a ship
 		if (input.contains("HIT")) {
 			AIShot.status = SquareTypes.HIT;
@@ -726,7 +769,7 @@ public class system extends JFrame {
 						break;
 					}
 				Battleship.enemyShipsSunk[temp] = true;
-
+				
 				// Check if AI has won
 				AIWin = true;
 				for (boolean b : Battleship.enemyShipsSunk)
