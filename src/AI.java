@@ -12,7 +12,7 @@ import java.util.Random;
 public class AI {
 	private static Random rand = new Random();
 	private static BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
-	private static String input, validate;
+	private static String input;
 
 	// Start with hunt mode
 	private Mode mode = Mode.HUNT;
@@ -32,7 +32,7 @@ public class AI {
 	// Constructor
 	public AI(boolean inGui) throws IOException {
 
-		// Generate Probability Density Distributed Graph for both grids
+		// Generate Probability Density distribution Graph for both grids
 		generatePDDG(Battleship.enemyGrid);
 
 		if (inGui)
@@ -186,7 +186,7 @@ public class AI {
 	}
 
 	/**
-	 * Generates the initial probability density distributed graph for the given
+	 * Generates the initial probability density distribution graph for the given
 	 * number of ships for each square in a given grid. Runs only at the beginning
 	 * of the game.
 	 * 
@@ -249,8 +249,8 @@ public class AI {
 			if (lastShot.status == SquareTypes.HIT) {
 				mode = Mode.TARGET;
 				for (int i = 0; i < shipLengths.length; i++) {
-					updateMissPD(mode, grid, lastShot, shipLengths[i]);
-					updateHitPD(grid, lastShot, shipLengths[i]);
+					updateHuntPD(mode, grid, lastShot, shipLengths[i]);
+					updateTargetPD(grid, lastShot, shipLengths[i]);
 				}
 				return target(mode, grid);
 			}
@@ -287,11 +287,8 @@ public class AI {
 			 */
 			else if (lastShot.status == SquareTypes.MISS) {
 				for (int i = 0; i < shipLengths.length; i++)
-					updateMissPD(mode, grid, lastShot, shipLengths[i]);
-				if (mode == Mode.HUNT)
-					return target(mode, grid);
-				else
-					return target(mode, grid);
+					updateHuntPD(mode, grid, lastShot, shipLengths[i]);
+				return target(mode, grid);
 			}
 
 		} catch (Exception e) {
@@ -311,7 +308,8 @@ public class AI {
 	}
 
 	/**
-	 * Updates the probability density for a ship for a missed square in a grid
+	 * Updates the hunt mode probability density for a ship for the AI's last shot
+	 * in a grid
 	 * 
 	 * @param grid
 	 *            The grid in which the square is located
@@ -320,7 +318,7 @@ public class AI {
 	 * @param shipLength
 	 *            The specific ship length for which to calculate
 	 */
-	public void updateMissPD(Mode mode, Square[][] grid, Square lastShot, int shipLength) {
+	public void updateHuntPD(Mode mode, Square[][] grid, Square lastShot, int shipLength) {
 
 		int[] bounds = getBounds(lastShot, grid);
 
@@ -360,7 +358,7 @@ public class AI {
 			for (int i = bounds[3]; i > lastShot.x; i--)
 				grid[lastShot.y][i].huntPDx -= i - lastShot.x;
 
-		// Recombine an updated probability density distributed graph for hunt mode
+		// Recombine an updated probability density distribution graph for hunt mode
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
 				grid[i][j].combinehuntPDXY();
@@ -373,7 +371,8 @@ public class AI {
 	}
 
 	/**
-	 * Updates the probability density for a ship for a hit square in a grid
+	 * Updates the target mode probability density for a ship for the AI's last shot
+	 * in a grid
 	 * 
 	 * @param grid
 	 *            The grid in which the square is located
@@ -382,7 +381,7 @@ public class AI {
 	 * @param shipLength
 	 *            The specific ship length for which to calculate
 	 */
-	public void updateHitPD(Square[][] grid, Square lastShot, int shipLength) {
+	public void updateTargetPD(Square[][] grid, Square lastShot, int shipLength) {
 		int[] bounds = getBounds(lastShot, grid);
 
 		// Going up
@@ -409,7 +408,7 @@ public class AI {
 		if (lastShot.x + 2 != bounds[3])
 			grid[lastShot.y][lastShot.x + 2].targetPDx++;
 
-		// Recombine an updated probability density distributed graph for target mode
+		// Recombine an updated probability density distribution graph for target mode
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
 				grid[i][j].combinetargetPDXY();
