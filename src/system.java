@@ -537,6 +537,8 @@ public class system extends JFrame {
 			while(!shipX.isEmpty()){
 				System.out.println(shipX.toString());
 				System.out.println(shipY.toString());
+				System.out.println("v "+visitedx.toString());
+				System.out.println("v "+visitedy.toString());
 				int thisx = shipX.remove(0);
 				int thisy = shipY.remove(0);
 				visitedx.add(thisx);
@@ -545,11 +547,12 @@ public class system extends JFrame {
 					int newx = thisx + adx[i];
 					int newy = thisy + ady[i];
 					if (newx > -1 && newx < 10 && newy > -1 && newy < 10) {
+						System.out.println("checkingUNIT: "+newx+" "+newy+" "+game.userMap[newx][newy].getBackground().toString()+" "+game.userMap[newx][newy].getText()+" "+(visitedx.indexOf(newx))+" "+(visitedy.indexOf(newy)));
 						if (game.userMap[newx][newy].getText().equals(game.userMap[x][y].getText())&&(game.userMap[newx][newy].getBackground().getBlue()==0)) {
 							System.out.println("AI HIT "+shipName+" "+newx+" "+newy);
 							return "HIT "+shipName;
 						}
-						if(game.userMap[newx][newy].getBackground().equals(game.darkRed)&&((visitedx.indexOf(newx)==-1)&&(visitedy.indexOf(newy)==-1))){
+						if(game.userMap[newx][newy].getText().equals(game.userMap[x][y].getText())&&game.userMap[newx][newy].getBackground().equals(game.darkRed)&&((visitedx.indexOf(newx)==-1)||(visitedy.indexOf(newy)==-1))){
 							System.out.println("red "+newx+" "+newy);
 							shipX.add(newx);
 							shipY.add(newy);
