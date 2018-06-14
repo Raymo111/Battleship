@@ -155,17 +155,18 @@ public class game extends JPanel{
     public game(){
 		setSize(1300,700);
 		setLayout(null);
-		mapSeparator.setBounds(bInsets.left+647,bInsets.top+125,6,525);
-		add(mapSeparator);
-		winWord.setBounds(bInsets.left,bInsets.top+190,1300,300);
+
+		winWord.setBounds(bInsets.left,bInsets.top,1300,700);
 		winWord.addMouseListener(hide);
 		add(winWord);
 		winWord.setVisible(false);
-		losWord.setBounds(bInsets.left,bInsets.top+190,1300,300);
+		losWord.setBounds(bInsets.left,bInsets.top,1300,700);
 		losWord.addMouseListener(hide);
 		add(losWord);
 		losWord.setVisible(false);
 		setMap(true);
+		mapSeparator.setBounds(bInsets.left+647,bInsets.top+125,6,525);
+		add(mapSeparator);
 		gButtons.add(backButton);
 		gButtons.add(startButton);
 		gButtons.add(leaveButton);
@@ -222,11 +223,6 @@ public class game extends JPanel{
 		bgi.setBounds(bInsets.left,bInsets.top,1300,700);
 		add(bgi);
 		setBackground(Color.DARK_GRAY);
-		for(int i =0;i<10;i++){
-			for(int j =0;j<10;j++){
-				
-			}
-		}
 		setVisible(true);
 		
 	}
@@ -318,7 +314,7 @@ public class game extends JPanel{
 				}
 				if(!firstTime){
 					userMap[i][j].setText("");
-					userMap[i][j].setText("");
+					enemMap[i][j].setText("");
 				}
 				userMap[i][j].setBorder(new LineBorder(Color.white));
 				enemMap[i][j].setBorder(new LineBorder(Color.white));

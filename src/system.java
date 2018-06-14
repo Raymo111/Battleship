@@ -40,8 +40,8 @@ public class system extends JFrame {
 					System.out.println(-1);
 					remove(baseInter);
 					add(gameInter);
-					enterGame();
 					repaint();
+					enterGame();
 					return;
 				}
 				if (source.equals(baseInter.rankingButton)) {
@@ -222,6 +222,7 @@ public class system extends JFrame {
 			if(AIcombat){
 				for(int i =0;i<10;i++){
 					for(int j =0;j<10;j++){
+						game.enemMap[i][j].setText("");;
 						game.userMap[i][j].setBackground(Color.white);
 						game.userMap[i][j].removeMouseListener(gameInter.unitDis);
 					}
