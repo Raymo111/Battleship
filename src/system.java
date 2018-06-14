@@ -13,6 +13,7 @@ public class system extends JFrame {
 	static Boolean inGame = false;
 	int userIndex;
 	login startGame;
+	static boolean AIcombat = false;
 	static String[] userInfo = new String[38];
 	static String offset = "";
 	static int difficulty = -1;
@@ -210,6 +211,19 @@ public class system extends JFrame {
 
 	public void enterGame() {
 		if (!inGame) {
+//			Object[] modeOptions = { "AI Combat", "Human against AI" };
+//			do {
+//				int firsthand = JOptionPane.showOptionDialog(null, "Choose a game mode", "Game mode",
+//						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), modeOptions,
+//						modeOptions[0]);
+//				if (firsthand == 0) {
+//					firstHand = "User";
+//					game.userTurn = true;
+//				} else {
+//					firstHand = "AI";
+//					game.userTurn = false;
+//				}
+//			} while (!areYouSure(firstHand));
 			do {
 				Object[] options = { "User", "AI" };
 				int firsthand = JOptionPane.showOptionDialog(null, "Battle started from:", "First hand",
