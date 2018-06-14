@@ -114,7 +114,7 @@ public class base extends JPanel{
        futurePost.setBounds(bInsets.left,bInsets.top,650,700);
        add(futurePost);
        futurePost.setVisible(false);
-       futurePost.addMouseListener(game.returnEnd);
+       futurePost.addMouseListener(game.hide);
        add(bgi);
        setVisible(true);
 		

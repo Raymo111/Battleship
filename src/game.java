@@ -42,7 +42,7 @@ public class game extends JPanel{
     JLabel[] mapLabels = new JLabel[40];
     ArrayList<JLabel> gButtons = new ArrayList<JLabel>();
     ArrayList<JLabel> buttonEffects = new ArrayList<JLabel>();
-	static MouseListener returnEnd = new MouseListener(){
+	static MouseListener hide = new MouseListener(){
 		public void mouseClicked(MouseEvent arg0) {
 			((JLabel)arg0.getSource()).setVisible(false);
 		}
@@ -153,14 +153,14 @@ public class game extends JPanel{
 //		system.askUser.setBounds(bInsets.left+150,bInsets.top+150,500,500);
 //		add(system.askUser);
 		winWord.setBounds(bInsets.left,bInsets.top+190,1300,300);
-		winWord.addMouseListener(returnEnd);
+		winWord.addMouseListener(hide);
 		add(winWord);
 		winWord.setVisible(false);
 		losWord.setBounds(bInsets.left,bInsets.top+190,1300,300);
-		losWord.addMouseListener(returnEnd);
+		losWord.addMouseListener(hide);
 		add(losWord);
 		losWord.setVisible(false);
-		addMaps();
+		setMap(true);
 		gButtons.add(backButton);
 		gButtons.add(startButton);
 		gButtons.add(leaveButton);
@@ -219,14 +219,20 @@ public class game extends JPanel{
 		setBackground(Color.DARK_GRAY);
 		for(int i =0;i<10;i++){
 			for(int j =0;j<10;j++){
-				userMap[i][j].addMouseListener(unitDis);
-				enemMap[i][j].addMouseListener(unitFire);
+				
 			}
 		}
 		setVisible(true);
 		
 	}
-
+    public void reset(){
+    	setMap(false);
+    	uHit.setText("0");
+    	uMis.setText("0");
+    	eHit.setText("0");
+    	eMis.setText("0");
+    	timerLabel.setText("00:00:00");
+    }
     /**
      * The procedure type method shadows the ship onto the grid by marking covered units green.
      * @param theShip the target ship
@@ -252,47 +258,57 @@ public class game extends JPanel{
     	}//end for
     	theShip.setBackground(darkRed);;
     }//end method
-	public void addMaps(){
-		for(int i =0;i<40;i++){
-			mapLabels[i]=new JLabel(labelStr[i%20]);
-			mapLabels[i].setHorizontalAlignment(JLabel.CENTER);
-			mapLabels[i].setVerticalAlignment(JLabel.CENTER);
-			add(mapLabels[i]);
-		}
-		for(int i =0;i<20;i++){
-			mapLabels[i].setForeground(Color.white);
-			mapLabels[i].setBorder(new LineBorder(Color.white));
-			if(i<10){
-				mapLabels[i].setBounds(bInsets.left+150+i*50,bInsets.top+125,50,25);
-			}else{
-				mapLabels[i].setBounds(bInsets.left+125,bInsets.top+150+i%10*50,25,50);
+	public void setMap(boolean firstTime){
+		if(firstTime){
+			for(int i =0;i<40;i++){
+				mapLabels[i]=new JLabel(labelStr[i%20]);
+				mapLabels[i].setHorizontalAlignment(JLabel.CENTER);
+				mapLabels[i].setVerticalAlignment(JLabel.CENTER);
+				add(mapLabels[i]);
 			}
-		}
-		for(int i =20;i<40;i++){
-			mapLabels[i].setForeground(Color.white);
-			mapLabels[i].setBorder(new LineBorder(Color.white));
-			if(i<30){
-				mapLabels[i].setBounds(bInsets.left+650+i%10*50,bInsets.top+125,50,25);
-			}else{
-				mapLabels[i].setBounds(bInsets.left+1150,bInsets.top+150+i%10*50,25,50);
+			for(int i =0;i<20;i++){
+				mapLabels[i].setForeground(Color.white);
+				mapLabels[i].setBorder(new LineBorder(Color.white));
+				if(i<10){
+					mapLabels[i].setBounds(bInsets.left+150+i*50,bInsets.top+125,50,25);
+				}else{
+					mapLabels[i].setBounds(bInsets.left+125,bInsets.top+150+i%10*50,25,50);
+				}
+			}
+			for(int i =20;i<40;i++){
+				mapLabels[i].setForeground(Color.white);
+				mapLabels[i].setBorder(new LineBorder(Color.white));
+				if(i<30){
+					mapLabels[i].setBounds(bInsets.left+650+i%10*50,bInsets.top+125,50,25);
+				}else{
+					mapLabels[i].setBounds(bInsets.left+1150,bInsets.top+150+i%10*50,25,50);
+				}
 			}
 		}
 		for(int i=0;i<10;i++){
 			for(int j=0;j<10;j++){
-				userMap[i][j]=new JLabel();
-				enemMap[i][j]=new JLabel();
-				userMap[i][j].setHorizontalAlignment(JLabel.CENTER);
-				userMap[i][j].setBounds(bInsets.left+150+50*j,bInsets.top+150+50*i,50,50);
-				enemMap[i][j].setBounds(bInsets.left+650+50*j,bInsets.top+150+50*i,50,50);
+				if(firstTime){
+					userMap[i][j]=new JLabel();
+					enemMap[i][j]=new JLabel();
+					userMap[i][j].setHorizontalAlignment(JLabel.CENTER);
+					userMap[i][j].setBounds(bInsets.left+150+50*j,bInsets.top+150+50*i,50,50);
+					enemMap[i][j].setBounds(bInsets.left+650+50*j,bInsets.top+150+50*i,50,50);
+
+					userMap[i][j].setOpaque(true);
+					enemMap[i][j].setOpaque(true);
+					userMap[i][j].addMouseListener(unitDis);
+					enemMap[i][j].addMouseListener(unitFire);
+					add(userMap[i][j]);
+					add(enemMap[i][j]);
+				}
+				if(!firstTime){
+					userMap[i][j].setText("");
+					userMap[i][j].setText("");
+				}
 				userMap[i][j].setBorder(new LineBorder(Color.white));
 				enemMap[i][j].setBorder(new LineBorder(Color.white));
 				userMap[i][j].setBackground(darkBlue);
 				enemMap[i][j].setBackground(fogBlue);
-				userMap[i][j].setOpaque(true);
-				enemMap[i][j].setOpaque(true);
-
-				add(userMap[i][j]);
-				add(enemMap[i][j]);
 			}
 		}
 	}

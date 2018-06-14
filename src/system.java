@@ -35,6 +35,7 @@ public class system extends JFrame {
 					if(baseInter.futurePost.isVisible()){
 						baseInter.futurePost.setVisible(false);
 					}
+
 					System.out.println(-1);
 					remove(baseInter);
 					add(gameInter);
@@ -69,10 +70,14 @@ public class system extends JFrame {
 					baseInter.futurePost.setVisible(true);
 					return;
 				}
-				if (source.getIcon().toString().equals("theBackButton.png")) {
-					if(source.equals(gameInter.backButton)){
+				if (source.getIcon().toString().equals("theBackButton.png")||source.equals(game.winWord)||source.equals(game.losWord)) {
+					if(source.equals(gameInter.backButton)||source.equals(game.winWord)||source.equals(game.losWord)){
 						if(!game.userTurn){
 							return;
+						}
+						game.userTurn=true;
+						if(source.equals(game.winWord)||source.equals(game.losWord)){
+							gameInter.reset();
 						}
 					}
 					System.out.println(0);
@@ -138,6 +143,7 @@ public class system extends JFrame {
 				inGame = true;
 				game.firstClick = true;
 				gameInter.lastRecordTime = System.currentTimeMillis();
+				game.timeUsed = 0;
 				game.timer.restart();
 				game.eHit.setText("0");
 				game.eMis.setText("0");
@@ -179,6 +185,8 @@ public class system extends JFrame {
 		} // end for
 		gameInter.backButton.addMouseListener(directory);// add directory to buttons in game interface
 		gameInter.startButton.addMouseListener(gameOper);
+		game.winWord.addMouseListener(directory);
+		game.losWord.addMouseListener(directory);
 		rankInter = new rankings();// initializing the rankings interface
 		rankInter.backButton.addMouseListener(directory);
 		achiInter.backButton.addMouseListener(directory);
@@ -554,9 +562,10 @@ public class system extends JFrame {
 		return (long) Math.floor((25+Math.sqrt(625+100*exp))/50);
 	}
 	public static void endGame(boolean userWin) {
-		system.inGame = false;
+		inGame = false;
 		userInfo[1]= "null";
-		game.userTurn = false;
+		game.userTurn = true;
+		System.out.println("---------end "+inGame);
 		game.timer.stop();
 		getExp(18000/(game.timeUsed/1000));
 		if (userWin) {
@@ -697,10 +706,12 @@ public class system extends JFrame {
 		if (game.uHit.getText().equals("17")) {
 			System.out.println("Congrats, you have won!");
 			endGame(true);
+			return;
 		}
 		if (game.eHit.getText().equals("17")) {
 			System.out.println("Sorry, you have lost.");
 			endGame(false);
+			return;
 		}
 		System.out.println("What the heck?");
 	}
