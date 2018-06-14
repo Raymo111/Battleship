@@ -365,7 +365,9 @@ public class AI {
 		if (mode == Mode.TARGET && lastShot.status == SquareTypes.MISS) {
 			lastShot.targetPDx = 0;
 			lastShot.targetPDy = 0;
-			lastShot.combinetargetPDXY();
+			for (int i = 0; i < grid.length; i++)
+				for (int j = 0; j < grid[i].length; j++)
+					grid[i][j].combinetargetPDXY();
 		}
 	}
 
