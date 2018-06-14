@@ -30,7 +30,6 @@ public class Battleship {
 	private static BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
 
 	public static void main(String[] args) throws IOException {
-		// while (true)
 		newGameProcedure();
 	}
 
@@ -309,17 +308,38 @@ public class Battleship {
 	}
 
 	public static void displayPD(Square[][] grid) {
+		for (int i = 0; i < grid.length; i++)
+			System.out.print("___");
+		System.out.print("____");
+		System.out.println();
+		System.out.printf("| ||");
+		for (int i = 0; i < grid.length; i++)
+			System.out.printf("%-2d|", i + 1);
+		System.out.println();
 		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid[i].length; j++) {
-				System.out.printf("|%2d", grid[i][j].totalSquarePD);
-			}
-			System.out.println();
+			System.out.printf("|%c||", (char) (i + 65));
+			for (int j = 0; j < grid[i].length; j++)
+				System.out.printf("%2d|", grid[i][j].totalSquarePD);
+			System.out.println("");
 		}
+		for (int i = 0; i < grid.length; i++)
+			System.out.print("‾‾‾");
+		System.out.print("‾‾‾‾");
+		System.out.println();
 	}
 
 	public static void displayShips(Square[][] grid) {
+		for (int i = 0; i < grid.length; i++)
+			System.out.print("__");
+		System.out.print("____");
+		System.out.println();
+		System.out.printf("| ||");
+		for (int i = 0; i < grid.length; i++)
+			System.out.printf("%d|", (i + 1) % 10);
+		System.out.println();
 		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid.length; j++) {
+			System.out.printf("|%c|", (char) (i + 65));
+			for (int j = 0; j < grid[i].length; j++) {
 				if (grid[i][j].shipType != null && grid[i][j].shipType.shipName != null)
 					System.out.print("|" + grid[i][j].shipType.shipName.charAt(0));
 				else
@@ -327,14 +347,10 @@ public class Battleship {
 			}
 			System.out.print("|\n");
 		}
-	}
-
-	public static void display2Darray(int[][] array) {
-		for (int i = 0; i < array.length; i++) {
-			for (int j = 0; j < array.length; j++)
-				System.out.print("|" + array[j][i]);
-			System.out.println();
-		}
+		for (int i = 0; i < grid.length; i++)
+			System.out.print("‾‾");
+		System.out.print("‾‾‾‾");
+		System.out.println();
 	}
 
 }
