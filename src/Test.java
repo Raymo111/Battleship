@@ -14,17 +14,8 @@ import javax.swing.*;
 public class Test {
 
 	public static void main(String args[]) throws Exception {
-		JButton a = new JButton();
-		a.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("lol");
-			}
-
-		});
-		a.doClick();
+		game a = new game();
+		System.out.println(game.uHit.getText());
 		// JFrame frame = new JFrame("Rotation Test");
 		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//

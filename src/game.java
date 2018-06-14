@@ -79,7 +79,7 @@ public class game extends JPanel{
 		public void mouseClicked(MouseEvent e) {
 			if(!system.inGame){
 				JLabel source = (JLabel)e.getSource();
-				setDis(source, false, -1);
+				setDis(source);
 			}
 		}
 		public void mouseEntered(MouseEvent e) {
@@ -217,12 +217,6 @@ public class game extends JPanel{
 		bgi.setBounds(bInsets.left,bInsets.top,1300,700);
 		add(bgi);
 		setBackground(Color.DARK_GRAY);
-//		addMouseListener(dragger);
-//		addMouseMotionListener(dragger);
-		
-		//start the game
-//		removeMouseListener(dragger);
-//		removeMouseMotionListener(dragger);
 		for(int i =0;i<10;i++){
 			for(int j =0;j<10;j++){
 				userMap[i][j].addMouseListener(unitDis);
@@ -349,21 +343,14 @@ public class game extends JPanel{
 		}//end for
 		return formatedTime.substring(0, formatedTime.length() - 1);//returnt the answer
 	}//end method
-	private static int setDis(JLabel theUnit, boolean askInd, int knownInd){
+	private static int setDis(JLabel theUnit){
 		int colorIndex = -1;
-		if(knownInd==-1){
 			for(int i =0;i<6;i++){
 				if(theUnit.getBackground().equals(system.unitColor[i])){
-					if(askInd){
-						return i;
-					}
 					colorIndex = i+1;
 					break;
 				}
 			}
-		}else{
-			colorIndex = knownInd;
-		}
 		theUnit.setBackground(system.unitColor[colorIndex]);
 		if(colorIndex>3){
 			theUnit.setForeground(Color.white);
@@ -380,29 +367,7 @@ public class game extends JPanel{
 	public static void countIncre(JLabel var){
 		var.setText(Integer.toString(Integer.parseInt(var.getText())+1));
 	}
-	public static void startGame(){
-		
-	}
-	
-	public static void saveGame(){
-		system.userInfo[2]=Integer.toString(system.difficulty);
-		String[] uShipLocations = {"","","","",""};
-		String uMap = "";
-		String[] eShipLocations = {"","","","",""};
-		String eMap = "";
-		for(int i =0;i<10;i++){
-			for(int j =0;j<10;j++){
-				int uInd =setDis(userMap[i][j],true, -1);
-				int eInd =setDis(userMap[i][j],true, -1);
-				uMap+=" "+uInd;
-				eMap+=" "+eInd;
-				if(uInd>0&&uInd<6){
-					uShipLocations[uInd-1]+=i+""+j;
-				}
-				
-			}
-		}
-	}
+
 	public static void main(String[] args){
 		JFrame f = new JFrame();
 		f.add(new game());

@@ -38,8 +38,8 @@ public class system extends JFrame {
 					System.out.println(-1);
 					remove(baseInter);
 					add(gameInter);
-					repaint();
 					enterGame();
+					repaint();
 					return;
 				}
 				if (source.equals(baseInter.rankingButton)) {
@@ -70,13 +70,13 @@ public class system extends JFrame {
 					return;
 				}
 				if (source.getIcon().toString().equals("theBackButton.png")) {
+					if(source.equals(gameInter.backButton)){
+						if(!game.userTurn){
+							return;
+						}
+					}
 					System.out.println(0);
 					getContentPane().removeAll();
-					if(inGame){
-						game.startGame();
-					}else{
-						game.saveGame();
-					}
 					baseInter.updateInfo(userInfo[0], Integer.parseInt(userInfo[18]), Integer.parseInt(userInfo[15]));// update base
 					if(baseInter.futurePost.isVisible()){
 						baseInter.futurePost.setVisible(false);
@@ -137,6 +137,7 @@ public class system extends JFrame {
 			if (source.equals(gameInter.startButton)&&(!inGame)) {
 				inGame = true;
 				game.firstClick = true;
+				gameInter.lastRecordTime = System.currentTimeMillis();
 				game.timer.restart();
 				game.eHit.setText("0");
 				game.eMis.setText("0");
@@ -554,9 +555,10 @@ public class system extends JFrame {
 	}
 	public static void endGame(boolean userWin) {
 		system.inGame = false;
+		userInfo[1]= "null";
 		game.userTurn = false;
 		game.timer.stop();
-		getExp(1800/(game.timeUsed/1000));
+		getExp(18000/(game.timeUsed/1000));
 		if (userWin) {
 			game.winWord.setVisible(true);
 		} else {
@@ -621,9 +623,10 @@ public class system extends JFrame {
 						}
 					if (flag) // User has won
 						userWin = true;
-				} else
+				} else{
 					System.out.println("HIT, " + ship.shipName);
 					fireResult("HIT");
+				}
 			} else {
 				System.out.println("HIT, " + ship.shipName);
 				fireResult("HIT");
@@ -659,7 +662,6 @@ public class system extends JFrame {
 					ship.location.add(AIShot);
 					break;
 				}
- //////////problem: above lines :need to read ship type
 			// Check if sunk
 			if (input.contains("SUNK")) {
 				int temp = 0;
