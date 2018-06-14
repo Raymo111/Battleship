@@ -520,7 +520,7 @@ public class system extends JFrame {
 			String shipName = "";
 			for(int i =1;i<6;i++){
 				if(unitStatus.equals(unitColor[i])){
-					shipName=Battleship.shipNames[i-1].toUpperCase();
+					shipName=Battleship.shipNames[i-1];
 					break;
 				}
 			}
@@ -528,18 +528,38 @@ public class system extends JFrame {
 			game.countIncre(game.eHit);
 			int[] adx = { 0, 1, 0, -1 };
 			int[] ady = { 1, 0, -1, 0 };
-			for (int i = 0; i < 4; i++) {
-				int newx = x + adx[i];
-				int newy = y + ady[i];
-				if (newx > 0 && newx < 10 && newy > 0 && newy < 10) {
-					if (game.userMap[newx][newy].getBackground().getBlue()!=0) {
-						System.out.println("AI HIT "+shipName);
-						return "HIT "+shipName;
+			ArrayList<Integer> shipX = new ArrayList<Integer>();
+			ArrayList<Integer> shipY = new ArrayList<Integer>();
+			ArrayList<Integer> visitedx = new ArrayList<Integer>();
+			ArrayList<Integer> visitedy = new ArrayList<Integer>();
+			shipX.add(x);
+			shipY.add(y);
+			while(!shipX.isEmpty()){
+				System.out.println(shipX.toString());
+				System.out.println(shipY.toString());
+				int thisx = shipX.remove(0);
+				int thisy = shipY.remove(0);
+				visitedx.add(thisx);
+				visitedy.add(thisy);
+				for (int i = 0; i < 4; i++) {
+					int newx = thisx + adx[i];
+					int newy = thisy + ady[i];
+					if (newx > -1 && newx < 10 && newy > -1 && newy < 10) {
+						if (game.userMap[newx][newy].getText().equals(game.userMap[x][y].getText())&&(game.userMap[newx][newy].getBackground().getBlue()==0)) {
+							System.out.println("AI HIT "+shipName+" "+newx+" "+newy);
+							return "HIT "+shipName;
+						}
+						if(game.userMap[newx][newy].getBackground().equals(game.darkRed)&&((visitedx.indexOf(newx)==-1)&&(visitedy.indexOf(newy)==-1))){
+							System.out.println("red "+newx+" "+newy);
+							shipX.add(newx);
+							shipY.add(newy);
+						}
 					}
 				}
 			}
-			System.out.println("AI SUNK "+shipName);
-			return "SUNK "+shipName;
+			
+			System.out.println("AI HIT, SUNK "+shipName);
+			return "HIT, SUNK "+shipName;
 		} else {
 			if (game.userMap[x][y].getBackground().equals(game.darkBlue)) {
 				game.userMap[x][y].setBackground(game.fogBlue);
@@ -663,8 +683,8 @@ public class system extends JFrame {
 				+ (Character.toString((char) (AIShot.y + 65)) + Integer.toString(AIShot.x + 1)).toUpperCase());
 		// Get user's response
 		System.out.println("HIT or MISS?");
-		input = getFire(AIShot.x, AIShot.y);
-
+		input = getFire(AIShot.x, AIShot.y).toUpperCase();
+		System.out.println("getInput--------------: "+input);
 		// AI hit a ship
 		if (input.contains("HIT")) {
 			AIShot.status = SquareTypes.HIT;
@@ -683,7 +703,7 @@ public class system extends JFrame {
 				for (int i = 0; i < ship.location.size(); i++)// Set all location squares of ship to status sunk
 					ship.location.get(i).status = SquareTypes.SUNK;
 				for (int i = 0; i < Battleship.shipNames.length; i++)
-					if (ship.shipName.equals(Battleship.shipNames[i].toUpperCase())) {
+					if (ship.shipName.equalsIgnoreCase(Battleship.shipNames[i])) {
 						temp = i;
 						break;
 					}
