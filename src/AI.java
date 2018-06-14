@@ -77,7 +77,7 @@ public class AI {
 			gameMode = system.difficulty + 1;
 		} else {
 			// Get mode
-			System.out.println("Select the mode. \n1. Manual - Raymond\n2. Random\n3. Manual - David");
+			System.out.println("Select the mode. \n1. Manual - Raymond\n2. Random\n3. Manual - David\n4.Extreme");
 			while (true) {
 				try {
 					input = br.readLine();
@@ -147,6 +147,13 @@ public class AI {
 			Battleship.homeShips[2] = new Ship(grid, grid[9][7], grid[7][7]);
 			Battleship.homeShips[3] = new Ship(grid, grid[4][6], grid[1][6]);
 			Battleship.homeShips[4] = new Ship(grid, grid[0][0], grid[0][4]);
+		} else if (gameMode == 4) {
+			// best possible
+			Battleship.homeShips[0] = new Ship(grid, grid[1][7], grid[2][7]);// 2ship
+			Battleship.homeShips[1] = new Ship(grid, grid[1][0], grid[3][0]);// 3ship
+			Battleship.homeShips[2] = new Ship(grid, grid[6][5], grid[8][5]);// 3ship
+			Battleship.homeShips[3] = new Ship(grid, grid[9][1], grid[9][4]);// 4ship
+			Battleship.homeShips[4] = new Ship(grid, grid[0][9], grid[4][9]);// 5 ship
 		}
 	}
 
