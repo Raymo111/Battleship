@@ -223,7 +223,7 @@ public class system extends JFrame {
 					game.userTurn = false;
 				}
 			} while (!areYouSure(firstHand));
-			Object[] diOptions = { "Expert - Raymond", "Random", "Expert - David" };
+			Object[] diOptions = { "Expert - Raymond", "Random", "Expert - David","Extreme" };
 			do {
 				difficulty = JOptionPane.showOptionDialog(null, "Choose a difficulty level:", "Difficulty",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), diOptions,
