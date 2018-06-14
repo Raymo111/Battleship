@@ -636,7 +636,7 @@ public class system extends JFrame {
 		userInfo[19]= Long.toString(expUpdated);
 		userInfo[18]= Long.toString(calLv(expUpdated));
 	}
-	public static void recordBattle(){
+	public static void recordBattle(boolean userWin){
 		String[] nums = userInfo[17].split(" ");
 		int winNum = Integer.parseInt(nums[1]);
 		if(userWin){
@@ -654,7 +654,7 @@ public class system extends JFrame {
 		System.out.println("---------end "+inGame);
 		game.timer.stop();
 		getExp(18000/(game.timeUsed/1000));
-		recordBattle();
+		recordBattle(userWin);
 		if (userWin) {
 			game.winWord.setVisible(true);
 		} else {
@@ -790,13 +790,14 @@ public class system extends JFrame {
 	}
 
 	public static void checkWin() {
-		// If user wins
-		if (game.uHit.getText().equals("17")) {
+		boolean uWin = game.uHit.getText().equals("17");
+		boolean eWin = game.eHit.getText().equals("17");
+		if ((uWin&&(!AIcombat))||(eWin&&AIcombat)) {//reverse the result if in AI combat
 			System.out.println("Congrats, you have won!");
 			endGame(true);
 			return;
 		}
-		if (game.eHit.getText().equals("17")) {
+		if ((uWin&&AIcombat)||eWin&&(!AIcombat)) {
 			System.out.println("Sorry, you have lost.");
 			endGame(false);
 			return;
