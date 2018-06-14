@@ -83,7 +83,7 @@ public class Battleship {
 				break;
 		}
 
-		// ~ String input = system.firstHand;
+		// String input = system.firstHand;
 
 		// User wants AI to go first
 		if (input.contains("a")) {
@@ -196,7 +196,7 @@ public class Battleship {
 					for (int i = 0; i < ship.location.size(); i++)// Set all location squares of ship to status sunk
 						ship.location.get(i).status = SquareTypes.SUNK;
 					for (int i = 0; i < shipNames.length; i++)
-						if (ship.shipName.equals(shipNames[i].toUpperCase())) {
+						if (ship.shipName.equalsIgnoreCase(shipNames[i])) {
 							temp = i;
 							break;
 						}
