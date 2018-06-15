@@ -267,22 +267,30 @@ public class system extends JFrame {
 				}
 			} while (!areYouSure(offsetOptions[offsetInd].toString()));
 		}
-	}
-
+	}//end method
+	/**
+	 * The return type method for universal confirmation pop-up for all choices user made in pop-up windows.
+	 * @param confirmInfo information user previously selected
+	 * @return whether user confirms true or not
+	 */
 	public static boolean areYouSure(String confirmInfo) {
-		Object[] optionsAg = { "Yes", "No" };
+		Object[] optionsAg = { "Yes", "No" };//choices of confirmations
 		int confirm = JOptionPane.showOptionDialog(null, confirmInfo + " -Are you sure?", "First hand Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), optionsAg,
-				optionsAg[0]);
+				optionsAg[0]);//display confirm message
 		if (confirm == 0) {
 			return true;
 		} else {
 			return false;
-		}
-	}
-
+		}//end if
+	}//end method
+	/**
+	 * The procedure type method read the username in login interface and process to load current user or create new user profile.
+	 * @param thisUsername the username user enters in login interface
+	 * @throws IOException Exceptions of loading users' profiles
+	 */
 	public void readLogin(String thisUsername) throws IOException {
-		BufferedReader fileReader = new BufferedReader(new FileReader("usersRecord.txt"));
+		BufferedReader fileReader = new BufferedReader(new FileReader("usersRecord.txt"));//read userRecord.txt
 		int thisUserIndex = 0;
 		try {
 			while (true) {// search till end of the list
@@ -300,7 +308,6 @@ public class system extends JFrame {
 		userIndex = thisUserIndex;
 		fileReader.close();// close the BufferedReader
 	}// end method
-
 	/**
 	 * The procedure type method read and record all information in file to the
 	 * system
@@ -346,23 +353,20 @@ public class system extends JFrame {
 			rankReader.close();// close the IO fileReader
 			boolean placed = false;
 			for (int i = 0; i < index.length; i++) {
-				if (placed) {
-					if (Integer.parseInt(index[i - 1]) != tUserIndex) {
-						newIndexes += index[i - 1] + " ";
+				if (placed) {//if user has been placed
+					if (Integer.parseInt(index[i - 1]) != tUserIndex) {//if the original is not the user
+						newIndexes += index[i - 1] + " ";//record one before
 						newValues += val[i - 1] + " ";
-						System.out.println(i + " " + 1);
-					}
-				} else {
-					if (Integer.parseInt(val[i]) > rankInfo) {
+					}//end if
+				} else {//check if user need to be placed
+					if (Integer.parseInt(val[i]) > rankInfo) {//record original
 						if (Integer.parseInt(index[i]) != tUserIndex) {
 							newIndexes += index[i] + " ";
 							newValues += val[i] + " ";
-							System.out.println(i + " " + 2);
 						}
 					} else {
 						newIndexes += tUserIndex + " ";
 						newValues += rankInfo + " ";
-						System.out.println(i + " " + 3);
 						placed = true;// record the placement
 					} // end if
 				} // end if
@@ -370,19 +374,15 @@ public class system extends JFrame {
 			if (!placed) {// add the user if ranked last
 				newIndexes += tUserIndex;
 				newValues += rankInfo;
-				System.out.println(4);
 			} else {// add the last if user is not last
 				if (Integer.parseInt(index[index.length - 1]) != tUserIndex) {
 					newIndexes += index[index.length - 1];
 					newValues += val[val.length - 1];
-					System.out.println(5);
 				}
 			} // end if
 		} catch (Exception e) {// add the user directly when there is no user exists in record rank
-			System.out.println("_______________________________________________direct");
 			newIndexes += tUserIndex;
 			newValues += rankInfo;
-			System.out.println(6);
 		} // end try catch
 		PrintWriter rankWriter = new PrintWriter(theRank);// create PrintWriter to write the file
 		rankWriter.println(newIndexes);// write the indexes
@@ -390,9 +390,6 @@ public class system extends JFrame {
 		rankWriter.close();// close the fileWriter
 
 		if (isDisplaying == true) {// if the rankings needs to be displayed, convert the information
-			System.out.println("rkrkrkrkrkrkrkkrkrkrkrk\n" + isDisplaying);
-			System.out.println(newIndexes);
-			System.out.println(newValues);
 			rankInter.convertRank(rankType, newIndexes, newValues);
 		} // end if
 	}// end method
@@ -458,20 +455,28 @@ public class system extends JFrame {
 		recordWriter.println(newName);// write the name into users' record list
 		recordWriter.close();// close the record writer
 	}// end method
-
+	/**
+	 * The return type method convert coordinate to message to console game codes.
+	 * @param x x-coordinate needs to be converted
+	 * @param y y-coordinate needs to be converted
+	 * @return converted String: letter+index start from 1
+	 */
 	public static String convertMessage(int x, int y) {
-		System.out.println(y + " " + x);
 		return (Character.toString((char) (y + 65)) + Integer.toString(x + 1)).toUpperCase();
-	}
-
+	}//end method
+	/**
+	 * The procedure type method record result of being fired in AI's map.
+	 * @param result input message of result
+	 * @param nameIndex index of shipName
+	 */
 	public static void fireResult(String result, int nameIndex) {
-		if(AIcombat){
+		if(AIcombat){//display message if in AI combat mode
 			JOptionPane.showMessageDialog(null,
 				    "That was: "+result,
 				    "Response to other AI",
 				    JOptionPane.INFORMATION_MESSAGE,
 				    new ImageIcon("gResponse.png"));
-		}
+		}//end if
 		Game.userTurn = false;
 		if (result.equals("MISS")) {
 			Game.countIncre(Game.uMis);
