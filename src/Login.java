@@ -16,8 +16,8 @@ import java.awt.event.MouseListener;
  * @author Benny Shen
  */
 public class Login extends JDialog {
-	Boolean firstClick = true;
-	JPanel iconInter = new JPanel();
+	Boolean firstClick = true;															//first click boolean for hiding instructions
+	JPanel iconInter = new JPanel();													//
 	JLabel bgi = new JLabel(new ImageIcon("loginBgi.png"));
 	JLabel startButton = new JLabel("CLICK TO ENTER",SwingConstants.CENTER);
 	JPanel loginInter = new JPanel();
@@ -41,11 +41,11 @@ public class Login extends JDialog {
 			public void mousePressed(MouseEvent arg0) {}
 			public void mouseReleased(MouseEvent arg0) {}
          });
-         iconInter.setLayout(null);
-         iconInter.setBackground(new Color(0,0,0,0));
          bgi.setBounds(0,0,500,250);
          startButton.setForeground(Color.white);
          startButton.setBounds(320,80,100,100);
+         iconInter.setLayout(null);
+         iconInter.setBackground(new Color(0,0,0,0));
          iconInter.add(startButton);
          iconInter.add(bgi);
          add(iconInter);
