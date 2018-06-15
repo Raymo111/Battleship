@@ -14,6 +14,7 @@ import javax.swing.border.LineBorder;
  * 
  * <p>Final Evaluation: Battleship Tournament
  * <br/> Description: The major class which allows the user to start tournament or play against AI
+ * <br/> Unless specified all components of the class are written by Benny.
  * 
  * @author Benny Shen
  */
@@ -238,7 +239,7 @@ public class system extends JFrame {
 				firstHandOptions[1] = "Us";
 			}//end if
 			int firsthandIndex;
-			do {
+			do {//ask for first hand
 				firsthandIndex = JOptionPane.showOptionDialog(null, "Battle started from:", "First hand",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), firstHandOptions,
 						firstHandOptions[0]);
@@ -249,16 +250,16 @@ public class system extends JFrame {
 					firstHand = "AI";
 					Game.userTurn = false;
 				}
-			} while (!areYouSure(firstHandOptions[firsthandIndex].toString()));
+			} while (!areYouSure(firstHandOptions[firsthandIndex].toString()));//confirm
 			Object[] diOptions = { "Expert - Raymond", "Random", "Expert - David","Extreme" };
-			do {
+			do {//ask for difficulty level
 				difficulty = JOptionPane.showOptionDialog(null, "Choose a difficulty level:", "Difficulty",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), diOptions,
 						diOptions[0]);
-			} while (!areYouSure(diOptions[difficulty].toString()));
+			} while (!areYouSure(diOptions[difficulty].toString()));//confirm
 			Object[] offsetOptions = { "Yes", "No" };
 			int offsetInd;
-			do {
+			do {//ask for offset
 				offsetInd = JOptionPane.showOptionDialog(null, "Offset edges?", "Offset?",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), offsetOptions,
 						offsetOptions[0]);
@@ -266,9 +267,9 @@ public class system extends JFrame {
 					offset = "y";
 				} else {
 					offset = "n";
-				}
-			} while (!areYouSure(offsetOptions[offsetInd].toString()));
-		}
+				}//end if
+			} while (!areYouSure(offsetOptions[offsetInd].toString()));//confirm
+		}//end if
 	}//end method
 	/**
 	 * The return type method for universal confirmation pop-up for all choices user made in pop-up windows.
@@ -300,13 +301,13 @@ public class system extends JFrame {
 				if (fileReader.readLine().equals(thisUsername)) {// when the username is found in history
 					loadUser(thisUserIndex);// load the user information
 					break;// stop searching
-				}
-			}
+				}//end if
+			}//end while
 		} catch (Exception e) {
 			// when the username is not found in history
 			System.out.println("u" + thisUserIndex);
 			createUser(thisUsername, thisUserIndex);
-		}
+		}//end try catch
 		userIndex = thisUserIndex;
 		fileReader.close();// close the BufferedReader
 	}// end method
@@ -319,13 +320,11 @@ public class system extends JFrame {
 	 */
 	public void loadUser(int tUserIndex) throws IOException {
 		BufferedReader fileReader = new BufferedReader(new FileReader("User" + tUserIndex));// create BufferedReader to
-																							// read record
 		for (int i = 0; i < 38; i++) {
 			userInfo[i] = fileReader.readLine();// read and record the information line by line in system
 		} // end for
 		fileReader.close();// close the fileReader
 	}// end method
-
 	/**
 	 * The procedure type method update the rank information and files.
 	 * 
@@ -337,7 +336,6 @@ public class system extends JFrame {
 	 *             Exceptions for File IO
 	 */
 	public void updateRank(int tUserIndex, String rankType, Boolean isDisplaying) throws IOException {
-		System.out.println("------------------------------------------" + rankType);
 		File theRank = new File("rank" + rankType + ".txt");
 		BufferedReader rankReader = new BufferedReader(new FileReader(theRank));
 		int rankInfo =-1;// record the info of rank of target player for comparisons
@@ -349,7 +347,6 @@ public class system extends JFrame {
 		String newIndexes = "";// initialize empty String for the new indexes
 		String newValues = "";// initialize empty String for the new values
 		try {
-			System.out.println("_______________________________________________ranked");
 			String[] index = rankReader.readLine().split(" ");// read and record the indexes and values
 			String[] val = rankReader.readLine().split(" ");
 			rankReader.close();// close the IO fileReader
@@ -390,12 +387,10 @@ public class system extends JFrame {
 		rankWriter.println(newIndexes);// write the indexes
 		rankWriter.println(newValues);// write the values
 		rankWriter.close();// close the fileWriter
-
 		if (isDisplaying == true) {// if the rankings needs to be displayed, convert the information
 			rankInter.convertRank(rankType, newIndexes, newValues);
 		} // end if
 	}// end method
-
 	/**
 	 * The procedure type method initialize a new line in userInfo.
 	 * 
@@ -415,7 +410,6 @@ public class system extends JFrame {
 			userInfo[i] += state;// end the line
 		} // end for
 	}// end method
-
 	/**
 	 * The procedure type method initiates all information for a new user in system.
 	 * 
@@ -490,11 +484,10 @@ public class system extends JFrame {
 			Game.enemMap[y][x].setHorizontalAlignment(JLabel.CENTER);
 			Game.enemMap[y][x].setText(result.substring(nameIndex,nameIndex+2));
 		}
-	}
-
+	}//end method
 	/**
-	 * Functions that only need to be run at the beginning of a new game
-	 * 
+	 * Functions that only need to be run at the beginning of a new game (from console game)
+	 * @author Raymond
 	 * @throws IOException
 	 */
 	public static void newGameProcedure() throws IOException {
@@ -514,11 +507,10 @@ public class system extends JFrame {
 		Battleship.displayPD(Battleship.enemyGrid);
 		Battleship.displayShips(Battleship.homeGrid);
 		game();
-	}
-
+	}//end method
 	/**
-	 * The actual game method
-	 * 
+	 * The actual game method from console game.
+	 * @author Raymond
 	 * @throws IOException
 	 */
 	public static void game() throws IOException {
@@ -548,136 +540,157 @@ public class system extends JFrame {
 		for (int i = 0; i < Battleship.enemyShips.length; i++)
 			Battleship.enemyShips[i] = new Ship(Battleship.enemyGrid, Battleship.shipNames[i],
 					Battleship.shipLengths[i]);
-	}
-
+	}//end method
+	/**
+	 * The return type method which repsonds to AI's shot.
+	 * @param y y-coordinate of AI's shot
+	 * @param x x-coordinate of AI's shot
+	 * @param AIcoor AI's coordinates in String format
+	 * @return output result String
+	 */
 	public static String getFire(int y, int x, String AIcoor) {
-		if(AIcombat){
-			Object[] reOptions = { "MISS", "HIT", "SUNK" };
+		if(AIcombat){//ask for response if in AI combat mode
+			Object[] reOptions = { "MISS", "HIT", "SUNK" };//results type options
 			int responseIndex = -1;
 			do {
 				responseIndex = JOptionPane.showOptionDialog(null, "Shot: "+AIcoor, "Get Response",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), reOptions,
-						reOptions[0]);
-			} while (!areYouSure(reOptions[responseIndex].toString()));
+						reOptions[0]);//display ask result type
+			} while (!areYouSure(reOptions[responseIndex].toString()));//confirm
 			if(responseIndex==0){
-				Game.countIncre(Game.eMis);
-				return "MISS";
-			}else{
-				Game.countIncre(Game.eHit);
+				Game.countIncre(Game.eMis);//count a miss
+				return "MISS";//return miss
+			}else{//if hit or sunk as for ship type
+				Game.countIncre(Game.eHit);//count a hit
 				String ultResponse = "HIT, ";
 				if(responseIndex==2){
 					ultResponse += "SUNK ";
-				}
-				Object[] hitShipOptions = Battleship.shipNames;
+				}//end if
+				Object[] hitShipOptions = Battleship.shipNames;//ship name options
 				int hitShipIndex = -1;
 				do {
 					hitShipIndex = JOptionPane.showOptionDialog(null, "Response from other AI?", "Get Response",
 							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), hitShipOptions,
 							hitShipOptions[0]);
-				} while (!areYouSure(hitShipOptions[hitShipIndex].toString()));
-				return ultResponse+Battleship.shipNames[hitShipIndex];
-			}
-		}
+				} while (!areYouSure(hitShipOptions[hitShipIndex].toString()));//confirm
+				return ultResponse+Battleship.shipNames[hitShipIndex];//return after adding name
+			}//end if
+		}//end if
+		//auto check the result if play with human
 		Color unitStatus = Game.userMap[x][y].getBackground();
 		if (unitStatus.getBlue()==0) {
 			String shipName = "";
-			for(int i =1;i<6;i++){
+			for(int i =1;i<6;i++){//find ship name by background color
 				if(unitStatus.equals(unitColor[i])){
 					shipName=Battleship.shipNames[i-1];
 					break;
-				}
-			}
-			Game.userMap[x][y].setBackground(Game.darkRed);
-			Game.countIncre(Game.eHit);
-			int[] adx = { 0, 1, 0, -1 };
-			int[] ady = { 1, 0, -1, 0 };
-			ArrayList<Integer> shipX = new ArrayList<Integer>();
+				}//end if
+			}//end for
+			Game.userMap[x][y].setBackground(Game.darkRed);//mark hit
+			Game.countIncre(Game.eHit);//record hit
+			//Breadth First Search
+			int[] adx = { 0, 1, 0, -1 };//change of x coordinate
+			int[] ady = { 1, 0, -1, 0 };//change of y coordinate
+			ArrayList<Integer> shipX = new ArrayList<Integer>();//units waiting to be checked
 			ArrayList<Integer> shipY = new ArrayList<Integer>();
-			ArrayList<Integer> visitedx = new ArrayList<Integer>();
+			ArrayList<Integer> visitedx = new ArrayList<Integer>();//unit checked
 			ArrayList<Integer> visitedy = new ArrayList<Integer>();
-			shipX.add(x);
+			shipX.add(x);//add original ship hit
 			shipY.add(y);
 			while(!shipX.isEmpty()){
-				System.out.println(shipX.toString());
-				System.out.println(shipY.toString());
-				System.out.println("v "+visitedx.toString());
-				System.out.println("v "+visitedy.toString());
-				int thisx = shipX.remove(0);
+				int thisx = shipX.remove(0);//read the first waiting unit and record, remove from list
 				int thisy = shipY.remove(0);
-				visitedx.add(thisx);
+				visitedx.add(thisx);//mark visited
 				visitedy.add(thisy);
 				for (int i = 0; i < 4; i++) {
-					int newx = thisx + adx[i];
+					int newx = thisx + adx[i];//calculate coordinate for adjacent unit
 					int newy = thisy + ady[i];
 					if (newx > -1 && newx < 10 && newy > -1 && newy < 10) {
 						System.out.println("checkingUNIT: "+newx+" "+newy+" "+Game.userMap[newx][newy].getBackground().toString()+" "+Game.userMap[newx][newy].getText()+" "+(visitedx.indexOf(newx))+" "+(visitedy.indexOf(newy)));
 						if (Game.userMap[newx][newy].getText().equals(Game.userMap[x][y].getText())&&(Game.userMap[newx][newy].getBackground().getBlue()==0)) {
 							System.out.println("AI HIT "+shipName+" "+newx+" "+newy);
-							return "HIT "+shipName;
-						}
+							return "HIT "+shipName;//return hit message
+						}//end if
 						if(Game.userMap[newx][newy].getText().equals(Game.userMap[x][y].getText())&&Game.userMap[newx][newy].getBackground().equals(Game.darkRed)&&((visitedx.indexOf(newx)==-1)||(visitedy.indexOf(newy)==-1))){
 							System.out.println("red "+newx+" "+newy);
-							shipX.add(newx);
+							shipX.add(newx);//add damaged ship to waiting list
 							shipY.add(newy);
-						}
-					}
-				}
-			}
-			
+						}//end if
+					}//end if
+				}//end for
+			}//end while
 			System.out.println("AI HIT, SUNK "+shipName);
-			return "HIT, SUNK "+shipName;
+			return "HIT, SUNK "+shipName;//return sunk message
 		} else {
 			if (Game.userMap[x][y].getBackground().equals(Game.darkBlue)) {
 				Game.userMap[x][y].setBackground(Game.fogBlue);
-			}
-			
-			Game.userMap[x][y].setBorder(new LineBorder(Color.gray));
-			Game.countIncre(Game.eMis);
+			}//end if
+			Game.userMap[x][y].setBorder(new LineBorder(Color.gray));//mark miss
+			Game.countIncre(Game.eMis);//record miss
 			System.out.println("AI MISS");
 			return "MISS";
-		}
-	}
+		}//end if
+	}//end method
+	/**
+	 * The procedure type method add exp to user in system.
+	 * @param expInAddition exp amount in addition
+	 */
 	public static void getExp(long expInAddition){
-		Long expUpdated = Long.parseLong(userInfo[19])+expInAddition;
-		userInfo[19]= Long.toString(expUpdated);
-		userInfo[18]= Long.toString(calLv(expUpdated));
-	}
+		Long expUpdated = Long.parseLong(userInfo[19])+expInAddition;//record the new exp after addition
+		userInfo[19]= Long.toString(expUpdated);//update exp amount
+		userInfo[18]= Long.toString(calLv(expUpdated));//calculate and update Lv number
+	}//end method
+	/**
+	 * The procedure type method record the battle and win when game ends.
+	 * @param userWin boolean which indicates whether user/other AI wins the game
+	 */
 	public static void recordBattle(boolean userWin){
-		String[] nums = userInfo[17].split(" ");
-		int winNum = Integer.parseInt(nums[1]);
-		if(userWin){
-			winNum++;
-		}
-		userInfo[17] = (Integer.parseInt(nums[0])+1)+" "+winNum;
-	}
+		String[] nums = userInfo[17].split(" ");//read battle number and win number
+		int winNum = Integer.parseInt(nums[1]);//record original number of win
+		if((userWin&&(!AIcombat))){
+			winNum++;//increment for win number if the user wins
+		}//end if
+		userInfo[17] = (Integer.parseInt(nums[0])+1)+" "+winNum;//updated battle+1 and updated win number
+	}//end method
+	/**
+	 * The return type method calculate the level after exp is added.
+	 * @param exp the amount of exp needs to be converted
+	 * @return the new Lv number
+	 */
 	public static long calLv(long exp){
-		return (long) Math.floor((25+Math.sqrt(625+100*exp))/50);
-	}
+		return (long) Math.floor((25+Math.sqrt(625+100*exp))/50);//return calculated with formula
+	}//end method
+	/**
+	 * The procedure type method which performs game end procedures including mark not in game, show end game message, add exp, record battle.
+	 * @param userWin boolean indicates whether user/other AI wins
+	 */
 	public static void endGame(boolean userWin) {
-		inGame = false;
-		userInfo[1]= "null";
-		Game.userTurn = true;
-		System.out.println("---------end "+inGame);
-		String missNum = "";
+		inGame = false;//record not in game
+		userInfo[1]= "null";//record not in game in user information
+		Game.userTurn = true;//allows user to operate components
+		String missNum = "";//use String to record miss
 		if(AIcombat){
-			missNum = Game.eMis.getText();
+			missNum = Game.eMis.getText();//record AI(this side)'s miss
 		}else{
-			missNum = Game.uMis.getText();
-		}
-		userInfo[14] = Integer.toString(Integer.parseInt(userInfo[14])+Integer.parseInt(missNum));
-		Game.timer.stop();
-		getExp(18000/(Game.timeUsed/1000));
-		recordBattle(userWin);
+			missNum = Game.uMis.getText();//record user's miss
+		}//end if
+		userInfo[14] = Integer.toString(Integer.parseInt(userInfo[14])+Integer.parseInt(missNum));//record miss
+		Game.timer.stop();//stop timer
+		getExp(18000/(Game.timeUsed/1000));//add exp
+		recordBattle(userWin);//record battle
 		if (userWin) {
-			Game.winWord.setVisible(true);
+			Game.winWord.setVisible(true);//win message displayed
 		} else {
-			Game.losWord.setVisible(true);
-		}
-		// and reset game method
-	}
-
+			Game.losWord.setVisible(true);//lost message displayed
+		}//end if
+	}//end method
+	/**
+	 * The procedure type method which check if fire from user/other AI miss, hit or sunk ship.
+	 * @author Raymond
+	 * @editor Benny (Integration)
+	 * @param isNotFirst if this is the first time checking
+	 */
 	public static void AIcheck(boolean isNotFirst) {
-		System.out.println("isFirst? " + (!isNotFirst));
 		if (!isNotFirst) {
 			round++;
 		}
@@ -742,8 +755,12 @@ public class system extends JFrame {
 			}
 		}
 		Battleship.enemyShotLog.add(Battleship.homeGrid[y][x]);// Add enemy shot to log
-	}
-
+	}//end method
+	/**
+	 * The procedure type method which performs the round of AI as AI fires and user/other AI check results
+	 * @author Raymond
+	 * @editor Benny (Integration)
+	 */
 	public static void AIRound() {
 		round++;
 		// Get AI's shot
@@ -800,25 +817,25 @@ public class system extends JFrame {
 			AIShot.status = SquareTypes.MISS;
 		}
 		Game.userTurn = true;
-	}
-
+	}//end method
+	/**
+	 * The procedure type method check if either side win the game at current status by counting number of hits.
+	 */
 	public static void checkWin() {
-		boolean uWin = Game.uHit.getText().equals("17");
-		boolean eWin = Game.eHit.getText().equals("17");
+		boolean uWin = Game.uHit.getText().equals("17");//check if user/other AI has hit 17 times (all ships)
+		boolean eWin = Game.eHit.getText().equals("17");//check same thing for AI side
 		if ((uWin&&(!AIcombat))||(eWin&&AIcombat)) {//reverse the result if in AI combat
 			System.out.println("Congrats, you have won!");
-			endGame(true);
-			return;
-		}
+			endGame(true);//execute end game procedures
+			return;//check completed
+		}//end if
 		if ((uWin&&AIcombat)||eWin&&(!AIcombat)) {
 			System.out.println("Sorry, you have lost.");
-			endGame(false);
-			return;
-		}
-	}
-	
+			endGame(false);//execute end game procedures
+			return;//check completed
+		}//end if
+	}//end method
 	public static void main(String[] args) throws IOException {
 		system theGame = new system();
-	}
-
-}
+	}//end method
+}//end class
