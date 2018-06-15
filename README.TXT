@@ -10,7 +10,7 @@ Instructions
 ------------
 
 -Login
-Users may login to the game by running system.java in 
+Users login to the game by running system.java in 
 
 ------
 Images

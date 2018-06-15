@@ -1,4 +1,10 @@
 Please enter a username
 lol
 ARCHANGEL
+<<<<<<< HEAD
 lol
+=======
+david
+Archangel
+
+>>>>>>> fcd74addd94d754b4c50e48ab9e2bc3288eca85a
