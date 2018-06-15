@@ -1,3 +1,4 @@
+
 /*
  * Authors: Raymond Li, David Tuck
  * Date created: 2018-05-30
@@ -12,6 +13,7 @@ public class AI {
 	private static Random rand = new Random();
 	private static BufferedReader br = new BufferedReader(new java.io.InputStreamReader(System.in));
 	private static String input;
+	private static int parity = rand.nextInt(2);
 
 	// Start with hunt mode
 	private Mode mode = Mode.HUNT;
@@ -47,12 +49,12 @@ public class AI {
 		if (input.equalsIgnoreCase("y")) {
 			for (int i = 0; i < Battleship.enemyGrid.length; i++)
 				for (int j = 0; j < Battleship.enemyGrid[i].length; j++) {
-					if (Battleship.enemyGrid[i][j].x <= 2 || Battleship.enemyGrid[i][j].x >= 7) {// x in outer 2
-						Battleship.enemyGrid[i][j].huntPDx += 9;
+					if (Battleship.enemyGrid[i][j].x == 0 || Battleship.enemyGrid[i][j].x == 9) {// x in outer 2
+						Battleship.enemyGrid[i][j].huntPDx += 40;
 						Battleship.enemyGrid[i][j].combinehuntPDXY();
 					}
-					if (Battleship.enemyGrid[i][j].y <= 2 || Battleship.enemyGrid[i][j].y >= 7) {// y in outer 2
-						Battleship.enemyGrid[i][j].huntPDy += 9;
+					if (Battleship.enemyGrid[i][j].y == 0 || Battleship.enemyGrid[i][j].y == 9) {// y in outer 2
+						Battleship.enemyGrid[i][j].huntPDy += 40;
 						Battleship.enemyGrid[i][j].combinehuntPDXY();
 					}
 				}
@@ -456,12 +458,12 @@ public class AI {
 		if (mode == Mode.HUNT)
 			for (int i = 0; i < grid.length; i++)
 				for (int j = 0; j < grid[0].length; j++) {
-					if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN
+					if ((i + j) % 2 == parity && grid[i][j].status == SquareTypes.UNKNOWN
 							&& grid[i][j].totalSquarePD > max) {
 						max = grid[i][j].totalSquarePD;
 						targets.clear();
 						targets.add(grid[i][j]);
-					} else if ((i + j) % 2 == 0 && grid[i][j].status == SquareTypes.UNKNOWN
+					} else if ((i + j) % 2 == parity && grid[i][j].status == SquareTypes.UNKNOWN
 							&& grid[i][j].totalSquarePD == max)
 						targets.add(grid[i][j]);
 				}
