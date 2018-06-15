@@ -6,7 +6,6 @@ import java.awt.event.MouseListener;
 
 import javax.swing.*;
 
-<<<<<<< HEAD:src/Rankings.java
 public class Rankings extends JPanel {
     Insets bInsets = getInsets();
     JLabel bgi = new JLabel(new ImageIcon("rankBgi.jpg"));
@@ -17,7 +16,7 @@ public class Rankings extends JPanel {
     JLabel winButton = new JLabel(new ImageIcon("rWin.png"));
     JLabel screen = new JLabel(new ImageIcon("rTotalBack.png"));
     JLabel rankBoard = new JLabel();
-    JLabel userBoard = new JLabel();
+    JLabel userBoard = new JLabel("-----------------------------------");
     int userRankIndex = -1;
     String getValueL,getValueW;
     JLabel userScreen = new JLabel(new ImageIcon("rUserBack.png"));
@@ -25,26 +24,6 @@ public class Rankings extends JPanel {
     String collectionRank = "Will be Released in Near Future",levelRank,winRank;
     ArrayList<String> nameList = new ArrayList<String>();
     MouseListener backMouseEffect = new MouseListener(){
-=======
-public class rankings extends JPanel {
-	Insets bInsets = getInsets();
-	JLabel bgi = new JLabel(new ImageIcon("rankBgi.jpg"));
-	JLabel backButton = new JLabel(new ImageIcon("theBackButton.png"));
-	JLabel buttonEffect = new JLabel(new ImageIcon("gMouse.png"));
-	JLabel collectionButton = new JLabel(new ImageIcon("rCollection.png"));
-	JLabel levelButton = new JLabel(new ImageIcon("rLevel.png"));
-	JLabel winButton = new JLabel(new ImageIcon("rWin.png"));
-	JLabel screen = new JLabel(new ImageIcon("rTotalBack.png"));
-	JLabel rankBoard = new JLabel();
-	JLabel userBoard = new JLabel();
-	int userRankIndex = -1;
-	String getValueL, getValueW;
-	JLabel userScreen = new JLabel(new ImageIcon("rUserBack.png"));
-	ArrayList<JLabel> subTypes = new ArrayList<JLabel>();
-	String collectionRank = "Will be Released in Near Future", levelRank, winRank;
-	ArrayList<String> nameList = new ArrayList<String>();
-	MouseListener backMouseEffect = new MouseListener() {
->>>>>>> fcd74addd94d754b4c50e48ab9e2bc3288eca85a:src/rankings.java
 		public void mouseClicked(MouseEvent e) {
 			buttonEffect.setVisible(false);
 		}
@@ -69,6 +48,7 @@ public class rankings extends JPanel {
 			if (source.equals(collectionButton)) {
 				System.out.println(777);
 				rankBoard.setText(collectionRank);
+				userBoard.setText("-----------------------------------");
 				return;
 			}
 			if (source.equals(levelButton)) {
@@ -95,14 +75,8 @@ public class rankings extends JPanel {
 		public void mouseReleased(MouseEvent e) {
 		}
 	};
-<<<<<<< HEAD:src/Rankings.java
     public Rankings() throws IOException{
 		setSize(1300,700);
-=======
-
-	public rankings() throws IOException {
-		setSize(1300, 700);
->>>>>>> fcd74addd94d754b4c50e48ab9e2bc3288eca85a:src/rankings.java
 		setLayout(null);
 		BufferedReader nameReader = new BufferedReader(new FileReader("usersRecord.txt"));
 		try {
@@ -115,8 +89,6 @@ public class rankings extends JPanel {
 				}
 			}
 		} catch (Exception e) {
-			/// dopa
-			e.printStackTrace();
 		}
 		nameReader.close();// close the BufferedReadeer
 		backButton.setBounds(bInsets.left + 10, bInsets.top + 10, 100, 60);
@@ -135,24 +107,13 @@ public class rankings extends JPanel {
 		} // end for
 		rankBoard.setBounds(bInsets.left + 185, bInsets.top + 290, 1050, 300);
 		rankBoard.setForeground(Color.white);
-		rankBoard.setText("------------------------------------");
 		rankBoard.setHorizontalAlignment(JLabel.CENTER);
-<<<<<<< HEAD:src/Rankings.java
-		rankBoard.setFont(new Font(rankBoard.getFont().getName(),Font.PLAIN,28));;
-=======
-		rankBoard.setFont(new Font(rankBoard.getFont().getName(), Font.PLAIN, 40));
-		;
->>>>>>> fcd74addd94d754b4c50e48ab9e2bc3288eca85a:src/rankings.java
+		rankBoard.setFont(new Font(rankBoard.getFont().getName(), Font.PLAIN, 28));
 		add(rankBoard);
 		userBoard.setBounds(bInsets.left + 185, bInsets.top + 80, 1050, 200);
 		userBoard.setForeground(Color.white);
-		userBoard.setText("-----------------------------------");
 		userBoard.setHorizontalAlignment(JLabel.CENTER);
-<<<<<<< HEAD:src/Rankings.java
-		userBoard.setFont(new Font(userBoard.getFont().getName(),Font.PLAIN,60));
-=======
-		userBoard.setFont(new Font(userBoard.getFont().getName(), Font.PLAIN, 40));
->>>>>>> fcd74addd94d754b4c50e48ab9e2bc3288eca85a:src/rankings.java
+		userBoard.setFont(new Font(userBoard.getFont().getName(), Font.PLAIN, 60));
 		add(userBoard);
 		userScreen.setBounds(bInsets.left + 185, bInsets.top + 80, 1050, 200);
 		add(userScreen);
@@ -201,15 +162,4 @@ public class rankings extends JPanel {
 		System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrrr\n" + collectionRank);
 
 	}
-<<<<<<< HEAD:src/Rankings.java
-=======
-
-	public static void main(String[] args) throws IOException {
-		JFrame f = new JFrame();
-		f.add(new rankings());
-		f.setSize(f.getPreferredSize());
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setVisible(true);
-	}
->>>>>>> fcd74addd94d754b4c50e48ab9e2bc3288eca85a:src/rankings.java
 }
