@@ -10,7 +10,6 @@ import javax.swing.border.LineBorder;
 
 
 import java.util.*;
-import java.io.*;
 
 public class Game extends JPanel{
 	Insets bInsets = getInsets();
@@ -31,7 +30,6 @@ public class Game extends JPanel{
 	long lastRecordTime = System.currentTimeMillis();
     JLabel backButton = new JLabel(new ImageIcon("theBackButton.png"));
     JLabel startButton = new JLabel(new ImageIcon("gStartButton.png"));
-    JLabel leaveButton = new JLabel(new ImageIcon("gLeaveButton.png"));
     JLabel userBoard = new JLabel(new ImageIcon("gUserSide.png"));
     JLabel enemBoard = new JLabel(new ImageIcon("gEnemySide.png"));
     String[] labelStr = {"1","2","3","4","5","6","7","8","9","10","A","B","C","D","E","F","G","H","I","J"};
@@ -168,8 +166,7 @@ public class Game extends JPanel{
 		add(mapSeparator);
 		gButtons.add(backButton);
 		gButtons.add(startButton);
-		gButtons.add(leaveButton);
-		for(int i =0;i<3;i++){
+		for(int i =0;i<2;i++){
 			buttonEffects.add(new JLabel(new ImageIcon("gMouse.png")));
 			buttonEffects.get(i).setBounds(bInsets.left+i*120,bInsets.top,120,80);
 			buttonEffects.get(i).setVisible(false);
@@ -392,6 +389,49 @@ public class Game extends JPanel{
 	}
 	public static void countIncre(JLabel var){
 		var.setText(Integer.toString(Integer.parseInt(var.getText())+1));
+	}
+	public static boolean checkShip(){
+		ArrayList<Integer>[] shipCoorsX = new ArrayList[5];
+		ArrayList<Integer>[] shipCoorsY = new ArrayList[5];
+		for(int i =0;i<5;i++){
+			shipCoorsX[i] = new ArrayList<Integer>();
+			shipCoorsY[i] = new ArrayList<Integer>();
+		}
+		for(int i =0;i<10;i++){
+			for(int j =0;j<10;j++){
+				for(int k = 0;k<5;k++){
+					if(userMap[i][j].getText().equals(Battleship.shipNames[k].substring(0,2))){
+						shipCoorsX[k].add(i);
+						shipCoorsY[k].add(j);
+						break;
+					}
+				}
+			}
+		}
+		for(int i =0;i<5;i++){
+			boolean isX = false;
+			boolean isY = false;
+			boolean sorted = false;
+			for(int j =0;j<shipCoorsX[i].size()-1;j++){
+				if(shipCoorsX[i].get(j)==shipCoorsX[i].get(j+1)){
+					isX = true;
+				}else{
+					if(isX){
+						return false;
+					}else{
+						if(!sorted){
+							Collections.sort(shipCoorsX[i]);
+							sorted = true;
+						}
+						if(shipCoorsX[i].get(j)==(shipCoorsX[i].get(j+1)-1)){
+							isY = true;
+						}else{
+							return false;
+						}
+					}
+				}
+			}
+		}
 	}
 	
 }

@@ -94,6 +94,7 @@ public class Achievements extends JPanel{
 			System.out.println(i+" "+accomplished[i]);
 		}
 		System.out.println("Achievement loaded");
+		makeLabel();
 	}
 	public Achievements() {
 		setSize(1300, 700);
@@ -113,7 +114,6 @@ public class Achievements extends JPanel{
 		scrollPane.setBounds(bInsets.left + 150, bInsets.top + 20, 1250, 650);
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setOpaque(false);
-		makeLabel();
 		add(scrollPane);
 		scrollPane.setVisible(true);
 		bgi.setBounds(bInsets.left, bInsets.top, 1300, 700);
