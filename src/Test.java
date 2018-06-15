@@ -15,7 +15,7 @@ public class Test {
 
 	public static void main(String args[]) throws Exception {
 		game a = new game();
-		System.out.println(false^false);
+		System.out.println(false ^ false);
 		// JFrame frame = new JFrame("Rotation Test");
 		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//
