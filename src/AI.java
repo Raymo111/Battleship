@@ -1,4 +1,3 @@
-
 /*
  * Authors: Raymond Li, David Tuck
  * Date created: 2018-05-30
