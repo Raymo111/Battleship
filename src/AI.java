@@ -66,10 +66,8 @@ public class AI {
 	/**
 	 * Generates where to place ships
 	 * 
-	 * @param grid
-	 *            The grid to place ships on
-	 * @param shipLengths
-	 *            The lengths of ships to place
+	 * @param grid        The grid to place ships on
+	 * @param shipLengths The lengths of ships to place
 	 */
 	public void placeShips(Square[][] grid, int[] shipLengths, boolean inGui) {
 		int gameMode;
@@ -160,19 +158,14 @@ public class AI {
 	/**
 	 * Check to see if a ship placement is in a valid position
 	 * 
-	 * @param X
-	 *            the starting x coordinate that is always within the grid
-	 * @param Y
-	 *            the starting y coordinate that is always within the grid
-	 * @param endX
-	 *            the ending x coordinate for the ship that might be out of the
-	 *            board
-	 * @param endY
-	 *            the ending y coordinate for the ship that might be out of the
-	 *            board
-	 * @param rotation
-	 *            the orientation of the ship from x,y to endX,endY. 0=down 1=up
-	 *            2=right 3=left
+	 * @param X        the starting x coordinate that is always within the grid
+	 * @param Y        the starting y coordinate that is always within the grid
+	 * @param endX     the ending x coordinate for the ship that might be out of the
+	 *                 board
+	 * @param endY     the ending y coordinate for the ship that might be out of the
+	 *                 board
+	 * @param rotation the orientation of the ship from x,y to endX,endY. 0=down
+	 *                 1=up 2=right 3=left
 	 * @return If true, the ship is inside the grid and is not overlapping any other
 	 *         ship. If false, the ships placement is either outside of the board or
 	 *         is overlapping another ship
@@ -197,8 +190,7 @@ public class AI {
 	 * number of ships for each square in a given grid. Runs only at the beginning
 	 * of the game.
 	 * 
-	 * @param grid
-	 *            The grid for which to calculate the initial PDDG
+	 * @param grid The grid for which to calculate the initial PDDG
 	 */
 	public void generatePDDG(Square[][] grid) {
 		int[] distanceX, distanceY;
@@ -218,11 +210,9 @@ public class AI {
 	 * component (horizontal or vertical) of a given square. Runs only at the
 	 * beginning of the game.
 	 * 
-	 * @param shipLength
-	 *            The length of a ship to calculate the PD for
-	 * @param distance
-	 *            The distances of a square to the edges of the grid (0 for a square
-	 *            on the edge)
+	 * @param shipLength The length of a ship to calculate the PD for
+	 * @param distance   The distances of a square to the edges of the grid (0 for a
+	 *                   square on the edge)
 	 * @return The PD of a component (horizontal or vertical) of a square
 	 */
 	public int generatePD(int shipLength, int[] distance) {
@@ -237,15 +227,11 @@ public class AI {
 	 * Selects a square to fire at after updating the probability density for a
 	 * given grid and ship lengths after a given lastShot
 	 * 
-	 * @param mode
-	 *            The mode in which the AI is in (determined by hit or miss)
+	 * @param mode        The mode in which the AI is in (determined by hit or miss)
 	 * 
-	 * @param lastShot
-	 *            The lastShot which was fired
-	 * @param grid
-	 *            The grid for which to calculate
-	 * @param shipLengths
-	 *            The lengths of ships still in play
+	 * @param lastShot    The lastShot which was fired
+	 * @param grid        The grid for which to calculate
+	 * @param shipLengths The lengths of ships still in play
 	 */
 	public Square aim(Square lastShot, Square[][] grid, int[] shipLengths) {
 
@@ -317,12 +303,9 @@ public class AI {
 	 * Updates the hunt mode probability density for a ship for the AI's last shot
 	 * in a grid
 	 * 
-	 * @param grid
-	 *            The grid in which the square is located
-	 * @param lastShot
-	 *            The square for which to calculate
-	 * @param shipLength
-	 *            The specific ship length for which to calculate
+	 * @param grid       The grid in which the square is located
+	 * @param lastShot   The square for which to calculate
+	 * @param shipLength The specific ship length for which to calculate
 	 */
 	public void updateHuntPD(Mode mode, Square[][] grid, Square lastShot, int shipLength) {
 
@@ -382,12 +365,9 @@ public class AI {
 	 * Updates the target mode probability density for a ship for the AI's last shot
 	 * in a grid
 	 * 
-	 * @param grid
-	 *            The grid in which the square is located
-	 * @param lastShot
-	 *            The square for which to calculate
-	 * @param shipLength
-	 *            The specific ship length for which to calculate
+	 * @param grid       The grid in which the square is located
+	 * @param lastShot   The square for which to calculate
+	 * @param shipLength The specific ship length for which to calculate
 	 */
 	public void updateTargetPD(Square[][] grid, Square lastShot, int shipLength) {
 		int[] bounds = getBounds(lastShot, grid);
@@ -426,10 +406,8 @@ public class AI {
 	 * Gets the boundaries for a decrement of probability density in all 4
 	 * directions
 	 * 
-	 * @param lastShot
-	 *            The lastShot that was fired
-	 * @param grid
-	 *            The grid for which to calculate boundaries
+	 * @param lastShot The lastShot that was fired
+	 * @param grid     The grid for which to calculate boundaries
 	 * @return The boundaries as an int array
 	 */
 	private int[] getBounds(Square lastShot, Square[][] grid) {
