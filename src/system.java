@@ -114,7 +114,7 @@ public class system extends JFrame {
 			add(baseInter);//add base interface
 			setVisible(true);//set main frame visible
 		}//end method
-
+				/////
 		public void mouseEntered(MouseEvent e) {
 		}
 
