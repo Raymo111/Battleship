@@ -10,13 +10,14 @@ import javax.swing.border.LineBorder;
  * File: system.java
  * <p>Mr. Anadarajan
  * <br/>ICS4U1
- * <br/>Une 15, 2018
+ * <br/>June 15, 2018
  * 
  * <p>Final Evaluation: Battleship Tournament
  * <br/> Description: The major class which allows the user to start tournament or play against AI
- * <br/> Unless specified all components of the class are written by Benny.
  * 
  * @author Benny Shen
+ * <br/> program includes integration from console game designed by Raymond Li and David Tuck
+ * <br/> authors of methods integrated are specified in header before the method.
  */
 public class system extends JFrame {
 	static Boolean inGame = false;						//if the game in game interface has started
@@ -212,7 +213,7 @@ public class system extends JFrame {
 		});// end WindowStateListener this.setResizable(false);
 		setSize(1300, 700);//set the main frame to a size that allows the user to click sides to return to work but large enough to let user forget about other windows while playing
 		setLocationRelativeTo(null);//set the window at the center of the screen
-	}//end method
+	}//end constructor
 	/**
 	 * The procedure type method execute procedures to enter game in game interfaces.
 	 */
