@@ -51,6 +51,9 @@ public class Login extends JDialog {
          setLocationRelativeTo(null);//display dialog at center of the screen to attract attention
          setVisible(true);//display login dialog
     }
+    /**
+     * The procedure type method shows the login interface after clicking of "CLICK TO ENTER";
+     */
     public void showLogin(){
     	remove(iconInter);//remove initial interface
     	loginInter.setBackground(new Color(0,0,0,0));//set login interface transparent
