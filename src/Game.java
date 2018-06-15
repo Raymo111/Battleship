@@ -11,7 +11,7 @@ import javax.swing.border.LineBorder;
 
 import java.util.*;
 /**
- * File: system.java
+ * File: Game.java
  * <p>Mr. Anadarajan
  * <br/>ICS4U1
  * <br/>June 15, 2018

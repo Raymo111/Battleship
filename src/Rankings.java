@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.*;
 /**
- * File: system.java
+ * File: Rankings.java
  * <p>Mr. Anadarajan
  * <br/>ICS4U1
  * <br/>June 15, 2018

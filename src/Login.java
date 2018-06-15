@@ -4,7 +4,17 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
+/**
+ * File: Login.java
+ * <p>Mr. Anadarajan
+ * <br/>ICS4U1
+ * <br/>June 15, 2018
+ * 
+ * <p>Final Evaluation: Battleship Tournament
+ * <br/> Description: The class which describes functions and variables of login interface.
+ * 
+ * @author Benny Shen
+ */
 public class Login extends JDialog {
 	Boolean firstClick = true;
 	JPanel iconInter = new JPanel();
