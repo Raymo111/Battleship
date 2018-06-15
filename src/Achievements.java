@@ -2,17 +2,10 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
 
-<<<<<<< HEAD
-public class Achievements extends JPanel{
-    JLabel backButton = new JLabel(new ImageIcon("theBackButton.png"));
-    JLabel buttonEffect = new JLabel(new ImageIcon("gMouse.png"));
-    MouseListener backMouseEffect = new MouseListener(){
-=======
 public class Achievements extends JPanel implements MouseListener {
 	JLabel backButton = new JLabel(new ImageIcon("theBackButton.png"));
 	JLabel buttonEffect = new JLabel(new ImageIcon("gMouse.png"));
 	MouseListener backMouseEffect = new MouseListener() {
->>>>>>> fcd74addd94d754b4c50e48ab9e2bc3288eca85a
 		public void mouseClicked(MouseEvent e) {
 			buttonEffect.setVisible(false);
 		}
@@ -24,7 +17,6 @@ public class Achievements extends JPanel implements MouseListener {
 		public void mouseExited(MouseEvent e) {
 			buttonEffect.setVisible(false);
 		}
-<<<<<<< HEAD
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
     };
