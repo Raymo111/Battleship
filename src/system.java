@@ -6,93 +6,86 @@ import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-
+/**
+ * File: system.java
+ * <p>Mr. Anadarajan
+ * <br/>ICS4U1
+ * <br/>Une 15, 2018
+ * 
+ * <p>Final Evaluation: Battleship Tournament
+ * <br/> Description: The major class which allows the user to start tournament or play against AI
+ * 
+ * @author Benny Shen
+ */
 public class system extends JFrame {
-	static Boolean inGame = false;
-	int userIndex;
-	static boolean AIcombat = false;
-	static long recordTime = -1;
-	static String[] userInfo = new String[38];
-	static String offset = "";
-	static int difficulty = -1;
-	static String firstHand = "";
-	static boolean AIFirst, AIWin, userWin;
-	static int round, x, y, shipNumber;// The index of a ship in homeShips grid
-	static Square userShot, AIShot;
-	static Ship ship;
-	static boolean flag;
-	static String input, validate;
-	static AI Amadeus;//new name from Martin
-	final static Color[] unitColor = {Game.darkBlue,new Color(0,200,0), new Color(0,170,0), new Color(0,140,0),new Color(0,110,0),new Color(0,80,0),Game.darkBlue,Game.fogBlue,Game.darkRed};
-	
-	
-	MouseListener directory = new MouseListener() {
+	static Boolean inGame = false;						//if the game in game interface has started
+	int userIndex;										//the index of the user
+	static boolean AIcombat = false;					//if the game is AI combat or human play against AI.
+	static long recordTime = -1;						//record the last recorded time of from login or updating time in userInfo
+	static String[] userInfo = new String[38];			//information from user's profile recorded in system for change
+	static String offset = "";							//if the game in game interface offset edges
+	static int difficulty = -1;							//difficulty index of game in game interface
+	static String firstHand = "";						//describes which side is firstHand for running game in game interface
+	static boolean AIFirst, AIWin, userWin;				//variables from console game: if AI goes first, if AI wins, if user wins
+	static int round, x, y, shipNumber;					//variables from console game: round#, x coordinate of shot, y coordinate of shot, index of ship type
+	static Square userShot, AIShot;						//variables from console game: user's shot, AI's shot
+	static Ship ship;									//variables from console game: target ship
+	static boolean flag;								//variables from console game: boolean used in searching
+	static String input;								//variables from console game: String which contains information input from GUI		
+	static AI Amadeus;									//variables from console game: the AI in game
+	final static Color[] unitColor = {Game.darkBlue,new Color(0,200,0), new Color(0,170,0), new Color(0,140,0),new Color(0,110,0),new Color(0,80,0),Game.darkBlue};
+														//constant array of colors of ships for placing ships and checking existence of ship in shot in human against AI mode
+	MouseListener directory = new MouseListener() {//MouseListener for directing the display between interfaces
 		public void mouseClicked(MouseEvent event) {
-			JLabel source = (JLabel) event.getSource();
+			JLabel source = (JLabel) event.getSource();//source of button
 			try {
-				if (source.equals(baseInter.gameButton)) {
+				if (source.equals(baseInter.gameButton)) {//when game button in base clicked
+					remove(baseInter);//remove base interface
+					add(gameInter);//add game interfaces
+					repaint();//refresh display
+					enterGame();//execute enterGame() procedures
+					return;//source found, no need to continue to check if source equals to other buttons
+				}//end if
+				if (source.equals(baseInter.rankingButton)) {//when rankings button in base clicked
+					remove(baseInter);//remove base interface
+					add(rankInter);//add rankings interface
+					repaint();//refresh the display
+					updateRank(userIndex, "L", true);//update level rankings
+					updateRank(userIndex, "W", true);//update win rankings
+					return;//source found
+				}//end if
+				if (source.equals(baseInter.achievementButton)) {//when achievement button in base clicked
+					Achievements.updateAchievement();//update the achievement status
+					remove(baseInter);//remove base interface
+					add(achiInter);//add achievements interface
+					repaint();//refresh the display
+					return;//source found
+				}//end if
+				if(source.equals(baseInter.taskButton)||source.equals(baseInter.factoryButton)||source.equals(baseInter.settingButton)){//other buttons in base clicked
+					baseInter.futurePost.setVisible(true);//display message about unimplemented interfaces
+					return;//source found
+				}//end if
+				if (source.getIcon().toString().equals("theBackButton.png")||source.equals(Game.winWord)||source.equals(Game.losWord)) {//backButton in any interfaces/game end win message/game end lost message in game interface clicked
+					if(source.equals(gameInter.backButton)||source.equals(Game.winWord)||source.equals(Game.losWord)){//if from game interface
+						if(!Game.userTurn){//if it is an invalid click when program is processing
+							return;//do nothing
+						}//end if
+						if(source.equals(Game.winWord)||source.equals(Game.losWord)){//if game ended
+							gameInter.reset();//reset game interface
+						}//end if
+					}//end if
+					getContentPane().removeAll();//remove the current interface
+					baseInter.updateInfo(userInfo[0], Integer.parseInt(userInfo[18]), Integer.parseInt(userInfo[15]));//update base
 					if(baseInter.futurePost.isVisible()){
 						baseInter.futurePost.setVisible(false);
-					}
-
-					System.out.println(-1);
-					remove(baseInter);
-					add(gameInter);
-					repaint();
-					enterGame();
-					return;
-				}
-				if (source.equals(baseInter.rankingButton)) {
-					if(baseInter.futurePost.isVisible()){
-						baseInter.futurePost.setVisible(false);
-					}
-					System.out.println(6);
-					remove(baseInter);
-					add(rankInter);
-					repaint();
-					updateRank(userIndex, "L", true);
-					updateRank(userIndex, "W", true);
-					return;
-				}
-				if (source.equals(baseInter.achievementButton)) {
-					if(baseInter.futurePost.isVisible()){
-						baseInter.futurePost.setVisible(false);
-					}
-					System.out.println(8);
-					Achievements.updateAchievement();
-					remove(baseInter);
-					add(achiInter);
-					repaint();
-					return;
-				}
-				if(source.equals(baseInter.taskButton)||source.equals(baseInter.factoryButton)||source.equals(baseInter.settingButton)){
-					baseInter.futurePost.setVisible(true);
-					return;
-				}
-				if (source.getIcon().toString().equals("theBackButton.png")||source.equals(Game.winWord)||source.equals(Game.losWord)) {
-					if(source.equals(gameInter.backButton)||source.equals(Game.winWord)||source.equals(Game.losWord)){
-						if(!Game.userTurn){
-							return;
-						}
-						Game.userTurn=true;
-						if(source.equals(Game.winWord)||source.equals(Game.losWord)){
-							gameInter.reset();
-						}
-					}
-					System.out.println(0);
-					getContentPane().removeAll();
-					baseInter.updateInfo(userInfo[0], Integer.parseInt(userInfo[18]), Integer.parseInt(userInfo[15]));// update base
-					if(baseInter.futurePost.isVisible()){
-						baseInter.futurePost.setVisible(false);
-					}
-					add(baseInter);
-					repaint();
-					return;
-				}
+					}//hide futurePost
+					add(baseInter);//add base interface
+					repaint();//refresh the display
+					return;//source found
+				}//end if
 			} catch (Exception exp) {
-					
-			}
-		}
+			}//try catch to throw any exceptions during calling the methods
+		}//end method
 
 		public void mouseEntered(MouseEvent e) {
 		}
@@ -105,22 +98,20 @@ public class system extends JFrame {
 
 		public void mouseReleased(MouseEvent e) {
 		}
-	};
+	};//end MouseListener
 
-	MouseListener loginOper = new MouseListener() {
+	MouseListener loginOper = new MouseListener() {//MouseListener for login operations
 		public void mouseClicked(MouseEvent event) {
 			try {
-				readLogin(startGame.loginText.getText());
+				readLogin(startGame.loginText.getText());//perform readLogin operation to user's input
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("Asdfasfasfasfadfafasdaa");
-			}
-			startGame.dispose();
-			check();
-			baseInter.updateInfo(userInfo[0], Integer.parseInt(userInfo[18]), Integer.parseInt(userInfo[15]));// initialize base
-			add(baseInter);
-			setVisible(true);
-		}
+			}//handling IOException
+			startGame.dispose();//exit login interface
+			baseInter.updateInfo(userInfo[0], Integer.parseInt(userInfo[18]), Integer.parseInt(userInfo[15]));//initialize base
+			add(baseInter);//add base interface
+			setVisible(true);//set main frame visible
+		}//end method
 
 		public void mouseEntered(MouseEvent e) {
 		}
@@ -133,35 +124,35 @@ public class system extends JFrame {
 
 		public void mouseReleased(MouseEvent e) {
 		}
-	};
+	};//end MouseListener
 
-	MouseListener gameOper = new MouseListener() {
+	MouseListener gameOper = new MouseListener() {//MouseListener for game operations
 		public void mouseClicked(MouseEvent e) {
-			String shipPosition = Game.checkShip();
-			if(!shipPosition.equals("true")){
+			String shipPosition = Game.checkShip();//check if ships are placed properly and record checked response
+			if(!shipPosition.equals("true")){//when the response says improper
 				JOptionPane.showMessageDialog(null,
 					    shipPosition,
 					    "Ship Placement Error Detected",
 					    JOptionPane.INFORMATION_MESSAGE,
-					    new ImageIcon("gResponse.png"));
-				return;
-			}
-			if (!inGame) {
-				inGame = true;
-				Game.firstClick = true;
-				gameInter.lastRecordTime = System.currentTimeMillis();
-				Game.timeUsed = 0;
-				Game.timer.restart();
-				Game.eHit.setText("0");
+					    new ImageIcon("gResponse.png"));//display error image if ships are not placed properly.
+				return;//do not start the game
+			}//end if
+			if (!inGame) {//when the game is not already started
+				inGame = true;//record game start
+				Game.firstClick = true;//set first click not clicked
+				gameInter.lastRecordTime = System.currentTimeMillis();//start recording game time
+				Game.timeUsed = 0;//reset time used
+				Game.timer.restart();//restart the timer
+				Game.eHit.setText("0");//reset enemy board
 				Game.eMis.setText("0");
-				Game.uHit.setText("0");
+				Game.uHit.setText("0");//reset user board
 				Game.uMis.setText("0");
 				try {
-					newGameProcedure();
+					newGameProcedure();//execute game initializing procedures
 				} catch (IOException e1) {
 					e1.printStackTrace();
-				}
-			}
+				}//handling IOExceptions
+			}//end if
 		}//end method
 
 		public void mouseEntered(MouseEvent e) {
@@ -176,29 +167,29 @@ public class system extends JFrame {
 		public void mouseReleased(MouseEvent e) {
 		}
 
-	};
+	};//end MouseListener
 	
-	Login startGame;
-	Base baseInter = new Base();
-	Game gameInter = new Game();
-	Rankings rankInter;
-	Achievements achiInter;
+	Login startGame;//login interface
+	Base baseInter = new Base();//base interface
+	Game gameInter = new Game();//game interface
+	Rankings rankInter;//rankings interface
+	Achievements achiInter;//achievement interface
 
 	public system() throws IOException {
-		startGame = new Login();
-		startGame.okButton.addMouseListener(loginOper);
+		startGame = new Login();//initialize login interface
+		startGame.okButton.addMouseListener(loginOper);//add MouseListener to the OK Button
 		for (int i = 0; i < 6; i++) {
-			baseInter.mRightButtons.get(i).addMouseListener(directory);// add directory to all buttons in base interface
+			baseInter.mRightButtons.get(i).addMouseListener(directory);//add directory to all buttons in base interface
 		} // end for
-		recordTime = System.currentTimeMillis();
-		gameInter.backButton.addMouseListener(directory);// add directory to buttons in game interface
-		gameInter.startButton.addMouseListener(gameOper);
-		Game.winWord.addMouseListener(directory);
-		Game.losWord.addMouseListener(directory);
+		recordTime = System.currentTimeMillis();//record current time
+		gameInter.backButton.addMouseListener(directory);//add directory to buttons in game interface
+		gameInter.startButton.addMouseListener(gameOper);//add gameOper to start button in game interface
+		Game.winWord.addMouseListener(directory);//add directory to win message in game interface
+		Game.losWord.addMouseListener(directory);//add directory to lost message in game interface
 		rankInter = new Rankings();// initializing the Rankings interface
-		rankInter.backButton.addMouseListener(directory);
+		rankInter.backButton.addMouseListener(directory);//add directory to back button of rankings interface
 		achiInter = new Achievements();//initializing the achievement interface
-		achiInter.backButton.addMouseListener(directory);
+		achiInter.backButton.addMouseListener(directory);//add directory to back button in achievement interface
 		addWindowListener(new java.awt.event.WindowAdapter() {// need to save the information before closing
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				try {
@@ -216,32 +207,34 @@ public class system extends JFrame {
 				System.exit(0);// terminate the program
 			}// end method
 		});// end WindowStateListener this.setResizable(false);
-		setSize(1300, 700);
-		setLocationRelativeTo(null);
-	}
-
+		setSize(1300, 700);//set the main frame to a size that allows the user to click sides to return to work but large enough to let user forget about other windows while playing
+		setLocationRelativeTo(null);//set the window at the center of the screen
+	}//end method
+	/**
+	 * The procedure type method execute procedures to enter game in game interfaces.
+	 */
 	public void enterGame() {
-		if (!inGame) {
-			Object[] modeOptions = { "AI Combat", "Human against AI" };
+		if (!inGame) {//when the game is not already started
+			Object[] modeOptions = { "AI Combat", "Human against AI" };//ask for mode
 			int modeIndex;
 			do {
 				modeIndex = JOptionPane.showOptionDialog(null, "Choose a game mode", "Game mode",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), modeOptions,
 						modeOptions[0]);
 				AIcombat = (modeIndex==0);
-			} while (!areYouSure(modeOptions[modeIndex].toString()));
-			Object[] firstHandOptions = { "User", "AI" };
-			if(AIcombat){
-				for(int i =0;i<10;i++){
+			} while (!areYouSure(modeOptions[modeIndex].toString()));//confirm
+			Object[] firstHandOptions = { "User", "AI" };//ask for first hand
+			if(AIcombat){//it is an AI combat
+				for(int i =0;i<10;i++){//reset the user board of game interface
 					for(int j =0;j<10;j++){
 						Game.enemMap[i][j].setText("");;
 						Game.userMap[i][j].setBackground(Color.white);
 						Game.userMap[i][j].removeMouseListener(gameInter.unitDis);
-					}
-				}
+					}//end for
+				}//end for
 				firstHandOptions[0] = "Them";
 				firstHandOptions[1] = "Us";
-			}
+			}//end if
 			int firsthandIndex;
 			do {
 				firsthandIndex = JOptionPane.showOptionDialog(null, "Battle started from:", "First hand",
@@ -465,12 +458,6 @@ public class system extends JFrame {
 		recordWriter.println(newName);// write the name into users' record list
 		recordWriter.close();// close the record writer
 	}// end method
-
-	public void check() {
-		for (int i = 0; i < 38; i++) {
-			System.out.println(userInfo[i]);
-		}
-	}
 
 	public static String convertMessage(int x, int y) {
 		System.out.println(y + " " + x);
