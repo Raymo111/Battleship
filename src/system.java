@@ -128,14 +128,16 @@ public class system extends JFrame {
 
 	MouseListener gameOper = new MouseListener() {//MouseListener for game operations
 		public void mouseClicked(MouseEvent e) {
-			String shipPosition = Game.checkShip();//check if ships are placed properly and record checked response
-			if(!shipPosition.equals("true")){//when the response says improper
-				JOptionPane.showMessageDialog(null,
-					    shipPosition,
-					    "Ship Placement Error Detected",
-					    JOptionPane.INFORMATION_MESSAGE,
-					    new ImageIcon("gResponse.png"));//display error image if ships are not placed properly.
-				return;//do not start the game
+			if(!AIcombat){//if human placing ships
+				String shipPosition = Game.checkShip();//check if ships are placed properly and record checked response
+				if(!shipPosition.equals("true")){//when the response says improper
+					JOptionPane.showMessageDialog(null,
+						    shipPosition,
+						    "Ship Placement Error Detected",
+						    JOptionPane.INFORMATION_MESSAGE,
+						    new ImageIcon("gResponse.png"));//display error image if ships are not placed properly.
+					return;//do not start the game
+				}//end if
 			}//end if
 			if (!inGame) {//when the game is not already started
 				inGame = true;//record game start
