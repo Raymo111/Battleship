@@ -16,14 +16,14 @@ import java.awt.event.MouseListener;
  * @author Benny Shen
  */
 public class Login extends JDialog {
-	Boolean firstClick = true;															//first click boolean for hiding instructions
-	JPanel iconInter = new JPanel();													//interface panel which display "CLICK TO ENTER" message
-	JLabel bgi = new JLabel(new ImageIcon("loginBgi.png"));								//background image of login interface
-	JLabel startButton = new JLabel("CLICK TO ENTER",SwingConstants.CENTER);			//label prompt the user to click to login
-	JPanel loginInter = new JPanel();													//JPanel for login interface
+	private Boolean firstClick = true;															//first click boolean for hiding instructions
+	private JPanel iconInter = new JPanel();													//interface panel which display "CLICK TO ENTER" message
+	private JLabel bgi = new JLabel(new ImageIcon("loginBgi.png"));								//background image of login interface
+	private JLabel startButton = new JLabel("CLICK TO ENTER",SwingConstants.CENTER);			//label prompt the user to click to login
+	private JPanel loginInter = new JPanel();													//JPanel for login interface
 	JTextField loginText = new JTextField("Please enter a username");					//textfield for input of username
 	JLabel okButton = new JLabel(new ImageIcon("lOkButton.png"));						//OK button to confirm username login
-	JLabel mouseEffect = new JLabel(new ImageIcon("lMouse.png"));						//selection effect for OK button
+	private JLabel mouseEffect = new JLabel(new ImageIcon("lMouse.png"));						//selection effect for OK button
     public Login() {
     	 setUndecorated(true);//hide top bars of the dialog
     	 setBackground(new Color(0,0,0,0));//set dialog background transparent
@@ -54,7 +54,7 @@ public class Login extends JDialog {
     /**
      * The procedure type method shows the login interface after clicking of "CLICK TO ENTER";
      */
-    public void showLogin(){
+    private void showLogin(){
     	remove(iconInter);//remove initial interface
     	loginInter.setBackground(new Color(0,0,0,0));//set login interface transparent
         loginInter.setLayout(null);//set absolute layout

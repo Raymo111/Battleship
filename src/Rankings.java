@@ -17,23 +17,23 @@ import javax.swing.*;
  * @author Benny Shen
  */
 public class Rankings extends JPanel {
-    Insets bInsets = getInsets();													//get and record boundaries of rankings interface
-    JLabel bgi = new JLabel(new ImageIcon("rankBgi.jpg"));							//background image of rankings interface
+    private Insets bInsets = getInsets();													//get and record boundaries of rankings interface
+    private JLabel bgi = new JLabel(new ImageIcon("rankBgi.jpg"));							//background image of rankings interface
     JLabel backButton = new JLabel(new ImageIcon("theBackButton.png"));				//backButton to base interface
-    JLabel buttonEffect = new JLabel(new ImageIcon("gMouse.png"));					//mouse effect for back button
-    JLabel collectionButton = new JLabel(new ImageIcon("rCollection.png"));			//collection ranking sub interface button
-    JLabel levelButton = new JLabel(new ImageIcon("rLevel.png"));					//level ranking sub interface button
-    JLabel winButton = new JLabel(new ImageIcon("rWin.png"));						//win number ranking sub interface button
-    JLabel screen = new JLabel(new ImageIcon("rTotalBack.png"));					//transparent background for content of rankings
-    JLabel rankBoard = new JLabel();												//ranking content label
-    JLabel userBoard = new JLabel("-----------------------------------");			//user rank label
-    int userRankIndex = -1;															//user's rank index
-    String getValueL,getValueW;														//user's ranking information for level and number of wins
-    JLabel userScreen = new JLabel(new ImageIcon("rUserBack.png"));					//transparent background for content of current user rankings
-    ArrayList<JLabel> subTypes = new ArrayList<JLabel>();							//ArrayList of sub interface buttons
-    String collectionRank = "Will be Released in Near Future",levelRank,winRank;	//String which record rankings content
-    ArrayList<String> nameList = new ArrayList<String>();							//list of usernames of rankings
-    MouseListener backMouseEffect = new MouseListener(){//MouseListener for effect of selecting back button
+    private JLabel buttonEffect = new JLabel(new ImageIcon("gMouse.png"));					//mouse effect for back button
+    private JLabel collectionButton = new JLabel(new ImageIcon("rCollection.png"));			//collection ranking sub interface button
+    private JLabel levelButton = new JLabel(new ImageIcon("rLevel.png"));					//level ranking sub interface button
+    private JLabel winButton = new JLabel(new ImageIcon("rWin.png"));						//win number ranking sub interface button
+    private JLabel screen = new JLabel(new ImageIcon("rTotalBack.png"));					//transparent background for content of rankings
+    private JLabel rankBoard = new JLabel();												//ranking content label
+    private JLabel userBoard = new JLabel("-----------------------------------");			//user rank label
+    private int userRankIndex = -1;															//user's rank index
+    private String getValueL,getValueW;														//user's ranking information for level and number of wins
+    private JLabel userScreen = new JLabel(new ImageIcon("rUserBack.png"));					//transparent background for content of current user rankings
+    private ArrayList<JLabel> subTypes = new ArrayList<JLabel>();							//ArrayList of sub interface buttons
+    private String collectionRank = "Will be Released in Near Future",levelRank,winRank;	//String which record rankings content
+    private ArrayList<String> nameList = new ArrayList<String>();							//list of usernames of rankings
+    private MouseListener backMouseEffect = new MouseListener(){//MouseListener for effect of selecting back button
 		public void mouseClicked(MouseEvent e) {
 			buttonEffect.setVisible(false);//hide on click
 		}//end method
@@ -48,7 +48,7 @@ public class Rankings extends JPanel {
 		public void mouseReleased(MouseEvent e) {
 		}
 	};//end MouseListener
-	MouseListener switchRank = new MouseListener() {//MouseListener for switching rankings information display by sub interface buttons
+	private MouseListener switchRank = new MouseListener() {//MouseListener for switching rankings information display by sub interface buttons
 		public void mouseClicked(MouseEvent e) {
 			Object source = e.getSource();
 			if (source.equals(collectionButton)) {//when collection button is clicked
@@ -134,7 +134,7 @@ public class Rankings extends JPanel {
      * @param indexes the indexes read from system
      * @param values the values read from system
      */
-	public void convertRank(String rankType, String indexes, String values){
+    void convertRank(String rankType, String indexes, String values){
 		String convertedContent = "<html>";// create a String variable to store the result
 		String[] getIndex = indexes.split(" ");//split information of each user
 		String[] getValue = values.split(" ");

@@ -16,24 +16,24 @@ import java.util.*;
  * @author Benny Shen
  */
 public class Base extends JPanel{ 
-    Dimension mButtonsDimen = new Dimension(270,180);									//dimension of six interface buttons at right
-    Insets bInsets = getInsets();														//get and record boundaries of base interface
+    private Dimension mButtonsDimen = new Dimension(270,180);									//dimension of six interface buttons at right
+    private Insets bInsets = getInsets();														//get and record boundaries of base interface
 	JLabel achievementButton = new JLabel(new ImageIcon("mAchievementsButton.png"));	//achievement interface button
 	JLabel taskButton = new JLabel(new ImageIcon("mTasksButton.png"));					//tasks interface button
 	JLabel gameButton = new JLabel(new ImageIcon("mGAMEButton.png"));					//game interface button
 	JLabel rankingButton = new JLabel(new ImageIcon("mRankingsButton.png"));			//rankings interface button
 	JLabel factoryButton = new JLabel(new ImageIcon("mFactoryButton.png"));				//factory interface button
 	JLabel settingButton = new JLabel(new ImageIcon("mSettingsButton.png"));			//setting interface button
-	JLabel profileButton = new JLabel(new ImageIcon("mProfileButton.png"));				//profile interface button
-	JLabel contractPane = new JLabel(new ImageIcon("mContractPane.png"));				//background for displaying contract numbers
-	JLabel contractPaneButton = new JLabel(new ImageIcon("mContractPaneButton.png"));	//button to display contract numbers
+	private JLabel profileButton = new JLabel(new ImageIcon("mProfileButton.png"));				//profile interface button
+	private JLabel contractPane = new JLabel(new ImageIcon("mContractPane.png"));				//background for displaying contract numbers
+	private JLabel contractPaneButton = new JLabel(new ImageIcon("mContractPaneButton.png"));	//button to display contract numbers
     JLabel futurePost = new JLabel(new ImageIcon("futureFeatures.png"));				//message for interfaces will be released in future
-	final int initXCoordinate=700;														//constant initial x-coordinate of buttons at right
-	final int[] initYCoordinates = {30,50};												//constant initial y-coordinates of buttons at right
+	final private int initXCoordinate=700;														//constant initial x-coordinate of buttons at right
+	final private int[] initYCoordinates = {30,50};												//constant initial y-coordinates of buttons at right
 	ArrayList<JLabel> mRightButtons = new ArrayList<JLabel>();							//ArrayList of buttons which direct to each interface
-	ArrayList<JLabel> mEffects = new ArrayList<JLabel>();								//ArrayList of effects for selection of buttons at right
-	JLabel bgi = new JLabel(new ImageIcon("bgi.jpg"));									//background image of base interface
-	MouseListener mMousListButtons = new MouseListener(){//MouseListener for displaying contract number and effects of the selecting buttons at right
+	private ArrayList<JLabel> mEffects = new ArrayList<JLabel>();								//ArrayList of effects for selection of buttons at right
+	private JLabel bgi = new JLabel(new ImageIcon("bgi.jpg"));									//background image of base interface
+	private MouseListener mMousListButtons = new MouseListener(){//MouseListener for displaying contract number and effects of the selecting buttons at right
 		public void mouseClicked(MouseEvent e) {
 			Object source = e.getSource();
 			if(source.equals(contractPaneButton)&&contractPaneButton.isVisible()){//display contract number on click of button
@@ -69,12 +69,12 @@ public class Base extends JPanel{
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
 	};//end MouseListener
-	String userName;								//username of the user
-	int level;										//level of the user	
-	int contractNum;								//contract number of user
-	JLabel nameLabel = new JLabel();				//label for displaying username
-	JLabel levelLabel = new JLabel();				//label for displaying level of the user
-	JLabel contractLabel = new JLabel();			//label for displaying content of number of contract
+	private String userName;								//username of the user
+	private int level;										//level of the user	
+	private int contractNum;								//contract number of user
+	private JLabel nameLabel = new JLabel();				//label for displaying username
+	private JLabel levelLabel = new JLabel();				//label for displaying level of the user
+	private JLabel contractLabel = new JLabel();			//label for displaying content of number of contract
 	public Base(){
 		setSize(1300,700);//set size of base interface
 		setLayout(null);//set absolute layout
@@ -131,7 +131,7 @@ public class Base extends JPanel{
 	 * @param lv updated level number
 	 * @param contracts updated number of contract(s) owned
 	 */
-	public void updateInfo(String yourName, int lv, int contracts){
+	void updateInfo(String yourName, int lv, int contracts){
 		userName = yourName;//update username
 		nameLabel.setText(userName);//reset the label for name
 		level = lv;//update level

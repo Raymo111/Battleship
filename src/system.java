@@ -21,7 +21,7 @@ import javax.swing.border.LineBorder;
  */
 public class system extends JFrame {
 	static Boolean inGame = false;						//if the game in game interface has started
-	int userIndex;										//the index of the user
+	private int userIndex;										//the index of the user
 	static boolean AIcombat = false;					//if the game is AI combat or human play against AI.
 	static long recordTime = -1;						//record the last recorded time of from login or updating time in userInfo
 	static String[] userInfo = new String[38];			//information from user's profile recorded in system for change
@@ -29,15 +29,15 @@ public class system extends JFrame {
 	static int difficulty = -1;							//difficulty index of game in game interface
 	static String firstHand = "";						//describes which side is firstHand for running game in game interface
 	static boolean AIFirst, AIWin, userWin;				//variables from console game: if AI goes first, if AI wins, if user wins
-	static int round, x, y, shipNumber;					//variables from console game: round#, x coordinate of shot, y coordinate of shot, index of ship type
-	static Square userShot, AIShot;						//variables from console game: user's shot, AI's shot
-	static Ship ship;									//variables from console game: target ship
-	static boolean flag;								//variables from console game: boolean used in searching
+	private static int round, x, y, shipNumber;					//variables from console game: round#, x coordinate of shot, y coordinate of shot, index of ship type
+	private static Square userShot, AIShot;						//variables from console game: user's shot, AI's shot
+	private static Ship ship;									//variables from console game: target ship
+	private static boolean flag;								//variables from console game: boolean used in searching
 	static String input;								//variables from console game: String which contains information input from GUI		
-	static AI Amadeus;									//variables from console game: the AI in game
+	private static AI Amadeus;									//variables from console game: the AI in game
 	final static Color[] unitColor = {Game.darkBlue,new Color(0,200,0), new Color(0,170,0), new Color(0,140,0),new Color(0,110,0),new Color(0,80,0),Game.darkBlue};
 														//constant array of colors of ships for placing ships and checking existence of ship in shot in human against AI mode
-	MouseListener directory = new MouseListener() {//MouseListener for directing the display between interfaces
+	private MouseListener directory = new MouseListener() {//MouseListener for directing the display between interfaces
 		public void mouseClicked(MouseEvent event) {
 			JLabel source = (JLabel) event.getSource();//source of button
 			try {
@@ -102,7 +102,7 @@ public class system extends JFrame {
 		}
 	};//end MouseListener
 
-	MouseListener loginOper = new MouseListener() {//MouseListener for login operations
+	private MouseListener loginOper = new MouseListener() {//MouseListener for login operations
 		public void mouseClicked(MouseEvent event) {
 			try {
 				readLogin(startGame.loginText.getText());//perform readLogin operation to user's input
@@ -128,7 +128,7 @@ public class system extends JFrame {
 		}
 	};//end MouseListener
 
-	MouseListener gameOper = new MouseListener() {//MouseListener for game operations
+	private MouseListener gameOper = new MouseListener() {//MouseListener for game operations
 		public void mouseClicked(MouseEvent e) {
 			if(!AIcombat){//if human placing ships
 				String shipPosition = Game.checkShip();//check if ships are placed properly and record checked response
@@ -174,10 +174,10 @@ public class system extends JFrame {
 	};//end MouseListener
 	
 	Login startGame;//login interface
-	Base baseInter = new Base();//base interface
-	Game gameInter = new Game();//game interface
-	Rankings rankInter;//rankings interface
-	Achievements achiInter;//achievement interface
+	private Base baseInter = new Base();//base interface
+	private Game gameInter = new Game();//game interface
+	private Rankings rankInter;//rankings interface
+	private Achievements achiInter;//achievement interface
 
 	public system() throws IOException {
 		startGame = new Login();//initialize login interface
@@ -217,7 +217,7 @@ public class system extends JFrame {
 	/**
 	 * The procedure type method execute procedures to enter game in game interfaces.
 	 */
-	public void enterGame() {
+	private void enterGame() {
 		if (!inGame) {//when the game is not already started
 			Object[] modeOptions = { "AI Combat", "Human against AI" };//ask for mode
 			int modeIndex;
@@ -277,7 +277,7 @@ public class system extends JFrame {
 	 * @param confirmInfo information user previously selected
 	 * @return whether user confirms true or not
 	 */
-	public static boolean areYouSure(String confirmInfo) {
+	static boolean areYouSure(String confirmInfo) {
 		Object[] optionsAg = { "Yes", "No" };//choices of confirmations
 		int confirm = JOptionPane.showOptionDialog(null, confirmInfo + " -Are you sure?", "First hand Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), optionsAg,
@@ -293,7 +293,7 @@ public class system extends JFrame {
 	 * @param thisUsername the username user enters in login interface
 	 * @throws IOException Exceptions of loading users' profiles
 	 */
-	public void readLogin(String thisUsername) throws IOException {
+	private void readLogin(String thisUsername) throws IOException {
 		BufferedReader fileReader = new BufferedReader(new FileReader("usersRecord.txt"));//read userRecord.txt
 		int thisUserIndex = 0;
 		try {
@@ -319,7 +319,7 @@ public class system extends JFrame {
 	 * @param tUserIndex
 	 * @throws IOException
 	 */
-	public void loadUser(int tUserIndex) throws IOException {
+	private void loadUser(int tUserIndex) throws IOException {
 		BufferedReader fileReader = new BufferedReader(new FileReader("User" + tUserIndex));// create BufferedReader to
 		for (int i = 0; i < 38; i++) {
 			userInfo[i] = fileReader.readLine();// read and record the information line by line in system
@@ -336,7 +336,7 @@ public class system extends JFrame {
 	 * @throws IOException
 	 *             Exceptions for File IO
 	 */
-	public void updateRank(int tUserIndex, String rankType, Boolean isDisplaying) throws IOException {
+	private void updateRank(int tUserIndex, String rankType, Boolean isDisplaying) throws IOException {
 		File theRank = new File("rank" + rankType + ".txt");
 		BufferedReader rankReader = new BufferedReader(new FileReader(theRank));
 		int rankInfo =-1;// record the info of rank of target player for comparisons
@@ -402,7 +402,7 @@ public class system extends JFrame {
 	 * @param state
 	 *            the String which contains the information needs to be repeated
 	 */
-	public void initialn(int lnIndex, int iNum, int lineNum, String state) {
+	private void initialn(int lnIndex, int iNum, int lineNum, String state) {
 		for (int i = lnIndex; i < lnIndex + lineNum; i++) {
 			userInfo[i] = "";
 			for (int j = 0; j < iNum - 1; j++) {
@@ -422,7 +422,7 @@ public class system extends JFrame {
 	 *             Exceptions of using {@link #updateRank(int, String)}method},
 	 *             creating new file and registering the new user.
 	 */
-	public void createUser(String newName, int newIndex) throws IOException {
+	private void createUser(String newName, int newIndex) throws IOException {
 		userInfo[0] = newName;// first line:username
 		initialn(1, 1, 13, "null");// initialize the game board to not started
 		initialn(14, 1, 3, "0");// initialize the miss number, contract number and time played
@@ -458,7 +458,7 @@ public class system extends JFrame {
 	 * @param y y-coordinate needs to be converted
 	 * @return converted String: letter+index start from 1
 	 */
-	public static String convertMessage(int x, int y) {
+	static String convertMessage(int x, int y) {
 		return (Character.toString((char) (y + 65)) + Integer.toString(x + 1)).toUpperCase();
 	}//end method
 	/**
@@ -466,7 +466,7 @@ public class system extends JFrame {
 	 * @param result input message of result
 	 * @param nameIndex index of shipName
 	 */
-	public static void fireResult(String result, int nameIndex) {
+	private static void fireResult(String result, int nameIndex) {
 		if(AIcombat){//display message if in AI combat mode
 			JOptionPane.showMessageDialog(null,
 				    "That was: "+result,
@@ -491,7 +491,7 @@ public class system extends JFrame {
 	 * @author Raymond
 	 * @throws IOException
 	 */
-	public static void newGameProcedure() throws IOException {
+	private static void newGameProcedure() throws IOException {
 
 		// Initialize enemy grid
 		for (int i = 0; i < Battleship.enemyGrid.length; i++)
@@ -514,7 +514,7 @@ public class system extends JFrame {
 	 * @author Raymond
 	 * @throws IOException
 	 */
-	public static void game() throws IOException {
+	private static void game() throws IOException {
 		AIWin = false;
 		userWin = false;
 		round = 0;
@@ -549,7 +549,7 @@ public class system extends JFrame {
 	 * @param AIcoor AI's coordinates in String format
 	 * @return output result String
 	 */
-	public static String getFire(int y, int x, String AIcoor) {
+	private static String getFire(int y, int x, String AIcoor) {
 		if(AIcombat){//ask for response if in AI combat mode
 			Object[] reOptions = { "MISS", "HIT", "SUNK" };//results type options
 			int responseIndex = -1;
@@ -636,7 +636,7 @@ public class system extends JFrame {
 	 * The procedure type method add exp to user in system.
 	 * @param expInAddition exp amount in addition
 	 */
-	public static void getExp(long expInAddition){
+	static void getExp(long expInAddition){
 		Long expUpdated = Long.parseLong(userInfo[19])+expInAddition;//record the new exp after addition
 		userInfo[19]= Long.toString(expUpdated);//update exp amount
 		userInfo[18]= Long.toString(calLv(expUpdated));//calculate and update Lv number
@@ -645,7 +645,7 @@ public class system extends JFrame {
 	 * The procedure type method record the battle and win when game ends.
 	 * @param userWin boolean which indicates whether user/other AI wins the game
 	 */
-	public static void recordBattle(boolean userWin){
+	private static void recordBattle(boolean userWin){
 		String[] nums = userInfo[17].split(" ");//read battle number and win number
 		int winNum = Integer.parseInt(nums[1]);//record original number of win
 		if((userWin&&(!AIcombat))){
@@ -658,14 +658,14 @@ public class system extends JFrame {
 	 * @param exp the amount of exp needs to be converted
 	 * @return the new Lv number
 	 */
-	public static long calLv(long exp){
+	private static long calLv(long exp){
 		return (long) Math.floor((25+Math.sqrt(625+100*exp))/50);//return calculated with formula
 	}//end method
 	/**
 	 * The procedure type method which performs game end procedures including mark not in game, show end game message, add exp, record battle.
 	 * @param userWin boolean indicates whether user/other AI wins
 	 */
-	public static void endGame(boolean userWin) {
+	private static void endGame(boolean userWin) {
 		inGame = false;//record not in game
 		userInfo[1]= "null";//record not in game in user information
 		Game.userTurn = true;//allows user to operate components
@@ -691,7 +691,7 @@ public class system extends JFrame {
 	 * @editor Benny (Integration)
 	 * @param isNotFirst if this is the first time checking
 	 */
-	public static void AIcheck(boolean isNotFirst) {
+	static void AIcheck(boolean isNotFirst) {
 		if (!isNotFirst) {
 			round++;
 		}
@@ -762,7 +762,7 @@ public class system extends JFrame {
 	 * @author Raymond
 	 * @editor Benny (Integration)
 	 */
-	public static void AIRound() {
+	static void AIRound() {
 		round++;
 		// Get AI's shot
 		System.out.println("Round " + round + ". Amadeus's turn.");
@@ -822,7 +822,7 @@ public class system extends JFrame {
 	/**
 	 * The procedure type method check if either side win the game at current status by counting number of hits.
 	 */
-	public static void checkWin() {
+	static void checkWin() {
 		boolean uWin = Game.uHit.getText().equals("17");//check if user/other AI has hit 17 times (all ships)
 		boolean eWin = Game.eHit.getText().equals("17");//check same thing for AI side
 		if ((uWin&&(!AIcombat))||(eWin&&AIcombat)) {//reverse the result if in AI combat
