@@ -1,0 +1,14 @@
+win 1 battle
+win 100 battles
+win 1000 battles
+win 2000 battles
+lose 100 battles
+lose 1000 battles
+lose 2000 battles
+miss 100 times
+miss 1000 times
+miss 5000 times
+fight 10 battles
+fight 100 battles
+fight 5000 battles
+total 2036 hours played

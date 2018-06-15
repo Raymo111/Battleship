@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class login extends JDialog {
+public class Login extends JDialog {
 	Boolean firstClick = true;
 	JPanel iconInter = new JPanel();
 	JLabel bgi = new JLabel(new ImageIcon("loginBgi.png"));
@@ -14,7 +14,7 @@ public class login extends JDialog {
 	JTextField loginText = new JTextField("Please enter a username");
 	JLabel okButton = new JLabel(new ImageIcon("lOkButton.png"));
 	JLabel mouseEffect = new JLabel(new ImageIcon("lMouse.png"));
-    public login() {
+    public Login() {
     	 setUndecorated(true);
     	 setBackground(new Color(0,0,0,0));
     	 setResizable(false);
@@ -92,8 +92,5 @@ public class login extends JDialog {
 		loginInter.setVisible(true);
 		repaint();
 		System.out.print(-1);
-    }
-    public static void main(String[] args){
-    	login startGame = new login();
     }
 }

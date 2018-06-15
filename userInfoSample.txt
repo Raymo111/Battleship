@@ -1,0 +1,43 @@
+﻿1. Username s
+2. game timeUsed # 
+3. difficulty# 
+4. Offset? boolean
+5. Game History (“AI”/”USER”+” ”+”xy xy xy xy xy xy xy”)
+6. (User) inGame boolean
+7. (User) Ship HP (“# # # # #”)
+8. (User map)100 Colorcode ("# # #... # #")
+9. (Enemy map)100 Colorcode ("# # #... # #")
+10. (Enemside Destroyer) char# HP# location (## ##)
+11. (Enemside Cruiser) char# HP# location (## ## ##)
+12. (Enemside Submarine) char# HP# location (## ## ##)
+13. (Enemside Battleship) char# HP# location (## ## ## ##)
+14. (Enemside Aircraft Carrier) char# HP# location (## ## ## ## ##)
+15. miss#
+16. contract #
+17. time played #
+18. battleStarted# win#
+19. level #
+20. exp amount #
+21. assistant #
+22. team characters("# # # # #")
+23. owned characters ("# # #... # # null null... null")
+24. owned intimacy ("# # #... # # null null... null")
+25. dismantled characters #
+26. expert on? boolean
+27. sound% #
+28. task booleans("boolean boolean boolean... boolean boolean")
+29. achievements booleans("boolean boolean boolean... boolean boolean")
+30. %collection rank#
+31. Level rank#
+32. %winning expert rank#
+33. build1: character# (which gives corresponind time)
+34. time since built
+35. build2: character# (which gives corresponind time)
+36. time since built
+37. build3: character# (which gives corresponind time)
+38. time since built
+-----------------------------------------------------
+Username: 0
+Game Save: 1-14 (if not in game everything null)
+User Info: 15-31
+Build Save: 32-37 (if didn't build everything null)

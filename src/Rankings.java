@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.*;
 
-public class rankings extends JPanel {
+public class Rankings extends JPanel {
     Insets bInsets = getInsets();
     JLabel bgi = new JLabel(new ImageIcon("rankBgi.jpg"));
     JLabel backButton = new JLabel(new ImageIcon("theBackButton.png"));
@@ -62,7 +62,7 @@ public class rankings extends JPanel {
 		public void mouseReleased(MouseEvent e) {
 		}
 	};
-    public rankings() throws IOException{
+    public Rankings() throws IOException{
 		setSize(1300,700);
 		setLayout(null);
 		BufferedReader nameReader = new BufferedReader(new FileReader("usersRecord.txt"));
@@ -98,13 +98,13 @@ public class rankings extends JPanel {
 		rankBoard.setForeground(Color.white);
 		rankBoard.setText("------------------------------------");
 		rankBoard.setHorizontalAlignment(JLabel.CENTER);
-		rankBoard.setFont(new Font(rankBoard.getFont().getName(),Font.PLAIN,40));;
+		rankBoard.setFont(new Font(rankBoard.getFont().getName(),Font.PLAIN,28));;
 		add(rankBoard);
 		userBoard.setBounds(bInsets.left+185,bInsets.top+80,1050,200);
 		userBoard.setForeground(Color.white);
 		userBoard.setText("-----------------------------------");
 		userBoard.setHorizontalAlignment(JLabel.CENTER);
-		userBoard.setFont(new Font(userBoard.getFont().getName(),Font.PLAIN,40));
+		userBoard.setFont(new Font(userBoard.getFont().getName(),Font.PLAIN,60));
 		add(userBoard);
 		userScreen.setBounds(bInsets.left+185,bInsets.top+80,1050,200);
 		add(userScreen);
@@ -151,12 +151,5 @@ public class rankings extends JPanel {
 		}//end if
 		System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrrr\n"+collectionRank);
 
-	}
-	public static void main(String[] args) throws IOException{
-		JFrame f = new JFrame();
-		f.add(new rankings());
-		f.setSize(f.getPreferredSize());
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setVisible(true);
 	}
 }

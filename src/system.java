@@ -12,8 +12,8 @@ import javax.swing.border.LineBorder;
 public class system extends JFrame {
 	static Boolean inGame = false;
 	int userIndex;
-	login startGame;
 	static boolean AIcombat = false;
+	static long recordTime = -1;
 	static String[] userInfo = new String[38];
 	static String offset = "";
 	static int difficulty = -1;
@@ -25,7 +25,7 @@ public class system extends JFrame {
 	static boolean flag;
 	static String input, validate;
 	static AI Amadeus;//new name from Martin
-	final static Color[] unitColor = {game.darkBlue,new Color(0,200,0), new Color(0,170,0), new Color(0,140,0),new Color(0,110,0),new Color(0,80,0),game.darkBlue,game.fogBlue,game.darkRed};
+	final static Color[] unitColor = {Game.darkBlue,new Color(0,200,0), new Color(0,170,0), new Color(0,140,0),new Color(0,110,0),new Color(0,80,0),Game.darkBlue,Game.fogBlue,Game.darkRed};
 	
 	
 	MouseListener directory = new MouseListener() {
@@ -61,6 +61,7 @@ public class system extends JFrame {
 						baseInter.futurePost.setVisible(false);
 					}
 					System.out.println(8);
+					Achievements.updateAchievement();
 					remove(baseInter);
 					add(achiInter);
 					repaint();
@@ -70,13 +71,13 @@ public class system extends JFrame {
 					baseInter.futurePost.setVisible(true);
 					return;
 				}
-				if (source.getIcon().toString().equals("theBackButton.png")||source.equals(game.winWord)||source.equals(game.losWord)) {
-					if(source.equals(gameInter.backButton)||source.equals(game.winWord)||source.equals(game.losWord)){
-						if(!game.userTurn){
+				if (source.getIcon().toString().equals("theBackButton.png")||source.equals(Game.winWord)||source.equals(Game.losWord)) {
+					if(source.equals(gameInter.backButton)||source.equals(Game.winWord)||source.equals(Game.losWord)){
+						if(!Game.userTurn){
 							return;
 						}
-						game.userTurn=true;
-						if(source.equals(game.winWord)||source.equals(game.losWord)){
+						Game.userTurn=true;
+						if(source.equals(Game.winWord)||source.equals(Game.losWord)){
 							gameInter.reset();
 						}
 					}
@@ -141,14 +142,14 @@ public class system extends JFrame {
 			Object source = e.getSource();
 			if (source.equals(gameInter.startButton)&&(!inGame)) {
 				inGame = true;
-				game.firstClick = true;
+				Game.firstClick = true;
 				gameInter.lastRecordTime = System.currentTimeMillis();
-				game.timeUsed = 0;
-				game.timer.restart();
-				game.eHit.setText("0");
-				game.eMis.setText("0");
-				game.uHit.setText("0");
-				game.uMis.setText("0");
+				Game.timeUsed = 0;
+				Game.timer.restart();
+				Game.eHit.setText("0");
+				Game.eMis.setText("0");
+				Game.uHit.setText("0");
+				Game.uMis.setText("0");
 				try {
 					newGameProcedure();
 				} catch (IOException e1) {
@@ -170,28 +171,33 @@ public class system extends JFrame {
 		}
 
 	};
-
-	base baseInter = new base();
-	game gameInter = new game();
-	rankings rankInter;
-	Achievements achiInter = new Achievements();
+	
+	Login startGame;
+	Base baseInter = new Base();
+	Game gameInter = new Game();
+	Rankings rankInter;
+	Achievements achiInter;
 
 	public system() throws IOException {
-		startGame = new login();
+		startGame = new Login();
 		startGame.okButton.addMouseListener(loginOper);
 		for (int i = 0; i < 6; i++) {
 			baseInter.mRightButtons.get(i).addMouseListener(directory);// add directory to all buttons in base interface
 		} // end for
+		recordTime = System.currentTimeMillis();
 		gameInter.backButton.addMouseListener(directory);// add directory to buttons in game interface
 		gameInter.startButton.addMouseListener(gameOper);
-		game.winWord.addMouseListener(directory);
-		game.losWord.addMouseListener(directory);
-		rankInter = new rankings();// initializing the rankings interface
+		Game.winWord.addMouseListener(directory);
+		Game.losWord.addMouseListener(directory);
+		rankInter = new Rankings();// initializing the Rankings interface
 		rankInter.backButton.addMouseListener(directory);
+		achiInter = new Achievements();//initializing the achievement interface
 		achiInter.backButton.addMouseListener(directory);
 		addWindowListener(new java.awt.event.WindowAdapter() {// need to save the information before closing
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				try {
+					// save the time
+					userInfo[16] = Long.toString(System.currentTimeMillis()-recordTime+Long.parseLong(userInfo[16]));
 					// save the information
 					PrintWriter saveWriter = new PrintWriter("User" + userIndex);// create PrintWriter
 					for (String infoLn : userInfo) {
@@ -222,9 +228,9 @@ public class system extends JFrame {
 			if(AIcombat){
 				for(int i =0;i<10;i++){
 					for(int j =0;j<10;j++){
-						game.enemMap[i][j].setText("");;
-						game.userMap[i][j].setBackground(Color.white);
-						game.userMap[i][j].removeMouseListener(gameInter.unitDis);
+						Game.enemMap[i][j].setText("");;
+						Game.userMap[i][j].setBackground(Color.white);
+						Game.userMap[i][j].removeMouseListener(gameInter.unitDis);
 					}
 				}
 				firstHandOptions[0] = "Them";
@@ -237,10 +243,10 @@ public class system extends JFrame {
 						firstHandOptions[0]);
 				if (firsthandIndex == 0) {
 					firstHand = "User";
-					game.userTurn = true;
+					Game.userTurn = true;
 				} else {
 					firstHand = "AI";
-					game.userTurn = false;
+					Game.userTurn = false;
 				}
 			} while (!areYouSure(firstHandOptions[firsthandIndex].toString()));
 			Object[] diOptions = { "Expert - Raymond", "Random", "Expert - David","Extreme" };
@@ -425,8 +431,8 @@ public class system extends JFrame {
 	 */
 	public void createUser(String newName, int newIndex) throws IOException {
 		userInfo[0] = newName;// first line:username
-		initialn(1, 1, 14, "null");// initialize the game board to not started
-		initialn(15, 1, 2, "0");// initialize the contract number and time played
+		initialn(1, 1, 13, "null");// initialize the game board to not started
+		initialn(14, 1, 3, "0");// initialize the miss number, contract number and time played
 		initialn(17, 2, 1, "0");// initialize the battle numbers
 		initialn(18, 1, 1, "1");
 		;// initialize number of level
@@ -437,7 +443,7 @@ public class system extends JFrame {
 		initialn(25, 1, 1, "false");// initialize expert setting
 		initialn(26, 1, 1, "100");// initialize % of sound
 		initialn(27, 11, 1, "false");// initialize task completion
-		initialn(28, 26, 1, "false");// initialize achievement completion
+		initialn(28, 14, 1, "false");// initialize achievement completion
 		initialn(29, 1, 3, "0");// initialize rank information
 		updateRank(newIndex, "C", false);// update for all three ranks
 		updateRank(newIndex, "L", false);
@@ -473,16 +479,16 @@ public class system extends JFrame {
 				    JOptionPane.INFORMATION_MESSAGE,
 				    new ImageIcon("gResponse.png"));
 		}
-		game.userTurn = false;
+		Game.userTurn = false;
 		if (result.equals("MISS")) {
-			game.countIncre(game.uMis);
-			game.enemMap[y][x].setBackground(game.darkBlue);
+			Game.countIncre(Game.uMis);
+			Game.enemMap[y][x].setBackground(Game.darkBlue);
 		} else {
-			game.countIncre(game.uHit);
-			game.enemMap[y][x].setBackground(game.darkRed);
-			game.enemMap[y][x].setForeground(Color.white);
-			game.enemMap[y][x].setHorizontalAlignment(JLabel.CENTER);
-			game.enemMap[y][x].setText(result.substring(nameIndex,nameIndex+2));
+			Game.countIncre(Game.uHit);
+			Game.enemMap[y][x].setBackground(Game.darkRed);
+			Game.enemMap[y][x].setForeground(Color.white);
+			Game.enemMap[y][x].setHorizontalAlignment(JLabel.CENTER);
+			Game.enemMap[y][x].setText(result.substring(nameIndex,nameIndex+2));
 		}
 	}
 
@@ -523,7 +529,7 @@ public class system extends JFrame {
 		userShot = null;
 		AIShot = null;
 		ship = Battleship.homeShips[0];
-		game.timerLabel.setText("00:00:00");
+		Game.timerLabel.setText("00:00:00");
 		// Who goes first
 		System.out.println("You first or Amadeus (the AI) first?");
 
@@ -554,10 +560,10 @@ public class system extends JFrame {
 						reOptions[0]);
 			} while (!areYouSure(reOptions[responseIndex].toString()));
 			if(responseIndex==0){
-				game.countIncre(game.eMis);
+				Game.countIncre(Game.eMis);
 				return "MISS";
 			}else{
-				game.countIncre(game.eHit);
+				Game.countIncre(Game.eHit);
 				String ultResponse = "HIT, ";
 				if(responseIndex==2){
 					ultResponse += "SUNK ";
@@ -572,7 +578,7 @@ public class system extends JFrame {
 				return ultResponse+Battleship.shipNames[hitShipIndex];
 			}
 		}
-		Color unitStatus = game.userMap[x][y].getBackground();
+		Color unitStatus = Game.userMap[x][y].getBackground();
 		if (unitStatus.getBlue()==0) {
 			String shipName = "";
 			for(int i =1;i<6;i++){
@@ -581,8 +587,8 @@ public class system extends JFrame {
 					break;
 				}
 			}
-			game.userMap[x][y].setBackground(game.darkRed);
-			game.countIncre(game.eHit);
+			Game.userMap[x][y].setBackground(Game.darkRed);
+			Game.countIncre(Game.eHit);
 			int[] adx = { 0, 1, 0, -1 };
 			int[] ady = { 1, 0, -1, 0 };
 			ArrayList<Integer> shipX = new ArrayList<Integer>();
@@ -604,12 +610,12 @@ public class system extends JFrame {
 					int newx = thisx + adx[i];
 					int newy = thisy + ady[i];
 					if (newx > -1 && newx < 10 && newy > -1 && newy < 10) {
-						System.out.println("checkingUNIT: "+newx+" "+newy+" "+game.userMap[newx][newy].getBackground().toString()+" "+game.userMap[newx][newy].getText()+" "+(visitedx.indexOf(newx))+" "+(visitedy.indexOf(newy)));
-						if (game.userMap[newx][newy].getText().equals(game.userMap[x][y].getText())&&(game.userMap[newx][newy].getBackground().getBlue()==0)) {
+						System.out.println("checkingUNIT: "+newx+" "+newy+" "+Game.userMap[newx][newy].getBackground().toString()+" "+Game.userMap[newx][newy].getText()+" "+(visitedx.indexOf(newx))+" "+(visitedy.indexOf(newy)));
+						if (Game.userMap[newx][newy].getText().equals(Game.userMap[x][y].getText())&&(Game.userMap[newx][newy].getBackground().getBlue()==0)) {
 							System.out.println("AI HIT "+shipName+" "+newx+" "+newy);
 							return "HIT "+shipName;
 						}
-						if(game.userMap[newx][newy].getText().equals(game.userMap[x][y].getText())&&game.userMap[newx][newy].getBackground().equals(game.darkRed)&&((visitedx.indexOf(newx)==-1)||(visitedy.indexOf(newy)==-1))){
+						if(Game.userMap[newx][newy].getText().equals(Game.userMap[x][y].getText())&&Game.userMap[newx][newy].getBackground().equals(Game.darkRed)&&((visitedx.indexOf(newx)==-1)||(visitedy.indexOf(newy)==-1))){
 							System.out.println("red "+newx+" "+newy);
 							shipX.add(newx);
 							shipY.add(newy);
@@ -621,12 +627,12 @@ public class system extends JFrame {
 			System.out.println("AI HIT, SUNK "+shipName);
 			return "HIT, SUNK "+shipName;
 		} else {
-			if (game.userMap[x][y].getBackground().equals(game.darkBlue)) {
-				game.userMap[x][y].setBackground(game.fogBlue);
+			if (Game.userMap[x][y].getBackground().equals(Game.darkBlue)) {
+				Game.userMap[x][y].setBackground(Game.fogBlue);
 			}
 			
-			game.userMap[x][y].setBorder(new LineBorder(Color.gray));
-			game.countIncre(game.eMis);
+			Game.userMap[x][y].setBorder(new LineBorder(Color.gray));
+			Game.countIncre(Game.eMis);
 			System.out.println("AI MISS");
 			return "MISS";
 		}
@@ -650,15 +656,22 @@ public class system extends JFrame {
 	public static void endGame(boolean userWin) {
 		inGame = false;
 		userInfo[1]= "null";
-		game.userTurn = true;
+		Game.userTurn = true;
 		System.out.println("---------end "+inGame);
-		game.timer.stop();
-		getExp(18000/(game.timeUsed/1000));
+		String missNum = "";
+		if(AIcombat){
+			missNum = Game.eMis.getText();
+		}else{
+			missNum = Game.uMis.getText();
+		}
+		userInfo[14] = Integer.toString(Integer.parseInt(userInfo[14])+Integer.parseInt(missNum));
+		Game.timer.stop();
+		getExp(18000/(Game.timeUsed/1000));
 		recordBattle(userWin);
 		if (userWin) {
-			game.winWord.setVisible(true);
+			Game.winWord.setVisible(true);
 		} else {
-			game.losWord.setVisible(true);
+			Game.losWord.setVisible(true);
 		}
 		// and reset game method
 	}
@@ -786,12 +799,12 @@ public class system extends JFrame {
 		else if (input.contains("MISS")) {
 			AIShot.status = SquareTypes.MISS;
 		}
-		game.userTurn = true;
+		Game.userTurn = true;
 	}
 
 	public static void checkWin() {
-		boolean uWin = game.uHit.getText().equals("17");
-		boolean eWin = game.eHit.getText().equals("17");
+		boolean uWin = Game.uHit.getText().equals("17");
+		boolean eWin = Game.eHit.getText().equals("17");
 		if ((uWin&&(!AIcombat))||(eWin&&AIcombat)) {//reverse the result if in AI combat
 			System.out.println("Congrats, you have won!");
 			endGame(true);
