@@ -27,8 +27,8 @@ public class Game extends JPanel{
     static boolean firstClick = true; 											//if the first click of the game has been clicked
     static JLabel winWord = new JLabel(new ImageIcon("gWin.png"));				//win message
     static JLabel losWord = new JLabel(new ImageIcon("gLose.png"));				//lose message
-    JLabel bgi = new JLabel(new ImageIcon("gameBgi.png"));						//background image of game interface
-	JLabel timerBoard = new JLabel(new ImageIcon("gTimer.png"));				//background for timer
+    private JLabel bgi = new JLabel(new ImageIcon("gameBgi.png"));						//background image of game interface
+	private JLabel timerBoard = new JLabel(new ImageIcon("gTimer.png"));				//background for timer
 	static JLabel timerLabel = new JLabel("00:00:00");							//label for displaying time
 	static JLabel mapSeparator = new JLabel(new ImageIcon("gSeparator.png"));	//separator between maps
 	static JLabel uHit = new JLabel("0");										//user number of hits
@@ -40,17 +40,17 @@ public class Game extends JPanel{
 	long lastRecordTime = System.currentTimeMillis();							//last recorded time
     JLabel backButton = new JLabel(new ImageIcon("theBackButton.png"));			//back button
     JLabel startButton = new JLabel(new ImageIcon("gStartButton.png"));			//start button
-    JLabel userBoard = new JLabel(new ImageIcon("gUserSide.png"));				//user board
-    JLabel enemBoard = new JLabel(new ImageIcon("gEnemySide.png"));				//enemy board
-    String[] labelStr = {"1","2","3","4","5","6","7","8","9","10","A","B","C","D","E","F","G","H","I","J"};//constants for labels of the maps
+    private JLabel userBoard = new JLabel(new ImageIcon("gUserSide.png"));				//user board
+    private JLabel enemBoard = new JLabel(new ImageIcon("gEnemySide.png"));				//enemy board
+    final private String[] labelStr = {"1","2","3","4","5","6","7","8","9","10","A","B","C","D","E","F","G","H","I","J"};//constants for labels of the maps
     final static Color darkBlue = new Color(0,0,40);							//constant dark blue color
     final static Color fogBlue = new Color(80,80,180);							//constant light blue color
     final static Color darkRed = new Color(150,40,40);							//constant customized red color	
     static JLabel[][] userMap = new JLabel[10][10];								//user's map
     static JLabel[][] enemMap = new JLabel[10][10];								//enemy's map
-    JLabel[] mapLabels = new JLabel[40];										//labels for columns and rows of the map
-    ArrayList<JLabel> gButtons = new ArrayList<JLabel>();						//buttons at top left corner
-    ArrayList<JLabel> buttonEffects = new ArrayList<JLabel>();					//effects for buttons at top left corner
+    private JLabel[] mapLabels = new JLabel[40];										//labels for columns and rows of the map
+    private ArrayList<JLabel> gButtons = new ArrayList<JLabel>();						//buttons at top left corner
+    private ArrayList<JLabel> buttonEffects = new ArrayList<JLabel>();					//effects for buttons at top left corner
 	static MouseListener hide = new MouseListener(){//MouseListener which hide component on click
 		public void mouseClicked(MouseEvent arg0) {
 			((JLabel)arg0.getSource()).setVisible(false);//hide source
@@ -63,9 +63,8 @@ public class Game extends JPanel{
 		}
 		public void mouseReleased(MouseEvent arg0) {
 		}
-		
-	};
-    MouseListener mouseEffect = new MouseListener(){//MouseListener which display effect of selected when mouse on
+	};//end MouseListener
+    private MouseListener mouseEffect = new MouseListener(){//MouseListener which display effect of selected when mouse on
 		public void mouseClicked(MouseEvent e) {
 			try{
 				int i = gButtons.indexOf((JLabel)e.getSource());
@@ -100,7 +99,7 @@ public class Game extends JPanel{
 		public void mouseReleased(MouseEvent e) {
 		}
 	};//end MouseListener
-	MouseListener unitFire = new MouseListener(){//MouseListener for auto change of display of units on enemy grid
+	private MouseListener unitFire = new MouseListener(){//MouseListener for auto change of display of units on enemy grid
 		public void mouseClicked(MouseEvent e) {
 			if((!userTurn)&&system.inGame&&firstClick){
 				system.AIRound();
@@ -133,6 +132,9 @@ public class Game extends JPanel{
 					system.input = system.convertMessage(hitX, hitY);//call convert message to input to game algorithm
 					if(system.areYouSure(system.input)){
 						system.AIcheck(!(firstClick)&&(system.firstHand.equals("User")));//AI check if hit
+						if(uHit.getText().equals("17")||eHit.getText().equals("17")){
+							system.checkWin();//check if either side wins
+						}//end if
 						system.AIRound();//AI shot and check hit
 						System.out.println(uHit.getText().equals("17")+" "+eHit.getText().equals("17"));
 						if(uHit.getText().equals("17")||eHit.getText().equals("17")){
