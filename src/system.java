@@ -137,8 +137,16 @@ public class system extends JFrame {
 
 	MouseListener gameOper = new MouseListener() {
 		public void mouseClicked(MouseEvent e) {
-			Object source = e.getSource();
-			if (source.equals(gameInter.startButton)&&(!inGame)) {
+			String shipPosition = Game.checkShip();
+			if(!shipPosition.equals("true")){
+				JOptionPane.showMessageDialog(null,
+					    shipPosition,
+					    "Ship Placement Error Detected",
+					    JOptionPane.INFORMATION_MESSAGE,
+					    new ImageIcon("gResponse.png"));
+				return;
+			}
+			if (!inGame) {
 				inGame = true;
 				Game.firstClick = true;
 				gameInter.lastRecordTime = System.currentTimeMillis();

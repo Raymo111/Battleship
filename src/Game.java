@@ -390,7 +390,7 @@ public class Game extends JPanel{
 	public static void countIncre(JLabel var){
 		var.setText(Integer.toString(Integer.parseInt(var.getText())+1));
 	}
-	public static boolean checkShip(){
+	public static String checkShip(){
 		ArrayList<Integer>[] shipCoorsX = new ArrayList[5];
 		ArrayList<Integer>[] shipCoorsY = new ArrayList[5];
 		for(int i =0;i<5;i++){
@@ -412,12 +412,17 @@ public class Game extends JPanel{
 			boolean isX = false;
 			boolean isY = false;
 			boolean sorted = false;
+			if(shipCoorsX[i].size()!=Battleship.shipLengths[i]){
+				return Battleship.shipNames[i]+" has not been placed properly.";
+			}
+			System.out.println(shipCoorsX[i].toString());
+			System.out.println(shipCoorsY[i].toString());
 			for(int j =0;j<shipCoorsX[i].size()-1;j++){
 				if(shipCoorsX[i].get(j)==shipCoorsX[i].get(j+1)){
 					isX = true;
 				}else{
 					if(isX){
-						return false;
+						return Battleship.shipNames[i]+" is not in a line.";
 					}else{
 						if(!sorted){
 							Collections.sort(shipCoorsX[i]);
@@ -426,12 +431,19 @@ public class Game extends JPanel{
 						if(shipCoorsX[i].get(j)==(shipCoorsX[i].get(j+1)-1)){
 							isY = true;
 						}else{
-							return false;
+							return Battleship.shipNames[i]+" is not continuous";
 						}
+					}
+				}
+				if(isX){
+					System.out.println(shipCoorsY[i].get(j)+" "+shipCoorsY[i].get(j+1));
+					if(shipCoorsY[i].get(j)!=shipCoorsY[i].get(j+1)-1){
+						return Battleship.shipNames[i]+" is not continuous.";
 					}
 				}
 			}
 		}
+		return "true";
 	}
 	
 }
