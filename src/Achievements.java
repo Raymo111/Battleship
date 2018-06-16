@@ -3,9 +3,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Achievements extends JPanel{
-	JLabel backButton = new JLabel(new ImageIcon("theBackButton.png"));
-	JLabel buttonEffect = new JLabel(new ImageIcon("gMouse.png"));
-	MouseListener backMouseEffect = new MouseListener() {
+	JLabel backButton = new JLabel(new ImageIcon("theBackButton.png"));//button for returning to main menu
+	JLabel buttonEffect = new JLabel(new ImageIcon("gMouse.png"));//effect for button 
+	MouseListener backMouseEffect = new MouseListener() {//show effect when clicked or entered
 		public void mouseClicked(MouseEvent e) {
 			buttonEffect.setVisible(false);
 		}
