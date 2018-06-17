@@ -20,20 +20,20 @@ public class Achievements extends JPanel{
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
     };
-	private final static int num=14;
-	private static int accumExp = 0;
-	private static JScrollPane scrollPane = new JScrollPane();
-	private static JPanel paneContent=new JPanel();
-	private static JLabel[] achievementsLabels=new JLabel[num];
-	private static JLabel getRewardButton = new JLabel(new ImageIcon("aGetReward.png"));
-	private static JLabel bgi = new JLabel(new ImageIcon("achievementBgi.jpg"));
-	private static boolean[] accomplished=new boolean[num];
-	private static final int[] achiNums = {100,1000,2000,100,1000,5000};
-	private static final int[] achiRews = {100,100,1000,2000,100,1000,2000,100,1000,5000,10,100,5000,2036};
-	Insets bInsets;	
-	MouseListener getReward = new MouseListener(){
+	private final static int num=14;//number of achievements
+	private static int accumExp = 0;//exp points
+	private static JScrollPane scrollPane = new JScrollPane();//to fit all achievents in the window
+	private static JPanel paneContent=new JPanel();//things in scrollpane
+	private static JLabel[] achievementsLabels=new JLabel[num];//achievents
+	private static JLabel getRewardButton = new JLabel(new ImageIcon("aGetReward.png"));//reward icon
+	private static JLabel bgi = new JLabel(new ImageIcon("achievementBgi.jpg"));//background
+	private static boolean[] accomplished=new boolean[num];// determine if achievements is unlocked
+	private static final int[] achiNums = {100,1000,2000,100,1000,5000};//requirements list
+	private static final int[] achiRews = {100,100,1000,2000,100,1000,2000,100,1000,5000,10,100,5000,2036};//reward list
+	Insets bInsets;	//insets of window
+	MouseListener getReward = new MouseListener(){//enables user to collect reward
 		public void mouseClicked(MouseEvent e) {
-			JOptionPane.showMessageDialog(null,
+			JOptionPane.showMessageDialog(null,//inform user that reward is collected
 				    "Total Exp Collected: "+accumExp+".",
 				    "Reward Collected",
 				    JOptionPane.INFORMATION_MESSAGE,
@@ -50,7 +50,7 @@ public class Achievements extends JPanel{
 		public void mouseReleased(MouseEvent e) {
 		}
 	};
-	public static void updateAchievement(){
+	public static void updateAchievement(){//interface
 		loadAchi();
 		long now = System.currentTimeMillis();
 		system.userInfo[16] = Long.toString(now-system.recordTime);
