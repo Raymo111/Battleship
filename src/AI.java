@@ -261,15 +261,15 @@ public class AI {
 				if (flag) {// More hit squares than ships sunk
 					return target(mode, grid);
 				} else {// All hit ships were sunk
-					lastShot.huntPDx = 0;
-					lastShot.huntPDy = 0;
+					for (int i = 0; i < shipLengths.length; i++)
+						updateHuntPD(mode, grid, lastShot, shipLengths[i]);
+					mode = Mode.HUNT;
 					for (int i = 0; i < grid.length; i++)
 						for (int j = 0; j < grid[i].length; j++) {
 							grid[i][j].targetPDx = 0;
 							grid[i][j].targetPDy = 0;
 							grid[i][j].combinehuntPDXY();
 						}
-					mode = Mode.HUNT;
 					return aim(null, grid, shipLengths);
 				}
 			}
@@ -312,10 +312,6 @@ public class AI {
 
 		int[] bounds = getBounds(lastShot, grid);
 
-		// Set last shot (miss)'s PD to 0
-		lastShot.huntPDx = 0;
-		lastShot.huntPDy = 0;
-
 		// Going up
 		if (lastShot.y - bounds[0] >= shipLength) // No bounds
 			for (int i = 1; i < shipLength; i++)
@@ -352,6 +348,10 @@ public class AI {
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
 				grid[i][j].combinehuntPDXY();
+
+		// Set last shot (miss)'s PD to 0
+		lastShot.huntPDx = 0;
+		lastShot.huntPDy = 0;
 
 		if (mode == Mode.TARGET && lastShot.status == SquareTypes.MISS) {
 			lastShot.targetPDx = 0;
