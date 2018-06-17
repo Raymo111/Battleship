@@ -50,9 +50,13 @@ public class Achievements extends JPanel{
 		public void mouseReleased(MouseEvent e) {
 		}
 	};
-	public static void updateAchievement(){//interface
+	
+	/**
+	 * This method updates the current state of an achievement (locked or unlocked) as the game progresses
+	 */
+	public static void updateAchievement(){
 		loadAchi();
-		long now = System.currentTimeMillis();
+		long now = System.currentTimeMillis();//current time
 		system.userInfo[16] = Long.toString(now-system.recordTime);
 		system.recordTime = now;
 		System.out.println("Time Updated");
@@ -61,7 +65,7 @@ public class Achievements extends JPanel{
 		int battleNum = Integer.parseInt(battleRecords[0]);
 		int losNum = battleNum-winNum;
 		int missNum = Integer.parseInt(system.userInfo[14]);
-		int[] the3Var = {winNum,losNum,missNum};
+		int[] the3Var = {winNum,losNum,missNum};//all necessary info
 		long hourNum = Long.parseLong(system.userInfo[16])/3600000;
 		boolean[] newAccomplished = new boolean[num];
 		System.out.println("Calculations completed");
@@ -70,12 +74,12 @@ public class Achievements extends JPanel{
 			newAccomplished[i]=(the3Var[(i-1)/3]>=achiNums[((i-1)/6)*3+i%3]);
 			System.out.println(i+" "+newAccomplished[i]+" "+((i/6)*3+i%3));
 		}
-		System.out.println("checked 1-10");
+		System.out.println("checked 1-10");//inform user
 		newAccomplished[10] = (battleNum>=10);
 		newAccomplished[11] = (battleNum>=100);
 		newAccomplished[12] = (battleNum>=5000);
 		newAccomplished[13] = (hourNum >= 2036);
-		System.out.println("all checked");
+		System.out.println("all checked");//inform user
 		String checkedString = "";
 		for(int i=0;i<num;i++){
 			checkedString+=" "+newAccomplished[i];
@@ -87,6 +91,10 @@ public class Achievements extends JPanel{
 		System.out.println("Achievement updated");
 		system.userInfo[28] = checkedString.substring(1);
 	}
+	
+	/**
+	 * This method loads the achievement interface
+	 */
 	private static void loadAchi(){
 		String[] achiString = system.userInfo[28].split(" ");
 		for(int i =0;i<num;i++){
@@ -96,42 +104,47 @@ public class Achievements extends JPanel{
 		System.out.println("Achievement loaded");
 		makeLabel();
 	}
+	
 	public Achievements() {
-		setSize(1300, 700);
+		setSize(1300, 700);//size of window
 		setLayout(null);
 		bInsets=getInsets();
 		getRewardButton.setBounds(bInsets.left+10,bInsets.top+110,120,160);
 		getRewardButton.addMouseListener(getReward);
-		add(getRewardButton);
+		add(getRewardButton);//adds getReward
 		backButton.setBounds(bInsets.left + 10, bInsets.top + 10, 100, 60);
 		backButton.addMouseListener(backMouseEffect);
-		add(backButton);
+		add(backButton);//adds back
 		buttonEffect.setBounds(bInsets.left, bInsets.top, 120, 80);
-		add(buttonEffect);
+		add(buttonEffect);//adds effects
 		buttonEffect.setVisible(false);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);//remove horizontal scrollbar
 		scrollPane.setBounds(bInsets.left + 150, bInsets.top + 20, 1250, 650);
-		scrollPane.getViewport().setOpaque(false);
+		scrollPane.getViewport().setOpaque(false);//make scrollPane transparent
 		scrollPane.setOpaque(false);
-		add(scrollPane);
+		add(scrollPane);//adds scrollPane
 		scrollPane.setVisible(true);
 		bgi.setBounds(bInsets.left, bInsets.top, 1300, 700);
-		add(bgi);
+		add(bgi);//adds background
 		setVisible(true);
 	}
+	
+	/**
+	 * This method creates the label that contains each achievement
+	 */
 	public static void makeLabel() {
-		paneContent.setLayout(new BoxLayout(paneContent,BoxLayout.Y_AXIS));
-		for(int i=0;i<num;i++) {
+		paneContent.setLayout(new BoxLayout(paneContent,BoxLayout.Y_AXIS));//display one label per line
+		for(int i=0;i<num;i++) {//make labels
 			if(accomplished[i]) {
-				achievementsLabels[i]=new JLabel(new ImageIcon("A"+i+".png"));
+				achievementsLabels[i]=new JLabel(new ImageIcon("A"+i+".png"));//if unlocked
 			}else {
-				achievementsLabels[i]=new JLabel(new ImageIcon("aLocked.png"));
+				achievementsLabels[i]=new JLabel(new ImageIcon("aLocked.png"));//if locked
 			}
 			paneContent.add(achievementsLabels[i]);
 		}
-		paneContent.setOpaque(false);
+		paneContent.setOpaque(false);//make background transparent
 		scrollPane.add(paneContent);
-		scrollPane.setViewportView(paneContent);
+		scrollPane.setViewportView(paneContent);//add to scrollPane
 	}
 }
