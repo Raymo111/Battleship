@@ -117,7 +117,7 @@ public class Battleship {
 
 			x = Integer.parseInt(input.substring(1, 2)) - 1;
 			y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
-			if (x == 1) {// Get second digit, could be 10
+			if (x == 0) {// Get second digit, could be 10
 				try {
 					if (Integer.parseInt(input.substring(2, 3)) == 0)
 						x = 9;
