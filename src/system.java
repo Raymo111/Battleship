@@ -697,7 +697,6 @@ public class system extends JFrame {
 		}
 		x = Integer.parseInt(input.substring(1, input.length())) - 1;
 		y = ((int) input.charAt(0)) - 65;// ASCII value for A~J = 65~74
-		System.out.println("check " + round + " " + x + " " + y);
 		if (x == 1) {// Get second digit, could be 10
 			try {
 				if (Integer.parseInt(input.substring(2, 3)) == 0)
@@ -705,6 +704,7 @@ public class system extends JFrame {
 			} catch (Exception e) {
 			}
 		}
+		System.out.println("check " + round + " " + x + " " + y);
 		// Check for hit or miss on home grid
 		userShot = Battleship.homeGrid[y][x];
 		if (userShot.shipType == null) {// Miss
