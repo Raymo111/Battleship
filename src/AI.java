@@ -323,24 +323,24 @@ public class AI {
 						: 0;
 
 		// Going down
-		if (bounds[2] - lastShot.y >= shipLength) // No bounds
+		if (bounds[1] - lastShot.y >= shipLength) // No bounds
 			for (int i = 1; i < shipLength; i++)
 				grid[lastShot.y + i][lastShot.x].huntPDy -= (grid[lastShot.y + i][lastShot.x].huntPDy
 						- (shipLength - i) > 0) ? (shipLength - i) : 0;
 		else // With bounds
-			for (int i = bounds[2]; i > lastShot.y; i--)
+			for (int i = bounds[1]; i > lastShot.y; i--)
 				grid[i][lastShot.x].huntPDy -= (grid[i][lastShot.x].huntPDy - (i - lastShot.y) > 0) ? (i - lastShot.y)
 						: 0;
 
 		// Going left
-		if (lastShot.x - bounds[1] >= shipLength) // No bounds
+		if (lastShot.x - bounds[2] >= shipLength) // No bounds
 			for (int i = 1; i < shipLength; i++)
 				grid[lastShot.y][lastShot.x
 						- i].huntPDx -= (grid[lastShot.y][lastShot.x - i].huntPDx - (shipLength - i) > 0)
 								? (shipLength - i)
 								: 0;
 		else // With bounds
-			for (int i = bounds[1]; i < lastShot.x; i++)
+			for (int i = bounds[2]; i < lastShot.x; i++)
 				grid[lastShot.y][i].huntPDx -= (grid[lastShot.y][i].huntPDy - (lastShot.x - i) > 0) ? (lastShot.x - i)
 						: 0;
 
@@ -356,14 +356,14 @@ public class AI {
 				grid[lastShot.y][i].huntPDx -= (grid[lastShot.y][i].huntPDy - (i - lastShot.x) > 0) ? (i - lastShot.x)
 						: 0;
 
+		// Set last shot (miss)'s PD to 0
+		lastShot.huntPDx = 0;
+		lastShot.huntPDy = 0;
+
 		// Recombine an updated probability density distribution graph for hunt mode
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
 				grid[i][j].combinehuntPDXY();
-
-		// Set last shot (miss)'s PD to 0
-		lastShot.huntPDx = 0;
-		lastShot.huntPDy = 0;
 
 		if (mode == Mode.TARGET && lastShot.status == SquareTypes.MISS) {
 			lastShot.targetPDx = 0;
@@ -426,7 +426,7 @@ public class AI {
 	private int[] getBounds(Square lastShot, Square[][] grid) {
 
 		// Boundaries set for decrementing total square values
-		int[] bounds = new int[] { -1, -1, grid.length, grid[0].length };
+		int[] bounds = new int[] { -1, grid.length, -1, grid[0].length };
 
 		// Going up
 		for (int i = lastShot.y - 1; i >= 0; i--)
