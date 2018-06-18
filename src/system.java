@@ -214,13 +214,13 @@ public class system extends JFrame {
 	private void enterGame() {
 		if (!inGame) {//when the game is not already started
 			Object[] modeOptions = { "AI Combat", "Human against AI" };//ask for mode
-			int modeIndex;
+			int modeIndex = -1;
 			do {
 				modeIndex = JOptionPane.showOptionDialog(popUpFrame, "Choose a game mode", "Game mode",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), modeOptions,
 						modeOptions[0]);
 				AIcombat = (modeIndex==0);
-			} while (!areYouSure(modeOptions[modeIndex].toString()));//confirm
+			} while (modeIndex==-1||!areYouSure(modeOptions[modeIndex].toString()));//confirm
 			Object[] firstHandOptions = { "User", "AI" };//ask for first hand
 			if(AIcombat){//it is an AI combat
 				for(int i =0;i<10;i++){//reset the user board of game interface
@@ -233,7 +233,7 @@ public class system extends JFrame {
 				firstHandOptions[0] = "Them";
 				firstHandOptions[1] = "Us";
 			}//end if
-			int firsthandIndex;
+			int firsthandIndex = -1;
 			do {//ask for first hand
 				firsthandIndex = JOptionPane.showOptionDialog(null, "Battle started from:", "First hand",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), firstHandOptions,
@@ -245,15 +245,15 @@ public class system extends JFrame {
 					firstHand = "AI";
 					Game.userTurn = false;
 				}
-			} while (!areYouSure(firstHandOptions[firsthandIndex].toString()));//confirm
+			} while (firsthandIndex==-1||!areYouSure(firstHandOptions[firsthandIndex].toString()));//confirm
 			Object[] diOptions = { "Expert - Raymond", "Random", "Expert - David","Extreme" };
 			do {//ask for difficulty level
 				difficulty = JOptionPane.showOptionDialog(null, "Choose a difficulty level:", "Difficulty",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), diOptions,
 						diOptions[0]);
-			} while (!areYouSure(diOptions[difficulty].toString()));//confirm
+			} while (difficulty==-1||!areYouSure(diOptions[difficulty].toString()));//confirm
 			Object[] offsetOptions = { "Yes", "No" };
-			int offsetInd;
+			int offsetInd=-1;
 			do {//ask for offset
 				offsetInd = JOptionPane.showOptionDialog(null, "Offset edges?", "Offset?",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), offsetOptions,
@@ -263,7 +263,7 @@ public class system extends JFrame {
 				} else {
 					offset = "n";
 				}//end if
-			} while (!areYouSure(offsetOptions[offsetInd].toString()));//confirm
+			} while (offsetInd==-1||!areYouSure(offsetOptions[offsetInd].toString()));//confirm
 		}//end if
 	}//end method
 	/**
@@ -567,7 +567,7 @@ public class system extends JFrame {
 					hitShipIndex = JOptionPane.showOptionDialog(null, "Response from other AI?", "Get Response",
 							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), hitShipOptions,
 							hitShipOptions[0]);
-				} while (!areYouSure(hitShipOptions[hitShipIndex].toString()));//confirm
+				} while (hitShipIndex==-1||!areYouSure(hitShipOptions[hitShipIndex].toString()));//confirm
 				return ultResponse+Battleship.shipNames[hitShipIndex];//return after adding name
 			}//end if
 		}//end if
