@@ -39,6 +39,7 @@ public class system extends JFrame {
 	private static AI Amadeus;									//variables from console game: the AI in game
 	final static Color[] unitColor = {Game.darkBlue,new Color(0,200,0), new Color(0,170,0), new Color(0,140,0),new Color(0,110,0),new Color(0,80,0),Game.darkBlue};
 														//constant array of colors of ships for placing ships and checking existence of ship in shot in human against AI mode
+	static JFrame popUpFrame = new JFrame();
 	private MouseListener directory = new MouseListener() {//MouseListener for directing the display between interfaces
 		public void mouseClicked(MouseEvent event) {
 			JLabel source = (JLabel) event.getSource();//source of button
@@ -176,6 +177,8 @@ public class system extends JFrame {
 		for (int i = 0; i < 6; i++) {
 			baseInter.mRightButtons.get(i).addMouseListener(directory);//add directory to all buttons in base interface
 		} // end for
+		popUpFrame.setUndecorated(true);
+		popUpFrame.setSize(300, 200);
 		recordTime = System.currentTimeMillis();//record current time
 		gameInter.backButton.addMouseListener(directory);//add directory to buttons in game interface
 		gameInter.startButton.addMouseListener(gameOper);//add gameOper to start button in game interface
@@ -213,7 +216,7 @@ public class system extends JFrame {
 			Object[] modeOptions = { "AI Combat", "Human against AI" };//ask for mode
 			int modeIndex;
 			do {
-				modeIndex = JOptionPane.showOptionDialog(null, "Choose a game mode", "Game mode",
+				modeIndex = JOptionPane.showOptionDialog(popUpFrame, "Choose a game mode", "Game mode",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), modeOptions,
 						modeOptions[0]);
 				AIcombat = (modeIndex==0);
@@ -548,7 +551,7 @@ public class system extends JFrame {
 				responseIndex = JOptionPane.showOptionDialog(null, "Shot: "+AIcoor, "Get Response",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon("gNani.png"), reOptions,
 						reOptions[0]);//display ask result type
-			} while (!areYouSure(reOptions[responseIndex].toString()));//confirm
+			} while ((responseIndex==-1)||!areYouSure(reOptions[responseIndex].toString()));//reask if confirmed not or didn't get response
 			if(responseIndex==0){
 				Game.countIncre(Game.eMis);//count a miss
 				return "MISS";//return miss
