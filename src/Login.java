@@ -22,7 +22,7 @@ public class Login extends JDialog {
 	private JLabel startButton = new JLabel("CLICK TO ENTER",SwingConstants.CENTER);			//label prompt the user to click to login
 	private JPanel loginInter = new JPanel();													//JPanel for login interface
 	JTextField loginText = new JTextField("Please enter a username");					//textfield for input of username
-	JLabel okButton = new JLabel(new ImageIcon("lOkButton.png"));						//OK button to confirm username login
+	JButton okButton = new JButton(new ImageIcon("lOkButton.png"));						//OK button to confirm username login
 	private JLabel mouseEffect = new JLabel(new ImageIcon("lMouse.png"));						//selection effect for OK button
     public Login() {
     	 setUndecorated(true);//hide top bars of the dialog
@@ -49,6 +49,8 @@ public class Login extends JDialog {
          add(iconInter);//add initial interface
          loginInter.setVisible(false);//do not display login interface
          setLocationRelativeTo(null);//display dialog at center of the screen to attract attention
+         getRootPane().setDefaultButton(okButton);
+         
          setVisible(true);//display login dialog
     }
     /**

@@ -1,4 +1,4 @@
-Please enter a username
+a
 null
 null
 null
@@ -12,12 +12,12 @@ null
 null
 null
 null
-110
 0
-2376062
-5 1
-12
-3444
+0
+123898
+0 0
+1
+0
 0
 0 1 2 3 4
 null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null null
@@ -26,7 +26,7 @@ null null null null null null null null null null null null null null null null 
 false
 100
 false false false false false false false false false false false
-true false false false false false false false false false false false false false
+false false false false false false false false false false false false false false
 0
 0
 0
