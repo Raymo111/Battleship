@@ -315,34 +315,46 @@ public class AI {
 		// Going up
 		if (lastShot.y - bounds[0] >= shipLength) // No bounds
 			for (int i = 1; i < shipLength; i++)
-				grid[lastShot.y - i][lastShot.x].huntPDy -= shipLength - i;
+				grid[lastShot.y - i][lastShot.x].huntPDy -= (grid[lastShot.y - i][lastShot.x].huntPDy
+						- (shipLength - i) > 0) ? (shipLength - i) : 0;
 		else // With bounds
 			for (int i = bounds[0]; i < lastShot.y; i++)
-				grid[i][lastShot.x].huntPDy -= lastShot.y - i;
+				grid[i][lastShot.x].huntPDy -= (grid[i][lastShot.x].huntPDy - (lastShot.y - i) > 0) ? (lastShot.y - i)
+						: 0;
 
 		// Going down
 		if (bounds[2] - lastShot.y >= shipLength) // No bounds
 			for (int i = 1; i < shipLength; i++)
-				grid[lastShot.y + i][lastShot.x].huntPDy -= shipLength - i;
+				grid[lastShot.y + i][lastShot.x].huntPDy -= (grid[lastShot.y + i][lastShot.x].huntPDy
+						- (shipLength - i) > 0) ? (shipLength - i) : 0;
 		else // With bounds
 			for (int i = bounds[2]; i > lastShot.y; i--)
-				grid[i][lastShot.x].huntPDy -= i - lastShot.y;
+				grid[i][lastShot.x].huntPDy -= (grid[i][lastShot.x].huntPDy - (i - lastShot.y) > 0) ? (i - lastShot.y)
+						: 0;
 
 		// Going left
 		if (lastShot.x - bounds[1] >= shipLength) // No bounds
 			for (int i = 1; i < shipLength; i++)
-				grid[lastShot.y][lastShot.x - i].huntPDx -= shipLength - i;
+				grid[lastShot.y][lastShot.x
+						- i].huntPDx -= (grid[lastShot.y][lastShot.x - i].huntPDx - (shipLength - i) > 0)
+								? (shipLength - i)
+								: 0;
 		else // With bounds
 			for (int i = bounds[1]; i < lastShot.x; i++)
-				grid[lastShot.y][i].huntPDx -= lastShot.x - i;
+				grid[lastShot.y][i].huntPDx -= (grid[lastShot.y][i].huntPDy - (lastShot.x - i) > 0) ? (lastShot.x - i)
+						: 0;
 
 		// Going right
 		if (bounds[3] - lastShot.x >= shipLength) // No bounds
 			for (int i = 1; i < shipLength; i++)
-				grid[lastShot.y][lastShot.x + i].huntPDx -= shipLength - i;
+				grid[lastShot.y][lastShot.x
+						+ i].huntPDx -= (grid[lastShot.y][lastShot.x + i].huntPDx - (shipLength - i) > 0)
+								? (shipLength - i)
+								: 0;
 		else // With bounds
 			for (int i = bounds[3]; i > lastShot.x; i--)
-				grid[lastShot.y][i].huntPDx -= i - lastShot.x;
+				grid[lastShot.y][i].huntPDx -= (grid[lastShot.y][i].huntPDy - (i - lastShot.x) > 0) ? (i - lastShot.x)
+						: 0;
 
 		// Recombine an updated probability density distribution graph for hunt mode
 		for (int i = 0; i < grid.length; i++)
