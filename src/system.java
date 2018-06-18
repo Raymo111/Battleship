@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
@@ -101,9 +103,9 @@ public class system extends JFrame {
 		public void mouseReleased(MouseEvent e) {
 		}
 	};//end MouseListener
+	private ActionListener loginOper = new ActionListener(){//ActionListener for login operations
 
-	private MouseListener loginOper = new MouseListener() {//MouseListener for login operations
-		public void mouseClicked(MouseEvent event) {
+		public void actionPerformed(ActionEvent event) {
 			try {
 				readLogin(startGame.loginText.getText());//perform readLogin operation to user's input
 			} catch (Exception e) {
@@ -114,19 +116,8 @@ public class system extends JFrame {
 			add(baseInter);//add base interface
 			setVisible(true);//set main frame visible
 		}//end method
-				/////
-		public void mouseEntered(MouseEvent e) {
-		}
-
-		public void mouseExited(MouseEvent e) {
-		}
-
-		public void mousePressed(MouseEvent e) {
-		}
-
-		public void mouseReleased(MouseEvent e) {
-		}
-	};//end MouseListener
+		
+	};
 
 	private MouseListener gameOper = new MouseListener() {//MouseListener for game operations
 		public void mouseClicked(MouseEvent e) {
@@ -181,7 +172,7 @@ public class system extends JFrame {
 
 	public system() throws IOException {
 		startGame = new Login();//initialize login interface
-		startGame.okButton.addMouseListener(loginOper);//add MouseListener to the OK Button
+		startGame.okButton.addActionListener(loginOper);//add ActionListener to the OK Button
 		for (int i = 0; i < 6; i++) {
 			baseInter.mRightButtons.get(i).addMouseListener(directory);//add directory to all buttons in base interface
 		} // end for
