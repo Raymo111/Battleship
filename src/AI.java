@@ -49,11 +49,11 @@ public class AI {
 		if (input.equalsIgnoreCase("y")) {
 			for (int i = 0; i < Battleship.enemyGrid.length; i++)
 				for (int j = 0; j < Battleship.enemyGrid[i].length; j++) {
-					if (Battleship.enemyGrid[i][j].x == 0 || Battleship.enemyGrid[i][j].x == 9) {// x in outer 2
+					if (Battleship.enemyGrid[i][j].x == 1 || Battleship.enemyGrid[i][j].x == 8) {// x in outer 2
 						Battleship.enemyGrid[i][j].huntPDx += 40;
 						Battleship.enemyGrid[i][j].combinehuntPDXY();
 					}
-					if (Battleship.enemyGrid[i][j].y == 0 || Battleship.enemyGrid[i][j].y == 9) {// y in outer 2
+					if (Battleship.enemyGrid[i][j].y == 1 || Battleship.enemyGrid[i][j].y == 8) {// y in outer 2
 						Battleship.enemyGrid[i][j].huntPDy += 40;
 						Battleship.enemyGrid[i][j].combinehuntPDXY();
 					}
