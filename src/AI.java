@@ -47,13 +47,21 @@ public class AI {
 
 		// User wants to offset edges
 		if (input.equalsIgnoreCase("y")) {
+			int x = Integer.parseInt(br.readLine()) - 1;
+			int y = Integer.parseInt(br.readLine()) - 1;
 			for (int i = 0; i < Battleship.enemyGrid.length; i++)
 				for (int j = 0; j < Battleship.enemyGrid[i].length; j++) {
-					if (Battleship.enemyGrid[i][j].x == 1 || Battleship.enemyGrid[i][j].x == 8) {// x in outer 2
+
+					// X between x and y layers
+					if (Battleship.enemyGrid[i][j].x >= x && Battleship.enemyGrid[i][j].x <= y
+							|| Battleship.enemyGrid[i][j].x <= 9 - y && Battleship.enemyGrid[i][j].x >= 9 - x) {
 						Battleship.enemyGrid[i][j].huntPDx += 40;
 						Battleship.enemyGrid[i][j].combinehuntPDXY();
 					}
-					if (Battleship.enemyGrid[i][j].y == 1 || Battleship.enemyGrid[i][j].y == 8) {// y in outer 2
+
+					// Y between x and y layers
+					if (Battleship.enemyGrid[i][j].y >= x && Battleship.enemyGrid[i][j].y <= y
+							|| Battleship.enemyGrid[i][j].y <= 9 - y && Battleship.enemyGrid[i][j].y >= 9 - x) {
 						Battleship.enemyGrid[i][j].huntPDy += 40;
 						Battleship.enemyGrid[i][j].combinehuntPDXY();
 					}
